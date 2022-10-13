@@ -1,0 +1,13 @@
+{
+  "general.title.edit": "Edit",
+  "general.title.create": "Create",
+  "general.update.error": "Error",
+  "general.update.success": "Success",
+  "general.delete.content": "Delete Content",
+  "general.delete.title": "Delete title",
+  "general.actions.view": "View",
+  "general.actions.edit": "Edit",
+  "general.actions.delete": "Delete",
+  "general.actions.label": "Label",
+  "general.actions.create": "Create"
+}

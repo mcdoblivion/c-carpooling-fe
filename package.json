@@ -1,0 +1,177 @@
+{
+  "name": "react3lapp",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "14.x"
+  },
+  "dependencies": {
+    "@carbon/icons-react": "^10.44.0",
+    "@microsoft/signalr": "^5.0.9",
+    "@types/carbon__icons-react": "^10.31.2",
+    "ahooks": "^2.10.9",
+    "antd": "^4.16.6",
+    "availity-reactstrap-validation": "^2.7.0",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.0-beta2",
+    "chart.js": "^2.9.4",
+    "chartist": "^0.11.4",
+    "classnames": "^2.2.6",
+    "echarts": "^4.9.0",
+    "echarts-for-react": "^2.0.16",
+    "fast-memoize": "^2.5.2",
+    "file-saver": "^2.0.5",
+    "froala-editor": "^3.2.7",
+    "i": "^0.3.6",
+    "i18next": "^19.8.4",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "leaflet": "^1.7.1",
+    "lodash": "^4.17.20",
+    "lodash.clonedeep": "^4.5.0",
+    "metismenujs": "^1.2.1",
+    "moment": "2.29.1",
+    "moment-timezone": "^0.5.32",
+    "node-sass": "^4.14.1",
+    "npm": "^7.6.3",
+    "prop-types": "^15.7.2",
+    "qs": "^6.10.1",
+    "react": "^17.0.2",
+    "react-chartist": "^0.14.3",
+    "react-chartjs-2": "^2.11.1",
+    "react-collapse": "^5.1.1",
+    "react-cropper": "^2.1.4",
+    "react-dom": "^17.0.2",
+    "react-drawer": "^1.3.4",
+    "react-dropzone": "^11.2.4",
+    "react-error-boundary": "^3.1.4",
+    "react-flatpickr": "^3.10.6",
+    "react-froala-wysiwyg": "^3.2.6-1",
+    "react-i18next": "^11.8.5",
+    "react-meta-tags": "^1.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-toastr": "^3.0.0",
+    "react3l": "^6.0.0-rc.1",
+    "react3l-advanced-filters": "^6.0.0-rc.1",
+    "react3l-axios-observable": "^6.0.0-rc.1",
+    "react3l-common": "^6.0.3-rc.1",
+    "react3l-decorators": "^6.0.0-rc.1",
+    "react3l-localization": "^6.0.1-rc.1",
+    "react3l-ui-library": "^0.1.27",
+    "reactstrap": "^8.8.1",
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.7",
+    "redux-saga": "^1.1.3",
+    "rxjs": "^7.3.0",
+    "serve": "^14.0.1",
+    "simplebar-react": "^2.3.0",
+    "styled-components": "^5.2.1",
+    "toastr": "^2.1.4",
+    "typescript": "^4.1.2",
+    "webfontloader": "^1.6.28",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "dev": "react-app-rewired start",
+    "start": "serve -s build",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject",
+    "predev": "run-s merge",
+    "prebuild": "run-s merge",
+    "heroku-postbuild": "yarn build",
+    "merge": "react3l translate merge -i src/ -o src/locales/ -p src/i18n/",
+    "extract": "react3l translate extract -i src/ -o src/i18n/ -p src/i18n/",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,html,css,less,scss}\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "modules": true
+      },
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "no-console": "warn"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "no-undef": "off"
+        }
+      }
+    ],
+    "ignorePatterns": [
+      "src/**/*.test.{ts,tsx}"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/file-saver": "^2.0.4",
+    "@types/jest": "^26.0.15",
+    "@types/lodash": "^4.14.171",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-collapse": "^5.0.1",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-config": "^5.0.1",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/redux-saga": "^0.10.5",
+    "@types/webfontloader": "^1.6.33",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-react": "^7.20.6",
+    "husky": "^4.2.3",
+    "lint-staged": "^12.3.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.1",
+    "react-app-rewire-postcss": "^3.0.2",
+    "react-app-rewired": "^2.1.8",
+    "react3l-cli": "^1.1.0",
+    "ts-nameof.macro": "^4.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.+(ts|tsx|js|jsx|json|md|html|css|less|scss)": [
+      "prettier --write"
+    ],
+    "src/**/*.+(js|json|ts|tsx)": [
+      "yarn lint"
+    ]
+  }
+}

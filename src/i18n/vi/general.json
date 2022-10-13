@@ -1,0 +1,13 @@
+{
+  "general.title.edit": "Sửa",
+  "general.title.create": "Tạo mới",
+  "general.update.error": "Lỗi",
+  "general.update.success": "Thành công",
+  "general.delete.content": "",
+  "general.delete.title": "",
+  "general.actions.view": "Xem",
+  "general.actions.edit": "Sửa",
+  "general.actions.delete": "Xóa",
+  "general.actions.label": "Tác vụ",
+  "general.actions.create": "Thêm mới"
+}

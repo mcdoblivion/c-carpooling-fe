@@ -1,0 +1,484 @@
+$palettes: (
+  red: (
+    100: #2d0709,
+    90: #520408,
+    80: #750e13,
+    70: #a2191f,
+    60: #da1e28,
+    50: #fa4d56,
+    40: #ff8389,
+    30: #ffb3b8,
+    20: #ffd7d9,
+    10: #fff1f1,
+  ),
+  redHover: (
+    100: #540d11,
+    90: #66050a,
+    80: #921118,
+    70: #c21e25,
+    60: #b81922,
+    50: #ee0713,
+    40: #ff6168,
+    30: #ff99a0,
+    20: #ffc2c5,
+    10: #ffe0e0,
+  ),
+  magenta: (
+    100: #2a0a18,
+    90: #510224,
+    80: #740937,
+    70: #9f1853,
+    60: #d02670,
+    50: #ee5396,
+    40: #ff7eb6,
+    30: #ffafd2,
+    20: #ffd6e8,
+    10: #fff0f7,
+  ),
+  magentaHover: (
+    100: #53142f,
+    90: #68032e,
+    80: #8e0b43,
+    70: #bf1d63,
+    60: #b0215f,
+    50: #e3176f,
+    40: #ff57a0,
+    30: #ff94c3,
+    20: #ffbdda,
+    10: #ffe0ef,
+  ),
+  purple: (
+    100: #1c0f30,
+    90: #31135e,
+    80: #491d8b,
+    70: #6929c4,
+    60: #8a3ffc,
+    50: #a56eff,
+    40: #be95ff,
+    30: #d4bbff,
+    20: #e8daff,
+    10: #f6f2ff,
+  ),
+  purpleHover: (
+    100: #341c59,
+    90: #40197b,
+    80: #5b24ad,
+    70: #7c3dd6,
+    60: #7822fb,
+    50: #9352ff,
+    40: #ae7aff,
+    30: #c5a3ff,
+    20: #dcc7ff,
+    10: #ede5ff,
+  ),
+  blue: (
+    100: #001141,
+    90: #001d6c,
+    80: #002d9c,
+    70: #0043ce,
+    60: #0f62fe,
+    50: #4589ff,
+    40: #78a9ff,
+    30: #a6c8ff,
+    20: #d0e2ff,
+    10: #edf5ff,
+  ),
+  blueHover: (
+    100: #001f75,
+    90: #00258a,
+    80: #0039c7,
+    70: #0053ff,
+    60: #0050e6,
+    50: #1f70ff,
+    40: #5c97ff,
+    30: #8ab6ff,
+    20: #b8d3ff,
+    10: #dbebff,
+  ),
+  cyan: (
+    100: #061727,
+    90: #012749,
+    80: #003a6d,
+    70: #00539a,
+    60: #0072c3,
+    50: #1192e8,
+    40: #33b1ff,
+    30: #82cfff,
+    20: #bae6ff,
+    10: #e5f6ff,
+  ),
+  cyanHover: (
+    100: #0b2947,
+    90: #013360,
+    80: #00498a,
+    70: #0066bd,
+    60: #005fa3,
+    50: #0f7ec8,
+    40: #059fff,
+    30: #57beff,
+    20: #99daff,
+    10: #cceeff,
+  ),
+  teal: (
+    100: #081a1c,
+    90: #022b30,
+    80: #004144,
+    70: #005d5d,
+    60: #007d79,
+    50: #009d9a,
+    40: #08bdba,
+    30: #3ddbd9,
+    20: #9ef0f0,
+    10: #d9fbfb,
+  ),
+  tealHover: (
+    100: #0f3034,
+    90: #033940,
+    80: #005357,
+    70: #007070,
+    60: #006b68,
+    50: #008a87,
+    40: #07aba9,
+    30: #25cac8,
+    20: #57e5e5,
+    10: #acf6f6,
+  ),
+  green: (
+    100: #071908,
+    90: #022d0d,
+    80: #044317,
+    70: #0e6027,
+    60: #198038,
+    50: #24a148,
+    40: #42be65,
+    30: #6fdc8c,
+    20: #a7f0ba,
+    10: #defbe6,
+  ),
+  greenHover: (
+    100: #0d300f,
+    90: #033b11,
+    80: #05521c,
+    70: #11742f,
+    60: #166f31,
+    50: #208e3f,
+    40: #3bab5a,
+    30: #36ce5e,
+    20: #74e792,
+    10: #b6f6c8,
+  ),
+  coolGray: (
+    100: #121619,
+    90: #21272a,
+    80: #343a3f,
+    70: #4d5358,
+    60: #697077,
+    50: #878d96,
+    40: #a2a9b0,
+    30: #c1c7cd,
+    20: #dde1e6,
+    10: #f2f4f8,
+  ),
+  coolGrayHover: (
+    100: #222a2f,
+    90: #2b3236,
+    80: #434a51,
+    70: #5d646a,
+    60: #585e64,
+    50: #757b85,
+    40: #9199a1,
+    30: #adb5bd,
+    20: #cdd3da,
+    10: #e4e9f1,
+  ),
+  gray: (
+    100: #161616,
+    90: #262626,
+    80: #393939,
+    70: #525252,
+    60: #6f6f6f,
+    50: #8d8d8d,
+    40: #a8a8a8,
+    30: #c6c6c6,
+    20: #e0e0e0,
+    10: #f4f4f4,
+  ),
+  grayHover: (
+    100: #292929,
+    90: #333333,
+    80: #474747,
+    70: #636363,
+    60: #5e5e5e,
+    50: #7a7a7a,
+    40: #999999,
+    30: #b5b5b5,
+    20: #d1d1d1,
+    10: #e8e8e8,
+  ),
+  warmGray: (
+    100: #171414,
+    90: #272525,
+    80: #3c3838,
+    70: #565151,
+    60: #726e6e,
+    50: #8f8b8b,
+    40: #ada8a8,
+    30: #cac5c4,
+    20: #e5e0df,
+    10: #f7f3f2,
+  ),
+  warmGrayHover: (
+    100: #2c2626,
+    90: #343232,
+    80: #4c4848,
+    70: #696363,
+    60: #605d5d,
+    50: #7f7b7b,
+    40: #9c9696,
+    30: #b9b3b1,
+    20: #d8d0cf,
+    10: #f0e8e6,
+  ),
+  yellow: (
+    100: #1c1500,
+    90: #302400,
+    80: #483700,
+    70: #684e00,
+    60: #8e6a00,
+    50: #b28600,
+    40: #d2a106,
+    30: #f1c21b,
+    20: #fddc69,
+    10: #fcf4d6,
+  ),
+  yellowHover: (
+    100: #332600,
+    90: #3d2e00,
+    80: #5c4600,
+    70: #806000,
+    60: #755800,
+    50: #9e7700,
+    40: #bc9005,
+    30: #ddb00e,
+    20: #fccd27,
+    10: #f8e6a0,
+  ),
+  orange: (
+    100: #231000,
+    90: #3e1a00,
+    80: #5e2900,
+    70: #8a3800,
+    60: #ba4e00,
+    50: #eb6200,
+    40: #ff832b,
+    30: #ffb784,
+    20: #ffd9be,
+    10: #fff2e8,
+  ),
+  orangeHover: (
+    100: #421e00,
+    90: #522200,
+    80: #753300,
+    70: #a84400,
+    60: #9e4200,
+    50: #cc5500,
+    40: #fa6800,
+    30: #ff9d57,
+    20: #ffc69e,
+    10: #ffe2cc,
+  ),
+  black: (
+    100: #000000,
+  ),
+  blackHover: (
+    100: #212121,
+  ),
+  white: (
+    100: #ffffff,
+  ),
+  whiteHover: (
+    100: #e8e8e8,
+  ),
+);
+
+:root {
+  /* color palettes */
+  @each $colorname, $palette in $palettes {
+    @each $key, $value in $palette {
+      $keyname: "--palette-" + $colorname + "-" + $key;
+      #{$keyname}: #{$value};
+    }
+  }
+
+  /* main colors */
+  /* used for the links, the button background color,... */
+  --color-primary: #0f62fe;
+  --color-primary-hover: #0050e6;
+  --color-primary-active: #002d9c;
+  --color-primary-blur: #d0e2ff;
+  --color-secondary: #393939;
+  --color-secondary-hover: #4c4c4c;
+  --color-secondary-active: #6f6f6f;
+  --color-secondary-blur: #e0e0e0;
+  /* accent colors */
+  /* used to highlight something important on the page */
+  --color-accent: #eb6200;
+  --color-accent-hover: #cc5500;
+  --color-accent-active: #753300;
+  --color-accent-blur: #ffd9be;
+
+  /* support color */
+  --color-link: #0043ce;
+  --color-harmony-black: #000000;
+  --color-text: #161616;
+  --color-black-hover: #212121;
+  --color-white: #ffffff;
+  --color-white-hover: #e8e8e8;
+
+  /* critical color */
+  --color-critical: #da1e28;
+  --color-critical-hover: #b81922;
+  --color-critilcal-active: #750e13;
+  --color-critical-blur: #fff1f1;
+
+  --white: #ffffff;
+  --label--disable: #a8a8a8;
+  /* buttons primary */
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-hover: var(--color-primary-hover);
+  --btn-primary-active: var(--color-primary-active);
+  --btn-primary-focus: var(--color-primary);
+  --btn-primary-label: var(--white);
+  --btn-primary-disabled: #f4f4f4;
+  --btn-primary-disabled-label: var(--label--disable);
+
+  /* buttons primary outline */
+  --btn-outline-primary-border: var(--color-primary);
+  --btn-outline-primary-hover: var(--color-primary);
+  --btn-outline-primary-active: var(--color-primary);
+  --btn-outline-primary-label: var(--color-primary);
+  --btn-outline-primary-disabled-border: #c1c7cd;
+  --btn-outline-primary-disabled-label: var(--label--disable);
+
+  /* buttons secondary */
+  --btn-secondary-bg: var(--color-secondary);
+  --btn-secondary-hover: var(--color-secondary-hover);
+  --btn-secondary-active: var(--color-secondary-active);
+  --btn-secondary-focus: var(--color-secondary);
+  --btn-secondary-label: var(--white);
+  --btn-secondary-disabled: #f4f4f4;
+  --btn-secondary-disabled-label: var(--label--disable);
+
+  /* buttons ghost */
+  --color--ghost: #e8e8e8;
+  --btn-ghost-hover: var(--color--ghost);
+  --btn-ghost-active: var(--color--ghost);
+  --btn-ghost-focus: var(--color--ghost);
+  --btn-ghost-label: #161616;
+  --btn-ghost-disabled-label: var(--label--disable);
+  --btn-ghost-border-forcus: var(--color-primary);
+
+  /* buttons ghost primary */
+  --color--ghost--primary: var(--color-primary-hover);
+  --btn-ghost-primary-hover: var(--color--ghost--primary);
+  --btn-ghost-primary-active: var(--color--ghost--primary);
+  --btn-ghost-primary-focus: var(--color--ghost--primary);
+  --btn-ghost-primary-label: var(--white);
+  --btn-ghost-primary-disabled-label: var(--label--disable);
+  --btn-ghost-primary-border-forcus: var(--color--ghost--primary);
+
+  /* buttons ghost secondary */
+  --color--ghost--secondary: var(--color-secondary-hover);
+  --btn-ghost-secondary-hover: var(--color--ghost--secondary);
+  --btn-ghost-secondary-active: var(--color--ghost--secondary);
+  --btn-ghost-secondary-focus: var(--color--ghost--secondary);
+  --btn-ghost-secondary-label: var(--white);
+  --btn-ghost-secondary-disabled-label: var(--label--disable);
+  --btn-ghost-secondary-border-forcus: var(--color-primary);
+
+  /* buttons destructive */
+  --color--danger: var(--color-critical);
+  --color--danger-hover: var(--color-critical-hover);
+  --btn-danger-bg: var(--color--danger);
+  --btn-danger-hover: var(--color--danger-hover);
+  --btn-danger-active: var(--color-critilcal-active);
+  --btn-danger-focus: var(--color--danger);
+  --btn-danger-label: var(--white);
+  --btn-danger-disabled: #f4f4f4;
+  --btn-danger-disabled-label: var(--label--disable);
+
+  /* buttons destructive outline */
+  --btn-outline-danger-border: var(--color--danger);
+  --btn-outline-danger-hover: var(--color--danger);
+  --btn-outline-danger-active: var(--color--danger);
+  --btn-outline-danger-focus: var(--color--danger);
+  --btn-outline-danger-label: var(--color--danger);
+  --btn-outline-danger-disabled-border: #c1c7cd;
+  --btn-outline-danger-disabled-label: var(--label--disable);
+
+  /* buttons link-plain */
+  --color--link-plain: #e8e8e8;
+  --btn-link-plain-hover: var(--color--link-plain);
+  --btn-link-plain-active: var(--color--link-plain);
+  --btn-link-plain-focus: var(--white);
+  --btn-link-plain-label: #161616;
+  --btn-link-plain-disabled-label: var(--label--disable);
+  --btn-link-plain-border-forcus: var(--color-primary);
+
+  /* buttons link*/
+  --color--link: var(--white);
+  --btn-link-hover: var(--color--link);
+  --btn-link-active: var(--color--link);
+  --btn-link-focus: var(--white);
+  --btn-link-label: #161616;
+  --btn-link-disabled-label: var(--label--disable);
+  --btn-link-border-forcus: var(--color-primary);
+}
+
+/* class bg and color for color $palletes with syntax .palette-$colorname-$number-$type */
+
+@each $colorname, $palette in $palettes {
+  @each $key, $value in $palette {
+    $keyname: "--palette-" + $colorname + "-" + $key;
+    .bg-palette-#{"" + $colorname}-#{$key} {
+      background-color: var(#{$keyname});
+    }
+    .color-palette-#{"" + $colorname}-#{$key} {
+      color: var(#{$keyname});
+    }
+    .bg-palette-#{"" + $colorname}-#{$key}-important {
+      background-color: var(#{$keyname}) !important;
+    }
+    .color-palette-#{"" + $colorname}-#{$key}-important {
+      color: var(#{$keyname}) !important;
+    }
+  }
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.color-secondary {
+  color: var(--color-secondary);
+}
+
+// .bg-white {
+//   background-color: var(--white);
+// }
+
+.color-white {
+  color: var(--white);
+}
+
+.color-link {
+  color: var(--color-link);
+}

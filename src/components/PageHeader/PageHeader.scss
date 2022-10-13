@@ -1,0 +1,29 @@
+@import "./../../assets/scss/design-system/color";
+
+.page-header {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+  height: 96px;
+  position: fixed;
+  top: 48px;
+  z-index: 200;
+  .page-header__breadcrumb {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.16px;
+    .page-header__breadcrumb-active {
+      font-weight: bold;
+      color: var(--color-primary);
+    }
+  }
+  .page-header__title {
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+    color: var(--color-text);
+  }
+}
