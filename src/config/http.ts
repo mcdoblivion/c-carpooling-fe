@@ -7,11 +7,13 @@ import appMessageService, {
 } from "services/common-services/app-message-service";
 import { LOGIN_ROUTE } from "./route-consts";
 
+const token = JSON.parse(localStorage.getItem("token"));
 export const httpConfig: AxiosRequestConfig = {
   withCredentials: false,
   baseURL: BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
+    Authorization: token || "",
   },
 };
 
@@ -23,7 +25,6 @@ Repository.requestInterceptor = function (
   } else {
     config.headers["Content-Type"] = "application/json";
   }
-
   return config;
 };
 

@@ -7,9 +7,9 @@ import { Provider } from "react-redux";
 import WebFont from "webfontloader";
 import store from "./store";
 import { PrivateRoute } from "pages/Authentication/PrivateRoute";
-import Login from "pages/Authentication/Login";
 // Import scss
 import "assets/scss/theme.scss";
+import Login from "pages/Authentication/Login/Login";
 
 WebFont.load({
   google: {

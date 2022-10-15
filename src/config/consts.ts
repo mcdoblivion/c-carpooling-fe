@@ -8,8 +8,7 @@ export const ASSETS_IMAGE: string = PUBLIC_URL
 export const ASSETS_SVG: string = PUBLIC_URL
   ? PUBLIC_URL + "/assets/svg"
   : "/assets/svg";
-export const BASE_API_URL: string =
-  process.env.REACT_APP_BASE_API_URL ?? window.location.origin;
+export const BASE_API_URL: string = "https://c-carpooling-be.herokuapp.com";
 
 /**
  * Date-time constants

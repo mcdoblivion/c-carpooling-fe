@@ -9,7 +9,6 @@ const titleColor = {
   backgroundColor: "#F8F8FA",
   padding: "24px 72px",
 };
-
 function Color() {
   return (
     <React.Fragment>

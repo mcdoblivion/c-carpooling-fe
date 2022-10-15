@@ -1,7 +1,5 @@
 import React from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
-import * as Cookie from "js-cookie";
-import authenticationService from "services/common-services/authentication-service";
+import { Route, Switch } from "react-router-dom";
 import App from "app/App";
 import { Route as RouteInterface, userRoutes as routes } from "config/route";
 import { SIDE_BAR_PAGE_ROUTE } from "config/route-consts";
@@ -21,18 +19,17 @@ export const PrivateRoute = ({ ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        const currentUser = authenticationService.currentUserValue;
-        const token = Cookie.get("Token");
-        if (!currentUser || !token) {
-          return (
-            <Redirect
-              to={{
-                pathname: `${process.env.PUBLIC_URL}/login`,
-                state: { from: props.location },
-              }}
-            />
-          );
-        }
+        // const auth = httpConfig.headers["Authorization"]
+        // if (!auth) {
+        //   return (
+        //     <Redirect
+        //       to={{
+        //         pathname: `${process.env.PUBLIC_URL}/login`,
+        //         state: { from: props.location },
+        //       }}
+        //     />
+        //   );
+        // }
 
         return (
           <React.Suspense fallback={<span>Loading...</span>}>

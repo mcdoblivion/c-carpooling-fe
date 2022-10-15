@@ -1,14 +1,8 @@
-import Login from "pages/Authentication/Login";
+import Login from "pages/Authentication/Login/Login";
 import Logout from "pages/Authentication/Logout";
-import Color from "pages/Color";
-import Typography from "pages/Typography";
 import { Redirect } from "react-router";
-import {
-  COLOR_PAGE_ROUTE,
-  LOGIN_ROUTE,
-  LOGOUT_ROUTE,
-  TYPOGRAPHY_PAGE_ROUTE,
-} from "./route-consts";
+import UserView from "views/UserView/UserView";
+import { LOGIN_ROUTE, LOGOUT_ROUTE, USER_ROUTE } from "./route-consts";
 
 export interface Route {
   path: string;
@@ -17,15 +11,9 @@ export interface Route {
 }
 
 const userRoutes: Route[] = [
-  // Default init route for template:
-
   {
-    path: TYPOGRAPHY_PAGE_ROUTE,
-    component: Typography,
-  },
-  {
-    path: COLOR_PAGE_ROUTE,
-    component: Color,
+    path: USER_ROUTE,
+    component: UserView,
   },
 
   // Created route for project:
@@ -34,7 +22,7 @@ const userRoutes: Route[] = [
   {
     path: `${process.env.PUBLIC_URL}/`,
     exact: true,
-    component: () => <Redirect to={TYPOGRAPHY_PAGE_ROUTE} />,
+    component: () => <Redirect to={USER_ROUTE} />,
   },
 ];
 

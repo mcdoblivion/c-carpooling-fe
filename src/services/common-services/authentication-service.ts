@@ -27,26 +27,12 @@ class AuthenticationService {
       Cookie.set("Token", "a6e0459b-9f50-42f8-b9d0-20cc9b4ce225");
       this.currentUserSubject.next(loginInfo);
       resolve(loginInfo);
-
-      //Real login
-      // profileRepository.login(loginInfo).subscribe(res => {
-      //   if (res) {
-      //     localStorage.setItem('currentUserInfo', JSON.stringify(res));
-      //     Cookie.set("Token", res.token);
-      //     this.currentUserSubject.next(res);
-      //     resolve(res);
-      //   }
-      // }, err => {
-      //   reject(err);
-      // });
     });
     return loginPromise;
   }
 
   public logout() {
-    localStorage.removeItem("currentUserInfo");
-    Cookie.remove("Token");
-    this.currentUserSubject.next(null);
+    localStorage.removeItem("token");
     window.location.href = LOGIN_ROUTE;
   }
 }
