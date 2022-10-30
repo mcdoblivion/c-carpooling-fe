@@ -11,7 +11,6 @@ import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import RightSidebar from "../CommonForBoth/RightSidebar";
 import megamenuImg from "../../assets/images/megamenu-img.png";
 
@@ -26,6 +25,7 @@ import slack from "../../assets/images/brands/slack.png";
 //i18n
 import { withTranslation } from "react-i18next";
 import { Drawer } from "antd";
+import ProfileMenu from "components/CommonForBoth/TopbarDropdown/ProfileMenu/ProfileMenu";
 
 // Redux Store
 // import {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Drawer } from "antd";
 
 import { connect } from "react-redux";
 
@@ -12,10 +11,7 @@ import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions";
 import { Row, Col, Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 
 // Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
-import RightSidebar from "../CommonForBoth/RightSidebar";
 
 import logo from "../../assets/images/logo.svg";
 import logoLight from "../../assets/images/logo-light.png";
@@ -34,6 +30,7 @@ import Navbar from "./Navbar";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import ProfileMenu from "components/CommonForBoth/TopbarDropdown/ProfileMenu/ProfileMenu";
 interface Document extends HTMLDocument {
   mozFullScreenElement: any;
   webkitFullscreenElement: any;
@@ -47,15 +44,6 @@ interface Document extends HTMLDocument {
 const Header = (props: any) => {
   const [isSearch, setSearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const toggleTopDrawer = () => {
-    setOpen(!open);
-  };
-
-  const onDrawerClose = () => {
-    setOpen(false);
-  };
 
   function toggleFullscreen() {
     if (
@@ -155,8 +143,6 @@ const Header = (props: any) => {
               </div>
             </div>
 
-            <LanguageDropdown />
-
             <Dropdown
               className="d-none d-lg-inline-block ms-1"
               isOpen={socialDrp}
@@ -233,29 +219,9 @@ const Header = (props: any) => {
             <NotificationDropdown />
 
             <ProfileMenu />
-
-            <div className="dropdown d-inline-block">
-              <button
-                onClick={toggleTopDrawer}
-                disabled={open}
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle "
-              >
-                <i className="bx bx-cog bx-spin" />
-              </button>
-            </div>
           </div>
         </div>
       </header>
-      <Drawer
-        visible={open}
-        width={300}
-        placement="right"
-        closable={false}
-        onClose={onDrawerClose}
-      >
-        <RightSidebar onClose={onDrawerClose} />
-      </Drawer>
     </React.Fragment>
   );
 };

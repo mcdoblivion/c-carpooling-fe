@@ -2,6 +2,7 @@ import { API_USER_PREFIX } from "config/api-consts";
 import { BASE_API_URL } from "config/consts";
 import { httpConfig } from "config/http";
 import { kebabCase } from "lodash";
+import { AppUser, AppUserFilter } from "models/AppUser";
 import { Model, Repository } from "react3l-common";
 import { Observable } from "rxjs";
 import nameof from "ts-nameof.macro";
@@ -16,8 +17,25 @@ export class UserRepository extends Repository {
 
   public all = (): Observable<Model> => {
     return this.http
-      .get(kebabCase(nameof(this.all)))
+      .get("users/" + kebabCase(nameof(this.all)))
       .pipe(Repository.responseMapToModel<Model>(Model));
+  };
+  public getUsers = (filter: AppUserFilter): Observable<AppUser> => {
+    return this.http
+      .get(
+        `users?page=${filter?.page}&limit=${filter?.limit}&search=${filter?.search}&sort=${filter?.sort}&order=${filter?.order}`
+      )
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public getUser = (id: any): Observable<AppUser> => {
+    return this.http
+      .get(`users/${id}`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public getMe = (): Observable<AppUser> => {
+    return this.http
+      .get(`users/me`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
 }
 
