@@ -19,18 +19,6 @@ export const PrivateRoute = ({ ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        // const auth = httpConfig.headers["Authorization"]
-        // if (!auth) {
-        //   return (
-        //     <Redirect
-        //       to={{
-        //         pathname: `${process.env.PUBLIC_URL}/login`,
-        //         state: { from: props.location },
-        //       }}
-        //     />
-        //   );
-        // }
-
         return (
           <React.Suspense fallback={<span>Loading...</span>}>
             <App>

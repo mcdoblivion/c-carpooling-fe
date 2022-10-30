@@ -109,3 +109,28 @@ tr
     white-space: pre-line;
   }
 }
+.text__with__label {
+  color: var(--palette-gray-70);
+  span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    word-wrap: break-word;
+    width: 100%;
+  }
+
+  span:first-child {
+    display: block;
+    word-wrap: break-word;
+    letter-spacing: 0.16px;
+    margin-right: 3px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 150%;
+  }
+}
+.text-align-center {
+  text-align: center;
+}

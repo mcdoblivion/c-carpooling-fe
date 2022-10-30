@@ -7,7 +7,6 @@ import { AppUser, AppUserFilter } from "models/AppUser";
 import { Moment } from "moment";
 import React, { useMemo } from "react";
 import {
-  Button,
   InputSearch,
   LayoutCell,
   LayoutHeader,
@@ -19,7 +18,7 @@ import {
 import nameof from "ts-nameof.macro";
 import useUserMaster from "./UserMasterHook";
 import Avatar, { ConfigProvider } from "react-avatar";
-import { Add16, OverflowMenuHorizontal24 } from "@carbon/icons-react";
+import { OverflowMenuHorizontal24 } from "@carbon/icons-react";
 
 /* end individual import */
 
@@ -33,9 +32,9 @@ function UserMaster() {
     handleTableChange,
     handlePagination,
     handleGoPreview,
-    handleGoDetail,
     handleGoDetailWithId,
     handleChangeAllFilter,
+    handleDelete,
   } = useUserMaster();
 
   const menuAction = React.useCallback(
@@ -52,16 +51,13 @@ function UserMaster() {
           </div>
         </Menu.Item>
         <Menu.Item key="3">
-          <div
-            className="ant-action-menu"
-            // onClick={handleDelete(appUser)}
-          >
+          <div className="ant-action-menu" onClick={() => handleDelete(id)}>
             Xóa
           </div>
         </Menu.Item>
       </Menu>
     ),
-    [handleGoPreview, handleGoDetailWithId]
+    [handleGoPreview, handleGoDetailWithId, handleDelete]
   );
 
   const columns: ColumnProps<AppUser>[] = useMemo(
@@ -227,7 +223,7 @@ function UserMaster() {
           breadcrumbItems={["Quản lý người dùng", "Danh sách người dùng"]}
         />
         <div className="page page-master m-t--lg m-l--sm m-r--xxl m-b--xxs">
-          <div className="page-master__title p-l--sm p-t--sm p-r--sm">
+          <div className="page-master__title p-l--sm p-t--sm p-r--sm p-b--xxs">
             Danh sách người dùng
           </div>
           <div className="page-master__content">
@@ -250,16 +246,7 @@ function UserMaster() {
                 />
               </div>
               <div className="page-master__actions  d-flex align-items-center justify-content-start">
-                <div className="page-master__filter-action d-flex align-items-center">
-                  <Button
-                    type="primary"
-                    className="btn--lg"
-                    icon={<Add16 />}
-                    onClick={handleGoDetail}
-                  >
-                    Thêm mới
-                  </Button>
-                </div>
+                <div className="page-master__filter-action d-flex align-items-center"></div>
               </div>
             </div>
           </div>

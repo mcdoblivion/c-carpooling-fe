@@ -37,6 +37,16 @@ export class UserRepository extends Repository {
       .get(`users/me`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public delete = (id: any): Observable<AppUser> => {
+    return this.http
+      .delete(`users/${id}`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public update = (appUser: AppUser): Observable<AppUser> => {
+    return this.http
+      .put(`users/${appUser.id}`, appUser)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
 }
 
 export const userRepository = new UserRepository();

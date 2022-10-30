@@ -19,6 +19,10 @@ export const COLOR_PAGE_ROUTE: string = ROOT_ROUTE
 export const SIDE_BAR_PAGE_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/side-bar")
   : "/side-bar";
+
 export const USER_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/users")
   : "/users";
+export const USER_PREVIEW_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/users-preview")
+  : "/users-preview";
