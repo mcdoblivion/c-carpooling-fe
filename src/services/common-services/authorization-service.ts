@@ -1,72 +1,49 @@
+import { useAppState } from "app/AppStore";
+import { webService } from "./web-service";
 import { ACTION_URL_REGEX } from "config/consts";
 import { menu, Menu } from "config/menu";
-import React, { Reducer, useContext } from "react";
-import { forkJoin, Subscription } from "rxjs";
+import React from "react";
+import { forkJoin } from "rxjs";
 import { utilService } from "./util-service";
-import { kebabCase, isEmpty, cloneDeep } from "lodash";
-import { AppStateContext } from "app/AppContext";
-
-export enum AppActionEnum {
-  SET,
-  UPDATE,
-}
-
-export interface AppState {
-  permissionPaths?: string[];
-  authorizedAction?: string[];
-  authorizedMenus?: Menu[];
-  authorizedMenuMapper?: Record<string, any>;
-}
-
-export interface AppAction {
-  type: AppActionEnum;
-  payload?: AppState;
-}
-
-export function appReducer(state: AppState, action: AppAction): AppState {
-  switch (action.type) {
-    case AppActionEnum.SET:
-      return {
-        ...action.payload,
-      };
-    case AppActionEnum.UPDATE:
-      return {
-        ...state,
-        ...action.payload,
-      };
-  }
-}
+import _, { kebabCase } from "lodash";
+import { AppActionEnum } from "app/AppReducer";
+import { Model } from "react3l-common";
+import authenticationService from "./authentication-service";
+import store from "store";
+import { userRepository } from "repositories/user-repository";
+import { updateUser } from "store/global-state/actions";
 
 export const authorizationService = {
   useAuthorizedApp() {
-    const [authorizationData, dispatch] = React.useReducer<
-      Reducer<AppState, AppAction>
-    >(appReducer, {
-      permissionPaths: [],
-      authorizedMenus: [],
-      authorizedAction: [],
-      authorizedMenuMapper: null,
-    });
+    const [subscription] = webService.useSubscription();
+    const { appDispatch } = useAppState();
+
+    React.useEffect(() => {
+      subscription.add(
+        userRepository.getMe().subscribe((result: Model) => {
+          if (result) {
+            store.dispatch(updateUser(result));
+          } else {
+            authenticationService.logout();
+          }
+        })
+      );
+    }, [subscription]);
 
     React.useEffect(() => {
       let isCancelled = false;
       if (!isCancelled) {
-        dispatch({
-          type: AppActionEnum.SET,
-          payload: {
-            permissionPaths: [],
-            authorizedMenus: menu,
-            authorizedAction: [],
-            authorizedMenuMapper: [],
-          },
+        appDispatch({
+          type: AppActionEnum.SET_PERMISSION,
+          permissionPaths: [],
+          authorizedMenus: menu,
+          authorizedAction: [],
+          authorizedMenuMapper: [],
         });
-        const subscription = new Subscription();
         subscription.add(
-          forkJoin([
-            // Fill the repository to get permission paths
-          ]).subscribe({
+          forkJoin([]).subscribe({
             next: (results: any[]) => {
-              const response = [...results[0], ...results[1]];
+              const response = [...results[0]];
               if (response && response.length > 0) {
                 const authorizedMenuMapper: Record<string, number> = {};
                 const authorizedAction: string[] = [];
@@ -77,26 +54,22 @@ export const authorizationService = {
                     authorizedMenuMapper[`/${path as string}`] = index;
                   }
                 });
-                const authorizedMenus: Menu[] = cloneDeep(menu);
+                const authorizedMenus: Menu[] = _.cloneDeep(menu);
                 utilService.mapTreeMenu(authorizedMenus, authorizedMenuMapper);
-                dispatch({
-                  type: AppActionEnum.SET,
-                  payload: {
-                    permissionPaths: [...response],
-                    authorizedMenus,
-                    authorizedAction,
-                    authorizedMenuMapper,
-                  },
+                appDispatch({
+                  type: AppActionEnum.SET_PERMISSION,
+                  permissionPaths: [...response],
+                  authorizedMenus,
+                  authorizedAction,
+                  authorizedMenuMapper,
                 });
               } else {
-                dispatch({
-                  type: AppActionEnum.SET,
-                  payload: {
-                    permissionPaths: [],
-                    authorizedMenus: [],
-                    authorizedAction: [],
-                    authorizedMenuMapper: [],
-                  },
+                appDispatch({
+                  type: AppActionEnum.SET_PERMISSION,
+                  permissionPaths: [],
+                  authorizedMenus: [],
+                  authorizedAction: [],
+                  authorizedMenuMapper: [],
                 });
               }
             },
@@ -105,18 +78,15 @@ export const authorizationService = {
         );
         return () => {
           isCancelled = true;
-          subscription.unsubscribe();
         };
       }
-    }, []);
+    }, [appDispatch, subscription]);
 
-    return {
-      authorizationData,
-    };
+    return;
   },
 
   useAuthorizedAction(module: string, baseAction: string) {
-    const appState = useContext<AppState>(AppStateContext);
+    const { appState } = useAppState();
     const actionContext = React.useMemo(() => {
       return appState &&
         appState.authorizedAction &&
@@ -124,6 +94,7 @@ export const authorizationService = {
         ? appState.authorizedAction
         : [];
     }, [appState]);
+
     const [actionMapper, setActionMapper] = React.useState<
       Record<string, number>
     >({});
@@ -138,7 +109,6 @@ export const authorizationService = {
       });
       setActionMapper(mapper);
     }, [actionContext, module, baseAction]);
-
     const buildAction = React.useCallback(
       (action: string) => {
         return `${baseAction}/${kebabCase(action)}`;
@@ -149,7 +119,7 @@ export const authorizationService = {
     const validAction = React.useMemo(() => {
       return (action: string) => {
         if (
-          isEmpty(actionMapper) &&
+          !_.isEmpty(actionMapper) &&
           Object.prototype.hasOwnProperty.call(
             actionMapper,
             buildAction(action)
@@ -165,7 +135,8 @@ export const authorizationService = {
   },
 
   useAuthorizedRoute() {
-    const appState = useContext<AppState>(AppStateContext);
+    const { appState } = useAppState();
+
     const mapper = React.useMemo(() => {
       return appState &&
         appState.authorizedMenuMapper &&
@@ -179,7 +150,7 @@ export const authorizationService = {
         if (path.includes("dashboard-user")) {
           return true;
         }
-        if (isEmpty(mapper)) {
+        if (!_.isEmpty(mapper)) {
           if (
             Object.prototype.hasOwnProperty.call(mapper, "hasAnyPermission")
           ) {

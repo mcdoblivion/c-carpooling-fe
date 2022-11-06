@@ -1,6 +1,11 @@
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
 import { USER_ROUTE } from "config/route-consts";
+import { userRepository } from "repositories/user-repository";
+import { AppUser } from "models/AppUser";
+import store from "store";
+import { updateUser } from "store/global-state/actions";
+import authenticationService from "services/common-services/authentication-service";
 export default function useLogin(
   appUser: any,
   setAppUser: any,
@@ -11,11 +16,18 @@ export default function useLogin(
     authRepository.login(appUser).subscribe(
       (res) => {
         if (res.isSuccess && res.data.access_token) {
-          localStorage.setItem(
-            "token",
-            JSON.stringify(`Bearer ${res.data.access_token}`)
-          );
-          window.location.href = USER_ROUTE;
+          userRepository.getMe().subscribe((result: AppUser) => {
+            if (result) {
+              store.dispatch(updateUser(result));
+              localStorage.setItem(
+                "token",
+                JSON.stringify(`Bearer ${res.data.access_token}`)
+              );
+              window.location.href = USER_ROUTE;
+            } else {
+              authenticationService.logout();
+            }
+          });
         }
       },
       (error) => {
