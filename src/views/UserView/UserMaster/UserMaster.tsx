@@ -19,7 +19,6 @@ import nameof from "ts-nameof.macro";
 import useUserMaster from "./UserMasterHook";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { OverflowMenuHorizontal24 } from "@carbon/icons-react";
-import { useAppState } from "app/AppStore";
 
 /* end individual import */
 
@@ -37,8 +36,6 @@ function UserMaster() {
     handleChangeAllFilter,
     handleDelete,
   } = useUserMaster();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { appState } = useAppState();
 
   const menuAction = React.useCallback(
     (id: number, appUser: AppUser) => (

@@ -32,9 +32,14 @@ export class UserRepository extends Repository {
       .get(`users/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
-  public getMe = (): Observable<AppUser> => {
+  public getMe = (token: string): Observable<AppUser> => {
     return this.http
-      .get(`users/me`)
+      .get(`users/me`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token || "",
+        },
+      })
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
   public delete = (id: any): Observable<AppUser> => {

@@ -23,13 +23,14 @@ export default function useUserPreview() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
   const history = useHistory();
+  const token = JSON.parse(localStorage.getItem("token"));
 
   useEffect(() => {
     if (firstLoad) {
       setLoading(true);
       subscription.add(
         userRepository
-          .getMe()
+          .getMe(token)
           .pipe(finalize(() => setLoading(false)))
           .subscribe((res) => {
             setModel(res?.data);
@@ -38,7 +39,7 @@ export default function useUserPreview() {
       );
       firstLoad.current = false;
     }
-  }, [subscription]);
+  }, [subscription, token]);
 
   const { notifyUpdateItemSuccess, notifyUpdateItemError } =
     appMessageService.useCRUDMessage();

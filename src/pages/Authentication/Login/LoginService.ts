@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
-import { USER_ROUTE } from "config/route-consts";
+import { USER_PREVIEW_ROUTE, USER_ROUTE } from "config/route-consts";
 import { userRepository } from "repositories/user-repository";
 import { AppUser } from "models/AppUser";
 import store from "store";
@@ -16,18 +16,25 @@ export default function useLogin(
     authRepository.login(appUser).subscribe(
       (res) => {
         if (res.isSuccess && res.data.access_token) {
-          userRepository.getMe().subscribe((result: AppUser) => {
-            if (result) {
-              store.dispatch(updateUser(result));
-              localStorage.setItem(
-                "token",
-                JSON.stringify(`Bearer ${res.data.access_token}`)
-              );
-              window.location.href = USER_ROUTE;
-            } else {
-              authenticationService.logout();
-            }
-          });
+          const bearerToken = JSON.stringify(`Bearer ${res.data.access_token}`);
+          userRepository
+            .getMe(`Bearer ${res.data.access_token}`)
+            .subscribe((result: AppUser) => {
+              if (result) {
+                store.dispatch(updateUser(result));
+                localStorage.setItem("token", bearerToken);
+                localStorage.setItem(
+                  "currentUserInfo",
+                  JSON.stringify(result.data)
+                );
+
+                if (!result.data.userProfile) {
+                  window.location.href = `${USER_PREVIEW_ROUTE}?id=${result.data.id}`;
+                } else window.location.href = USER_ROUTE;
+              } else {
+                authenticationService.logout();
+              }
+            });
         }
       },
       (error) => {

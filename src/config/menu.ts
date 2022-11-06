@@ -10,13 +10,13 @@ export interface Menu {
   active?: boolean;
   show?: boolean;
 }
-
+const user = JSON.parse(localStorage.getItem("currentUserInfo"));
 export const menu: Menu[] = [
   {
     name: "Quản lý người dùng",
     icon: "bx-home",
     link: USER_ROUTE,
-    show: true,
+    show: user.role === "ADMIN" ? true : false,
     active: false,
   },
 ];

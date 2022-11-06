@@ -17,10 +17,11 @@ export const authorizationService = {
   useAuthorizedApp() {
     const [subscription] = webService.useSubscription();
     const { appDispatch } = useAppState();
+    const token = JSON.parse(localStorage.getItem("token"));
 
     React.useEffect(() => {
       subscription.add(
-        userRepository.getMe().subscribe((result: Model) => {
+        userRepository.getMe(token).subscribe((result: Model) => {
           if (result) {
             store.dispatch(updateUser(result));
           } else {
@@ -28,7 +29,7 @@ export const authorizationService = {
           }
         })
       );
-    }, [subscription]);
+    }, [subscription, token]);
 
     React.useEffect(() => {
       let isCancelled = false;

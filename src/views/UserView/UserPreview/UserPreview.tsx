@@ -22,17 +22,12 @@ function UserPreview() {
     singleListGender,
     handleSave,
   } = useUserPreview();
-
   return (
     <Spin spinning={loading}>
       <div className="page-content">
         <PageHeader
           title="Thông tin người dùng"
-          breadcrumbItems={[
-            "Quản lý người dùng",
-            "Thông tin người dùng",
-            "Xem",
-          ]}
+          breadcrumbItems={["Thông tin người dùng", "Cập nhật"]}
         />
         <div className="page page-detail p-t--lg p-l--sm p-r--sm p-b--lg">
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
@@ -98,18 +93,6 @@ function UserPreview() {
                       type={0}
                       placeholder="Nhập ngày sinh"
                       onChange={handleChangeUserProfile("dateOfBirth")}
-                    />
-                  </FormItem>
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <InputText
-                      label="Số điện thoại"
-                      type={0}
-                      value={model?.userProfile?.ICNumber}
-                      className={"tio-account_square_outlined"}
-                      onChange={handleChangeUserProfile("ICNumber")}
-                      isRequired
                     />
                   </FormItem>
                 </Col>
