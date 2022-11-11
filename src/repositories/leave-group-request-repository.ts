@@ -1,26 +1,20 @@
 import { API_PREFIX } from "config/api-consts";
 import { BASE_API_URL } from "config/consts";
 import { httpConfig } from "config/http";
-import { kebabCase } from "lodash";
 import { AppUser, AppUserFilter } from "models/AppUser";
-import { Model, Repository } from "react3l-common";
+import { Repository } from "react3l-common";
 import { Observable } from "rxjs";
-import nameof from "ts-nameof.macro";
 
 export type KeyType = string | number;
 
-export class UserRepository extends Repository {
+export class LeaveGroupRequestRepository extends Repository {
   constructor() {
     super(httpConfig);
     this.baseURL = new URL(API_PREFIX, BASE_API_URL).href;
   }
-
-  public all = (): Observable<Model> => {
-    return this.http
-      .get("users/" + kebabCase(nameof(this.all)))
-      .pipe(Repository.responseMapToModel<Model>(Model));
-  };
-  public getUsers = (filter: AppUserFilter): Observable<AppUser> => {
+  public getLeaveGroupRequests = (
+    filter: AppUserFilter
+  ): Observable<AppUser> => {
     return this.http
       .get(
         `users?page=${filter?.page}&limit=${filter?.limit}&search=${filter?.search}&sort=${filter?.sort}&order=${filter?.order}`
@@ -39,4 +33,4 @@ export class UserRepository extends Repository {
   };
 }
 
-export const userRepository = new UserRepository();
+export const leaveGroupRequestRepository = new LeaveGroupRequestRepository();

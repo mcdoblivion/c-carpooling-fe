@@ -1,8 +1,14 @@
 import Login from "pages/Authentication/Login/Login";
 import Logout from "pages/Authentication/Logout";
 import { Redirect } from "react-router";
+import LeaveGroupRequestMaster from "views/LeaveGroupRequestView/LeaveGroupRequestMaster";
 import UserView from "views/UserView/UserView";
-import { LOGIN_ROUTE, LOGOUT_ROUTE, USER_ROUTE } from "./route-consts";
+import {
+  LEAVE_GROUP_REQUEST_ROUTE,
+  LOGIN_ROUTE,
+  LOGOUT_ROUTE,
+  USER_ROUTE,
+} from "./route-consts";
 
 export interface Route {
   path: string;
@@ -14,6 +20,10 @@ const userRoutes: Route[] = [
   {
     path: USER_ROUTE,
     component: UserView,
+  },
+  {
+    path: LEAVE_GROUP_REQUEST_ROUTE,
+    component: LeaveGroupRequestMaster,
   },
 
   // Created route for project:

@@ -22,3 +22,6 @@ export const SIDE_BAR_PAGE_ROUTE: string = ROOT_ROUTE
 export const USER_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/users")
   : "/users";
+export const LEAVE_GROUP_REQUEST_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/leave-group-requests")
+  : "/leave-group-requests";
