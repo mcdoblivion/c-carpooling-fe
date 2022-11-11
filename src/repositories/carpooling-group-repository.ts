@@ -7,22 +7,18 @@ import { Observable } from "rxjs";
 
 export type KeyType = string | number;
 
-export class LeaveGroupRequestRepository extends Repository {
+export class CarpoolingGroupRepository extends Repository {
   constructor() {
     super(httpConfig);
     this.baseURL = new URL(API_PREFIX, BASE_API_URL).href;
   }
-  public getLeaveGroupRequests = (filter: any): Observable<AppUser> => {
+  public search = (filter?: any): Observable<AppUser> => {
     return this.http
       .get(
-        `leave-group-requests?page=${filter?.page}&limit=${
-          filter?.limit
-        }&filters={"userId":${filter?.userId || null},"carpoolingGroupId":${
-          filter?.carpoolingGroupId || null
-        }}&sort=${filter?.sort}&order=${filter?.order}`
+        `carpooling-groups/search?page=${filter?.page}&limit=${filter?.limit}&search=${filter?.search}&sort=${filter?.sort}&order=${filter?.order}`
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
 }
 
-export const leaveGroupRequestRepository = new LeaveGroupRequestRepository();
+export const carpoolingGroupRepository = new CarpoolingGroupRepository();

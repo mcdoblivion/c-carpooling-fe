@@ -25,7 +25,7 @@ export default function useLeaveGroupRequestMaster() {
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
-    { page: 1, limit: 10 }
+    { page: 1, limit: 10, userId: null, carpoolingGroupId: null }
   );
 
   const {
@@ -43,16 +43,18 @@ export default function useLeaveGroupRequestMaster() {
 
   const [loadingList, setLoadingList] = useState<boolean>(false);
 
-  const [defaultFilter] = useState<AppUserFilter>({
+  const [defaultFilter] = useState<any>({
     ...filter,
     page: 1,
     limit: 10,
+    userId: null,
+    carpoolingGroupId: null,
   });
 
   const [subscription] = webService.useSubscription();
 
   const handleLoadList = useCallback(
-    (filterParam?: AppUserFilter) => {
+    (filterParam?: any) => {
       const filterValue = filterParam ? { ...filterParam } : { ...filter };
       subscription.add(
         leaveGroupRequestRepository
@@ -64,7 +66,7 @@ export default function useLeaveGroupRequestMaster() {
                 type: ListActionType.SET,
                 payload: {
                   list: res.data.records,
-                  count: res.totalPages,
+                  count: res.data.totalPages,
                 },
               });
             },
@@ -73,7 +75,7 @@ export default function useLeaveGroupRequestMaster() {
                 type: ListActionType.SET,
                 payload: {
                   list: [],
-                  count: null,
+                  count: 0,
                 },
               });
             }
@@ -126,6 +128,19 @@ export default function useLeaveGroupRequestMaster() {
   const { handleGoPreview, handleGoDetail, handleGoDetailWithId } =
     webService.usePage(USER_ROUTE);
 
+  const handleChangeAppUserFilter = useCallback(
+    (value) => {
+      handleChangeAllFilter({ ...filter, userId: value });
+    },
+    [handleChangeAllFilter, filter]
+  );
+  const handleChangeGroupFilter = useCallback(
+    (value) => {
+      handleChangeAllFilter({ ...filter, carpoolingGroupId: value });
+    },
+    [handleChangeAllFilter, filter]
+  );
+
   return {
     filter,
     list,
@@ -144,5 +159,7 @@ export default function useLeaveGroupRequestMaster() {
     handleGoPreview,
     handleGoDetail,
     handleGoDetailWithId,
+    handleChangeAppUserFilter,
+    handleChangeGroupFilter,
   };
 }
