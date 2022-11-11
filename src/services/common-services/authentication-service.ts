@@ -33,6 +33,7 @@ class AuthenticationService {
 
   public logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("currentUserInfo");
     window.location.href = LOGIN_ROUTE;
   }
 }

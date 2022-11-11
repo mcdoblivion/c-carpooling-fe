@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import profileMenuStyle from "./ProfileMenu.module.scss";
 //i18n
-import { useTranslation, withTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 // Redux
 import { withRouter } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
@@ -13,8 +13,6 @@ import User16 from "@carbon/icons-react/es/user/16";
 import { useProfileMenu } from "./ProfileMenuHook";
 
 const ProfileMenu = (props: any) => {
-  const [translate] = useTranslation();
-
   const {
     handleToggerProfile,
     handleMouseLeaveAll,
@@ -42,7 +40,7 @@ const ProfileMenu = (props: any) => {
               maxInitials={1}
               round={true}
               size="22"
-              name={user?.displayName}
+              name={user?.username}
             />
           </ConfigProvider>
         </DropdownToggle>
@@ -56,20 +54,16 @@ const ProfileMenu = (props: any) => {
             >
               <div onClick={handleClickToProfile} className={`p-b--xxs`}>
                 <User16 />
-                <span className="p-l--xxxs">{user?.displayName} </span>
+                <span className="p-l--xxxs">{user?.username} </span>
               </div>
               <div onClick={handleClickToChangePassword} className={`p-b--xxs`}>
                 <Email16 />
-                <span className="p-l--xxxs">
-                  {translate("general.actions.changePass")}
-                </span>
+                <span className="p-l--xxxs">Đổi mật khẩu</span>
               </div>
 
               <li onClick={handleLogout}>
                 <Login16 />
-                <span className="p-l--xxxs">
-                  {translate("general.defaultHeader.logout")}
-                </span>
+                <span className="p-l--xxxs">Đăng xuất</span>
               </li>
             </div>
           </div>

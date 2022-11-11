@@ -115,7 +115,10 @@ File: Main Css File
       }
     }
     &.page-detail {
-      height: 80vh;
+      @extend .m-l--sm;
+      @extend .m-r--sm;
+      @extend .m-b--xxs;
+      height: 70vh;
       background-color: var(--color-white);
       margin-top: 147px;
       overflow: auto;

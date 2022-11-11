@@ -9,7 +9,7 @@ import nameof from "ts-nameof.macro";
 
 export type KeyType = string | number;
 
-export class UserRepository extends Repository {
+export class DriverRepository extends Repository {
   constructor() {
     super(httpConfig);
     this.baseURL = new URL(API_PREFIX, BASE_API_URL).href;
@@ -17,24 +17,24 @@ export class UserRepository extends Repository {
 
   public all = (): Observable<Model> => {
     return this.http
-      .get("users/" + kebabCase(nameof(this.all)))
+      .get("drivers/" + kebabCase(nameof(this.all)))
       .pipe(Repository.responseMapToModel<Model>(Model));
   };
-  public getUsers = (filter: AppUserFilter): Observable<AppUser> => {
+  public getDrivers = (filter: AppUserFilter): Observable<AppUser> => {
     return this.http
       .get(
-        `users?page=${filter?.page}&limit=${filter?.limit}&search=${filter?.search}&sort=${filter?.sort}&order=${filter?.order}`
+        `drivers?page=${filter?.page}&limit=${filter?.limit}&search=${filter?.search}&sort=${filter?.sort}&order=${filter?.order}`
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
   public getUser = (id: any): Observable<AppUser> => {
     return this.http
-      .get(`users/${id}`)
+      .get(`drivers/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
   public getMe = (token: string): Observable<AppUser> => {
     return this.http
-      .get(`users/me`, {
+      .get(`drivers/me`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: token || "",
@@ -44,19 +44,19 @@ export class UserRepository extends Repository {
   };
   public delete = (id: any): Observable<AppUser> => {
     return this.http
-      .delete(`users/${id}`)
+      .delete(`drivers/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
   public activation = (id: any, payload: any): Observable<AppUser> => {
     return this.http
-      .put(`users/${id}/activation`, payload)
+      .put(`drivers/${id}/activation`, payload)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
   public update = (appUser: AppUser): Observable<AppUser> => {
     return this.http
-      .put(`users/${appUser.id}`, appUser)
+      .put(`drivers/${appUser.id}`, appUser)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
 }
 
-export const userRepository = new UserRepository();
+export const driverRepository = new DriverRepository();

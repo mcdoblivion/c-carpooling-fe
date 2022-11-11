@@ -1,24 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Collapse } from "reactstrap";
 
 import { useSelector } from "react-redux";
 import classNames from "classnames";
 import { NavLink, useHistory } from "react-router-dom";
-import { Menu } from "config/menu";
-import { AppState } from "services/common-services/authorization-service";
-import { AppStateContext } from "app/AppContext";
-import { useTranslation } from "react-i18next";
+import { menu, Menu } from "config/menu";
 
-const Navbar = (props: any) => {
-  const [translate] = useTranslation();
-  const appState = useContext<AppState>(AppStateContext);
-  const menu = React.useMemo(() => {
-    return appState &&
-      appState.authorizedMenus &&
-      appState.authorizedMenus.length > 0
-      ? appState.authorizedMenus
-      : [];
-  }, [appState]);
+const Navbar = () => {
   const { leftMenu } = useSelector((state: any) => state.Layout);
   const [menuItems, setMenuItems] = React.useState<any>({});
   const [activeCurrent, setActiveCurrent] = React.useState<any>();
@@ -71,7 +59,7 @@ const Navbar = (props: any) => {
 
   // set active menu when navigate
   useEffect(() => {
-    return history.listen((location) => {
+    return history.listen((location: any) => {
       handleActiveMenu(location.pathname);
     });
   }, [handleActiveMenu, history]);
@@ -81,7 +69,7 @@ const Navbar = (props: any) => {
     if (menu && menu.length) {
       handleActiveMenu(window.location.pathname);
     }
-  }, [handleActiveMenu, menu]);
+  }, [handleActiveMenu]);
 
   function isDescendant(parent: HTMLElement, child: HTMLElement) {
     var node = child.parentNode;
@@ -101,16 +89,15 @@ const Navbar = (props: any) => {
       if (windowCurrentWidth <= 995) {
         setMenuItems({
           ...menuItems,
-          [`${`${menu.name}`}`]:
-            menuItems[`${`${menu.name}`}`] !== undefined
-              ? !menuItems[`${`${menu.name}`}`]
+          [`${menu.name}`]:
+            menuItems[`${menu.name}`] !== undefined
+              ? !menuItems[`${menu.name}`]
               : true,
         });
       }
     },
     [menuItems]
   );
-
   const renderMenu = (menu: Menu, key: number, itemType?: string) => {
     return (
       <React.Fragment key={key}>
@@ -132,17 +119,17 @@ const Navbar = (props: any) => {
                       ) : (
                         <>{menu.icon}</>
                       )}
-                      <span>{translate(`${`${menu.name}`}`)}</span>
+                      <span>{menu.name}</span>
                     </>
                   ) : (
-                    <>{translate(`${menu.name}`)}</>
+                    <>{menu.name}</>
                   )}
 
                   <div className="arrow-down"></div>
                 </NavLink>
                 <div
                   className={classNames("dropdown-menu", {
-                    show: menuItems[`${translate(`${menu.name}`)}`],
+                    show: menuItems[`${menu.name}`],
                   })}
                 >
                   {menu.children.map((item: Menu, index: number) => (
@@ -151,10 +138,16 @@ const Navbar = (props: any) => {
                         <div className="dropdown">
                           <>{renderMenu(item, index)}</>
                         </div>
+                      ) : item.show ? (
+                        item.link ? (
+                          <NavLink to={item.link} className="dropdown-item">
+                            {item.name}
+                          </NavLink>
+                        ) : (
+                          <div className="dropdown-item">{item.name}</div>
+                        )
                       ) : (
-                        <NavLink to={item.link} className="dropdown-item">
-                          {translate(`${item.name}`)}
-                        </NavLink>
+                        <></>
                       )}
                     </React.Fragment>
                   ))}
@@ -164,7 +157,7 @@ const Navbar = (props: any) => {
           : menu.show && (
               <>
                 <NavLink className="dropdown-item" to={menu.link}>
-                  {translate(`${menu.name}`)}
+                  {menu.name}
                 </NavLink>
               </>
             )}
@@ -199,7 +192,7 @@ const Navbar = (props: any) => {
                         ) : (
                           <>{item.icon}</>
                         )}
-                        <span>{translate(`${item.name}`)}</span>
+                        <span>{item.name}</span>
                       </NavLink>
                     </li>
                   )

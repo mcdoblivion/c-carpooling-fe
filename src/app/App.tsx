@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Reducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { connect, ConnectedComponent } from "react-redux";
-import { AppStateContext } from "./AppContext";
-import { authorizationService } from "services/common-services/authorization-service";
 import ErrorPage, { errorHandler } from "pages/ErrorPage/ErrorPage";
 
 // layouts Format
 import VerticalLayout from "../components/VerticalLayout";
 import HorizontalLayout from "../components/HorizontalLayout";
+import { AppAction, appReducer, AppState } from "./AppReducer";
+import { AppStateContext } from "./AppContext";
 
 const App = (props: any) => {
   const Layout: ConnectedComponent<any, any> = React.useMemo(() => {
@@ -24,12 +24,14 @@ const App = (props: any) => {
     return layoutCls;
   }, [props.layout.layoutType]);
 
-  const { authorizationData } = authorizationService.useAuthorizedApp();
+  const [appState, appDispatch] = React.useReducer<
+    Reducer<AppState, AppAction>
+  >(appReducer, {});
 
   return (
     <React.Fragment>
       <ErrorBoundary FallbackComponent={ErrorPage} onError={errorHandler}>
-        <AppStateContext.Provider value={authorizationData}>
+        <AppStateContext.Provider value={{ appState, appDispatch }}>
           <Layout>{props.children}</Layout>
         </AppStateContext.Provider>
       </ErrorBoundary>

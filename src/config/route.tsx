@@ -3,10 +3,14 @@ import Logout from "pages/Authentication/Logout";
 import { Redirect } from "react-router";
 import LeaveGroupRequestMaster from "views/LeaveGroupRequestView/LeaveGroupRequestMaster";
 import UserView from "views/UserView/UserView";
+import Payment from "views/Payment/Payment";
+import UserPreview from "views/UserView/UserPreview/UserPreview";
 import {
   LEAVE_GROUP_REQUEST_ROUTE,
   LOGIN_ROUTE,
   LOGOUT_ROUTE,
+  PAYMENT_ROUTE,
+  USER_PREVIEW_ROUTE,
   USER_ROUTE,
 } from "./route-consts";
 
@@ -25,10 +29,14 @@ const userRoutes: Route[] = [
     path: LEAVE_GROUP_REQUEST_ROUTE,
     component: LeaveGroupRequestMaster,
   },
-
-  // Created route for project:
-
-  // this base route should be at the end of all other routes
+  {
+    path: USER_PREVIEW_ROUTE,
+    component: UserPreview,
+  },
+  {
+    path: PAYMENT_ROUTE,
+    component: Payment,
+  },
   {
     path: `${process.env.PUBLIC_URL}/`,
     exact: true,

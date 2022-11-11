@@ -1,6 +1,7 @@
-import { USER_ROUTE } from "config/route-consts";
+import { USER_PREVIEW_ROUTE, USER_ROUTE } from "config/route-consts";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
+import { useHistory } from "react-router";
 import { userRepository } from "repositories/user-repository";
 import { finalize, forkJoin } from "rxjs";
 import { webService } from "services/common-services/web-service";
@@ -26,6 +27,7 @@ export default function useUserMaster() {
     AppUserFilter,
     { page: 1, limit: 10 }
   );
+  const history = useHistory();
 
   const {
     value: filter,
@@ -90,6 +92,13 @@ export default function useUserMaster() {
     });
   }, [defaultFilter, dispatchFilter]);
 
+  const handleDelete = useCallback(
+    (id) => {
+      userRepository.delete(id).subscribe((res) => handleLoadList(filter));
+    },
+    [filter, handleLoadList]
+  );
+
   useEffect(() => {
     if (filter && autoCallListByChange) {
       setLoadingList(true);
@@ -121,8 +130,26 @@ export default function useUserMaster() {
     },
     [handleChangeAllFilter, filter]
   );
-  const { handleGoPreview, handleGoDetail, handleGoDetailWithId } =
+  const { handleGoDetail, handleGoDetailWithId } =
     webService.usePage(USER_ROUTE);
+
+  const handleGoPreview = useCallback(
+    (id: any) => {
+      return () => {
+        history.push(`${USER_PREVIEW_ROUTE}?id=${id}`);
+      };
+    },
+    [history]
+  );
+  const handleActivation = useCallback(
+    (appUser: AppUser) => {
+      const isActive = { isActive: appUser.isActive ? false : true };
+      userRepository
+        .activation(appUser.id, isActive)
+        .subscribe((res) => handleLoadList(filter));
+    },
+    [filter, handleLoadList]
+  );
 
   return {
     filter,
@@ -132,6 +159,7 @@ export default function useUserMaster() {
     setLoadingList,
     handleResetList,
     handleLoadList,
+    handleActivation,
     handleChangeSelectFilter,
     handleChangeMultipleSelectFilter,
     handleChangeDateMasterFilter,
@@ -142,5 +170,6 @@ export default function useUserMaster() {
     handleGoPreview,
     handleGoDetail,
     handleGoDetailWithId,
+    handleDelete,
   };
 }
