@@ -141,6 +141,15 @@ export default function useUserMaster() {
     },
     [history]
   );
+  const handleActivation = useCallback(
+    (appUser: AppUser) => {
+      const isActive = { isActive: appUser.isActive ? false : true };
+      userRepository
+        .activation(appUser.id, isActive)
+        .subscribe((res) => handleLoadList(filter));
+    },
+    [filter, handleLoadList]
+  );
 
   return {
     filter,
@@ -150,6 +159,7 @@ export default function useUserMaster() {
     setLoadingList,
     handleResetList,
     handleLoadList,
+    handleActivation,
     handleChangeSelectFilter,
     handleChangeMultipleSelectFilter,
     handleChangeDateMasterFilter,

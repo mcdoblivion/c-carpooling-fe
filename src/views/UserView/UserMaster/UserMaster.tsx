@@ -31,33 +31,30 @@ function UserMaster() {
     handleChangeInputSearch,
     handleTableChange,
     handlePagination,
-    handleGoPreview,
-    handleGoDetailWithId,
     handleChangeAllFilter,
     handleDelete,
+    handleActivation,
   } = useUserMaster();
 
   const menuAction = React.useCallback(
     (id: number, appUser: AppUser) => (
       <Menu>
         <Menu.Item key="1">
-          <div className="ant-action-menu" onClick={handleGoPreview(id)}>
-            Xem
+          <div
+            className="ant-action-menu"
+            onClick={() => handleActivation(appUser)}
+          >
+            {appUser.isActive ? "Dừng hoạt động" : "Kích hoạt"}
           </div>
         </Menu.Item>
         <Menu.Item key="2">
-          <div className="ant-action-menu" onClick={handleGoDetailWithId(id)}>
-            Sửa
-          </div>
-        </Menu.Item>
-        <Menu.Item key="3">
           <div className="ant-action-menu" onClick={() => handleDelete(id)}>
             Xóa
           </div>
         </Menu.Item>
       </Menu>
     ),
-    [handleGoPreview, handleGoDetailWithId, handleDelete]
+    [handleActivation, handleDelete]
   );
 
   const columns: ColumnProps<AppUser>[] = useMemo(

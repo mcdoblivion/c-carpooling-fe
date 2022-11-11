@@ -1,11 +1,13 @@
 import Login from "pages/Authentication/Login/Login";
 import Logout from "pages/Authentication/Logout";
 import { Redirect } from "react-router";
+import Payment from "views/Payment/Payment";
 import UserPreview from "views/UserView/UserPreview/UserPreview";
 import UserView from "views/UserView/UserView";
 import {
   LOGIN_ROUTE,
   LOGOUT_ROUTE,
+  PAYMENT_ROUTE,
   USER_PREVIEW_ROUTE,
   USER_ROUTE,
 } from "./route-consts";
@@ -24,6 +26,10 @@ const userRoutes: Route[] = [
   {
     path: USER_PREVIEW_ROUTE,
     component: UserPreview,
+  },
+  {
+    path: PAYMENT_ROUTE,
+    component: Payment,
   },
   {
     path: `${process.env.PUBLIC_URL}/`,
