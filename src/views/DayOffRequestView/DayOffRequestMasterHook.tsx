@@ -1,7 +1,7 @@
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
-import { leaveGroupRequestRepository } from "repositories/leave-group-request-repository";
+import { dayOffRequestRepository } from "repositories/day-off-requests-repository";
 import { userRepository } from "repositories/user-repository";
 
 import { finalize, Observable } from "rxjs";
@@ -19,7 +19,7 @@ import {
   getOrderType,
 } from "services/page-services/table-service";
 
-export default function useLeaveGroupRequestMaster() {
+export default function useDayOffRequestMaster() {
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
@@ -51,8 +51,8 @@ export default function useLeaveGroupRequestMaster() {
     (filterParam?: any) => {
       const filterValue = filterParam ? { ...filterParam } : { ...filter };
       subscription.add(
-        leaveGroupRequestRepository
-          .getLeaveGroupRequests(filterValue)
+        dayOffRequestRepository
+          .getDayOffRequests(filterValue)
           .pipe(finalize(() => setLoadingList(false)))
           .subscribe(
             (res) => {
@@ -120,18 +120,24 @@ export default function useLeaveGroupRequestMaster() {
     [handleChangeAllFilter, filter]
   );
 
-  const handleChangeAppUserFilter = useCallback(
-    (value, object) => {
-      handleChangeAllFilter({ ...filter, userId: value, user: object });
-    },
-    [handleChangeAllFilter, filter]
-  );
-  const handleChangeGroupFilter = useCallback(
+  const handleChangeDirectionTypeFilter = useCallback(
     (value, object) => {
       handleChangeAllFilter({
         ...filter,
-        carpoolingGroupId: value,
-        carpoolingGroup: object,
+        directionTypeId: value,
+        directionType: object?.name,
+        directionTypeValue: object,
+      });
+    },
+    [handleChangeAllFilter, filter]
+  );
+
+  const handleChangeSelectFilter = useCallback(
+    (field) => (value: any, object: any) => {
+      handleChangeAllFilter({
+        ...filter,
+        [`${field}Id`]: value,
+        [`${field}`]: object,
       });
     },
     [handleChangeAllFilter, filter]
@@ -158,6 +164,17 @@ export default function useLeaveGroupRequestMaster() {
     return groupObservable;
   };
 
+  const directionTypeObservable = new Observable<any[]>((observer) => {
+    setTimeout(() => {
+      observer.next([
+        { id: 1, name: "Home to Work", code: "HTW" },
+        { id: 2, name: "Work to Home", code: "WTH" },
+      ]);
+    }, 1000);
+  });
+  const directionTypeSearchFunc = (TModelFilter?: any) => {
+    return directionTypeObservable;
+  };
   return {
     filter,
     list,
@@ -165,9 +182,10 @@ export default function useLeaveGroupRequestMaster() {
     loadingList,
     handleTableChange,
     handlePagination,
-    handleChangeAppUserFilter,
-    handleChangeGroupFilter,
+    handleChangeSelectFilter,
+    handleChangeDirectionTypeFilter,
     appUserSearchFunc,
     groupSearchFunc,
+    directionTypeSearchFunc,
   };
 }

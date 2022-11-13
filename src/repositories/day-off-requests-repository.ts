@@ -19,9 +19,9 @@ export class DayOffRequestRepository extends Repository {
           filter?.limit
         }&filters={"userId":${filter?.userId || null},"carpoolingGroupId":${
           filter?.carpoolingGroupId || null
-        },"directionType":${filter?.directionType || null}}&sort=${
-          filter?.sort
-        }&order=${filter?.order}`
+        },"directionType":${
+          filter.directionType ? `"${filter?.directionType}"` : null
+        }}&sort=${filter?.sort}&order=${filter?.order}`
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };

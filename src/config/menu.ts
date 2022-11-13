@@ -5,7 +5,6 @@ import {
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
-  LEAVE_REQUEST_ROUTE,
   USER_ROUTE,
   VEHICLES_ROUTE,
 } from "./route-consts";
@@ -42,14 +41,7 @@ export const menu: Menu[] = [
     active: false,
   },
   {
-    name: "Yêu cầu rời nhóm",
-    icon: "bx-home",
-    link: LEAVE_REQUEST_ROUTE,
-    show: user?.role === "ADMIN" ? true : false,
-    active: false,
-  },
-  {
-    name: "Đơn xin nghỉ",
+    name: "Yêu cầu nghỉ phép",
     icon: "bx-home",
     link: DAY_OFF_REQUEST_ROUTE,
     show: user?.role === "ADMIN" ? true : false,

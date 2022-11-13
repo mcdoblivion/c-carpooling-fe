@@ -6,6 +6,7 @@ import UserView from "views/UserView/UserView";
 import Payment from "views/Payment/Payment";
 import UserPreview from "views/UserView/UserPreview/UserPreview";
 import {
+  DAY_OFF_REQUEST_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
   LOGIN_ROUTE,
   LOGOUT_ROUTE,
@@ -13,6 +14,7 @@ import {
   USER_PREVIEW_ROUTE,
   USER_ROUTE,
 } from "./route-consts";
+import DayOffRequestMaster from "views/DayOffRequestView/DayOffRequestMaster";
 
 export interface Route {
   path: string;
@@ -28,6 +30,10 @@ const userRoutes: Route[] = [
   {
     path: LEAVE_GROUP_REQUEST_ROUTE,
     component: LeaveGroupRequestMaster,
+  },
+  {
+    path: DAY_OFF_REQUEST_ROUTE,
+    component: DayOffRequestMaster,
   },
   {
     path: USER_PREVIEW_ROUTE,
