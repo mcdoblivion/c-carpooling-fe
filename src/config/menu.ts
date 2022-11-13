@@ -48,7 +48,7 @@ export const menu: Menu[] = [
     active: false,
   },
   {
-    name: "Lịch sử",
+    name: "Lịch sử đi chung",
     icon: "bx-home",
     link: CARPOOLING_LOG_ROUTE,
     show: user?.role === "ADMIN" ? true : false,

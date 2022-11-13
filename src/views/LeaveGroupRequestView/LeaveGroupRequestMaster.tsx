@@ -140,7 +140,7 @@ function LeaveGroupRequestMaster() {
             <Pagination
               skip={(filter?.page - 1) * filter?.limit}
               take={filter?.limit}
-              total={count}
+              total={count * filter?.limit}
               onChange={handlePagination}
             />
           </div>

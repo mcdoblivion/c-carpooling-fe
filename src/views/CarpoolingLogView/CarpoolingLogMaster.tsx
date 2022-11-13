@@ -2,9 +2,11 @@ import { Col, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
 import Select from "components/Select/SingleSelect";
+import { formatNumber } from "helpers/number";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { useMemo } from "react";
 import {
+  DatePicker,
   LayoutCell,
   LayoutHeader,
   OneLineText,
@@ -12,11 +14,11 @@ import {
   StandardTable,
 } from "react3l-ui-library";
 import nameof from "ts-nameof.macro";
-import useDayOffRequestMaster from "./DayOffRequestMasterHook";
+import useCarpoolingLogMaster from "./CarpoolingLogMasterHook";
 
 /* end individual import */
 
-function DayOffRequestMaster() {
+function CarpoolingLogMaster() {
   const {
     filter,
     list,
@@ -26,10 +28,14 @@ function DayOffRequestMaster() {
     handlePagination,
     handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
+    handleChangeStatusFilter,
+    handleChangeDateFilter,
     appUserSearchFunc,
     groupSearchFunc,
+    statusSearchFunc,
     directionTypeSearchFunc,
-  } = useDayOffRequestMaster();
+  } = useCarpoolingLogMaster();
+
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
       {
@@ -68,7 +74,7 @@ function DayOffRequestMaster() {
         },
       },
       {
-        title: <LayoutHeader orderType="left" title="Ngày nghỉ phép" />,
+        title: <LayoutHeader orderType="left" title="Ngày" />,
         key: nameof(list[0].date),
         dataIndex: nameof(list[0].date),
         ellipsis: true,
@@ -95,6 +101,34 @@ function DayOffRequestMaster() {
           );
         },
       },
+      {
+        title: <LayoutHeader orderType="left" title="Trạng thái" />,
+        key: nameof(list[0].isAbsent),
+        dataIndex: nameof(list[0].isAbsent),
+        width: 100,
+        ellipsis: true,
+        render(...params: [boolean, AppUser, number]) {
+          return (
+            <LayoutCell orderType="left" tableSize="md">
+              <OneLineText value={params[0] ? "Nghỉ phép" : "Có tham gia"} />
+            </LayoutCell>
+          );
+        },
+      },
+      {
+        title: <LayoutHeader orderType="left" title="Chi phí đi chung" />,
+        key: nameof(list[0].carpoolingFee),
+        dataIndex: nameof(list[0].carpoolingFee),
+        width: 100,
+        ellipsis: true,
+        render(...params: [number, AppUser, number]) {
+          return (
+            <LayoutCell orderType="left" tableSize="md">
+              <OneLineText value={formatNumber(params[0]) + " VNĐ"} />
+            </LayoutCell>
+          );
+        },
+      },
     ],
     [list]
   );
@@ -102,17 +136,17 @@ function DayOffRequestMaster() {
     <Spin spinning={loadingList}>
       <div className="page-content">
         <PageHeader
-          title="Yêu cầu nghỉ phép"
-          breadcrumbItems={["Yêu cầu nghỉ phép", "Danh sách Yêu cầu nghỉ phép"]}
+          title="Lịch sử đi chung"
+          breadcrumbItems={["Lịch sử đi chung", "Danh sách Lịch sử đi chung"]}
         />
         <div className="page page-master m-t--lg m-l--sm m-r--xxl m-b--xxs">
           <div className="page-master__title p-l--sm p-t--sm p-r--sm p-b--xs">
-            Danh sách Yêu cầu nghỉ phép
+            Danh sách Lịch sử đi chung
           </div>
           <div className="page-master__content">
             <div className="m-b--xxxs m-l--sm">
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-                <Col lg={6}>
+                <Col lg={5}>
                   <Select
                     label="Tên người dùng"
                     classFilter={AppUserFilter}
@@ -123,7 +157,7 @@ function DayOffRequestMaster() {
                     value={filter?.user}
                   />
                 </Col>
-                <Col lg={6}>
+                <Col lg={5}>
                   <Select
                     label="Nhóm đi chung"
                     classFilter={AppUserFilter}
@@ -135,7 +169,7 @@ function DayOffRequestMaster() {
                   />
                 </Col>
 
-                <Col lg={6}>
+                <Col lg={5}>
                   <Select
                     label="Chiều di chuyển"
                     classFilter={AppUserFilter}
@@ -146,7 +180,25 @@ function DayOffRequestMaster() {
                   />
                 </Col>
 
-                <Col lg={6}></Col>
+                <Col lg={5}>
+                  <DatePicker
+                    label="Ngày"
+                    value={filter?.dateValue}
+                    placeholder="Chọn ngày"
+                    onChange={handleChangeDateFilter}
+                  />
+                </Col>
+
+                <Col lg={4}>
+                  <Select
+                    label="Trạng thái"
+                    classFilter={AppUserFilter}
+                    placeHolder="Chọn trạng thái"
+                    getList={statusSearchFunc}
+                    onChange={handleChangeStatusFilter}
+                    value={filter?.statusValue}
+                  />
+                </Col>
               </Row>
             </div>
           </div>
@@ -172,4 +224,4 @@ function DayOffRequestMaster() {
     </Spin>
   );
 }
-export default DayOffRequestMaster;
+export default CarpoolingLogMaster;
