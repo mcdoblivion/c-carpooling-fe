@@ -6,6 +6,7 @@ import UserView from "views/UserView/UserView";
 import Payment from "views/Payment/Payment";
 import UserPreview from "views/UserView/UserPreview/UserPreview";
 import {
+  CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
@@ -21,6 +22,7 @@ import DayOffRequestMaster from "views/DayOffRequestView/DayOffRequestMaster";
 import CarpoolingLogMaster from "views/CarpoolingLogView/CarpoolingLogMaster";
 import VehicleMaster from "views/VehicleView/VehicleMaster";
 import DriverMaster from "views/DriverView/DriverMaster";
+import CarpoolingGroupMaster from "views/CarpoolingGroupView/CarpoolingGroupMaster";
 
 export interface Route {
   path: string;
@@ -44,6 +46,10 @@ const userRoutes: Route[] = [
   {
     path: CARPOOLING_LOG_ROUTE,
     component: CarpoolingLogMaster,
+  },
+  {
+    path: CARPOOLING_GROUP_ROUTE,
+    component: CarpoolingGroupMaster,
   },
   {
     path: VEHICLES_ROUTE,

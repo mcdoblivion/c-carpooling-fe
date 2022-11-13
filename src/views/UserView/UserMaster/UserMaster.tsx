@@ -1,19 +1,18 @@
 /* begin general import */
-import { Dropdown, Menu, Spin } from "antd";
+import { Col, Dropdown, Menu, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
 import { formatDate } from "helpers/date-time";
-import { AppUser, AppUserFilter } from "models/AppUser";
+import { AppUser } from "models/AppUser";
 import { Moment } from "moment";
 import React, { useMemo } from "react";
 import {
-  InputSearch,
+  InputText,
   LayoutCell,
   LayoutHeader,
   OneLineText,
   Pagination,
   StandardTable,
-  TagFilter,
 } from "react3l-ui-library";
 import nameof from "ts-nameof.macro";
 import useUserMaster from "./UserMasterHook";
@@ -32,7 +31,6 @@ function UserMaster() {
     handleChangeInputSearch,
     handleTableChange,
     handlePagination,
-    handleChangeAllFilter,
     handleDelete,
     handleActivation,
   } = useUserMaster();
@@ -232,27 +230,20 @@ function UserMaster() {
             Danh sách người dùng
           </div>
           <div className="page-master__content">
-            <div className="page-master__tag-filter">
-              <TagFilter
-                value={filter}
-                handleChangeFilter={handleChangeAllFilter}
-                onClear={(value: any) => {
-                  return 0;
-                }}
-              />
-            </div>
-            <div className="page-master__filter-wrapper d-flex align-items-center justify-content-between">
-              <div className="page-master__filter-action-search d-flex align-items-center">
-                <InputSearch
-                  value={filter?.search}
-                  classFilter={AppUserFilter}
-                  placeHolder="Tìm kiếm người dùng..."
-                  onChange={handleChangeInputSearch}
-                />
-              </div>
-              <div className="page-master__actions  d-flex align-items-center justify-content-start">
-                <div className="page-master__filter-action d-flex align-items-center"></div>
-              </div>
+            <div className="m-b--xxxs m-l--sm">
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
+                <Col lg={6}>
+                  <InputText
+                    label="Tìm kiếm"
+                    placeHolder="Tìm kiếm"
+                    value={filter?.search}
+                    onChange={handleChangeInputSearch}
+                  />
+                </Col>
+                <Col lg={6}></Col>
+                <Col lg={6}></Col>
+                <Col lg={6}></Col>
+              </Row>
             </div>
           </div>
           <div className="page-master__content-table">

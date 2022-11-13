@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { TFunction } from "i18next";
 import {
+  CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
@@ -20,7 +21,7 @@ export interface Menu {
 const user = JSON.parse(localStorage.getItem("currentUserInfo"));
 export const menu: Menu[] = [
   {
-    name: "Danh sách người dùng",
+    name: "Người dùng",
     icon: "bx-home",
     link: USER_ROUTE,
     show: user?.role === "ADMIN" ? true : false,
@@ -58,7 +59,14 @@ export const menu: Menu[] = [
     name: "Yêu cầu rời nhóm",
     icon: "bx-home",
     link: LEAVE_GROUP_REQUEST_ROUTE,
-    show: true,
+    show: user?.role === "ADMIN" ? true : false,
+    active: false,
+  },
+  {
+    name: "Nhóm đi chung",
+    icon: "bx-home",
+    link: CARPOOLING_GROUP_ROUTE,
+    show: user?.role === "ADMIN" ? true : false,
     active: false,
   },
 ];
