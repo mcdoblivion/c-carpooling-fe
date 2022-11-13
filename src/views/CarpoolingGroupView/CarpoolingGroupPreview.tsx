@@ -12,6 +12,7 @@ export interface CarpoolingGroupPreviewProps extends DrawerProps {
 function CarpoolingGroupPreview(props: CarpoolingGroupPreviewProps) {
   const { visible, model, handleClose } = props;
   const vehicleForCarpooling = model?.driverUser?.driver?.vehicleForCarpooling;
+
   return (
     <Drawer
       visible={visible}
@@ -22,6 +23,47 @@ function CarpoolingGroupPreview(props: CarpoolingGroupPreviewProps) {
       title="Thông tin chi tiết"
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+        <Col lg={24} className="m-b--lg">
+          <div className="text__with__label">
+            <span>Thành viên</span>
+            <span>
+              {model?.carpoolers &&
+                model?.carpoolers?.length > 0 &&
+                model?.carpoolers.map((carpooler: any, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      className="m-t--xxs d-flex"
+                      style={{ alignItems: "center" }}
+                    >
+                      <div className="m-l--xxxs m-r--xxxs">
+                        {carpooler?.userProfile?.avatarURL ? (
+                          <img
+                            className="avatar-xs rounded-circle"
+                            src={carpooler?.userProfile?.avatarURL}
+                            alt="Ảnh đại diện"
+                          />
+                        ) : (
+                          <ConfigProvider colors={["red", "green", "blue"]}>
+                            <Avatar
+                              maxInitials={1}
+                              round={true}
+                              size="2rem"
+                              name={carpooler?.userProfile?.firstName || "U"}
+                            />
+                          </ConfigProvider>
+                        )}
+                      </div>
+
+                      {carpooler?.userProfile?.firstName +
+                        " " +
+                        carpooler?.userProfile?.lastName}
+                    </div>
+                  );
+                })}
+            </span>
+          </div>
+        </Col>
         <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Biển số phương tiện</span>

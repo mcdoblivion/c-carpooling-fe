@@ -112,8 +112,12 @@ export default function useCarpoolingGroupMaster() {
   );
   const handleGoPreview = useCallback(
     (model: AppUser) => {
-      setCurrentItem(model);
-      setVisible(true);
+      carpoolingGroupRepository
+        .getCarpoolingGroups(model.id)
+        .subscribe((res) => {
+          setVisible(true);
+          setCurrentItem(res?.data);
+        });
     },
     [setCurrentItem, setVisible]
   );
