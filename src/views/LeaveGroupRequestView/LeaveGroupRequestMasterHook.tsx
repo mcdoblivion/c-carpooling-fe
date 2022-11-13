@@ -1,9 +1,11 @@
 import { USER_ROUTE } from "config/route-consts";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
+import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 import { leaveGroupRequestRepository } from "repositories/leave-group-request-repository";
+import { userRepository } from "repositories/user-repository";
 
-import { finalize } from "rxjs";
+import { finalize, Observable } from "rxjs";
 import { webService } from "services/common-services/web-service";
 import {
   FilterActionEnum,
@@ -129,17 +131,42 @@ export default function useLeaveGroupRequestMaster() {
     webService.usePage(USER_ROUTE);
 
   const handleChangeAppUserFilter = useCallback(
-    (value) => {
-      handleChangeAllFilter({ ...filter, userId: value });
+    (value, object) => {
+      handleChangeAllFilter({ ...filter, userId: value, user: object });
     },
     [handleChangeAllFilter, filter]
   );
   const handleChangeGroupFilter = useCallback(
-    (value) => {
-      handleChangeAllFilter({ ...filter, carpoolingGroupId: value });
+    (value, object) => {
+      handleChangeAllFilter({
+        ...filter,
+        carpoolingGroupId: value,
+        carpoolingGroup: object,
+      });
     },
     [handleChangeAllFilter, filter]
   );
+
+  const appUserObservable = new Observable<any[]>((observer) => {
+    userRepository.all().subscribe((res) => {
+      setTimeout(() => {
+        observer.next(res?.data);
+      }, 1000);
+    });
+  });
+  const appUserSearchFunc = (TModelFilter?: any) => {
+    return appUserObservable;
+  };
+  const groupObservable = new Observable<any[]>((observer) => {
+    carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
+      setTimeout(() => {
+        observer.next(res?.data?.records);
+      }, 1000);
+    });
+  });
+  const groupSearchFunc = (TModelFilter?: any) => {
+    return groupObservable;
+  };
 
   return {
     filter,
@@ -161,5 +188,7 @@ export default function useLeaveGroupRequestMaster() {
     handleGoDetailWithId,
     handleChangeAppUserFilter,
     handleChangeGroupFilter,
+    appUserSearchFunc,
+    groupSearchFunc,
   };
 }

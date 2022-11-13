@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* begin general import */
 import { Col, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
-import AdvanceIdFilterMaster from "components/AdvanceFilterMaster/AdvanceIdFilterMaster";
 import PageHeader from "components/PageHeader/PageHeader";
+import Select from "components/Select/SingleSelect";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { useMemo } from "react";
 import {
@@ -12,10 +10,7 @@ import {
   OneLineText,
   Pagination,
   StandardTable,
-  TagFilter,
 } from "react3l-ui-library";
-import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
-import { userRepository } from "repositories/user-repository";
 import nameof from "ts-nameof.macro";
 import useLeaveGroupRequestMaster from "./LeaveGroupRequestMasterHook";
 
@@ -29,9 +24,10 @@ function LeaveGroupRequestMaster() {
     loadingList,
     handleTableChange,
     handlePagination,
-    handleChangeAllFilter,
     handleChangeAppUserFilter,
     handleChangeGroupFilter,
+    appUserSearchFunc,
+    groupSearchFunc,
   } = useLeaveGroupRequestMaster();
 
   const columns: ColumnProps<AppUser>[] = useMemo(
@@ -88,7 +84,6 @@ function LeaveGroupRequestMaster() {
     ],
     [list]
   );
-
   return (
     <Spin spinning={loadingList}>
       <div className="page-content">
@@ -101,42 +96,35 @@ function LeaveGroupRequestMaster() {
             Danh sách Yêu cầu rời nhóm
           </div>
           <div className="page-master__content">
-            <div className="page-master__tag-filter">
-              <TagFilter
-                value={filter}
-                handleChangeFilter={handleChangeAllFilter}
-                onClear={(value: any) => {
-                  return 0;
-                }}
-              />
-            </div>
-            <div className="page-master__filter-wrapper d-flex align-items-center justify-content-between">
-              <div className="page-master__filter d-flex align-items-center justify-content-start">
-                <div className="d-flex align-items-center">
-                  <div className="">
-                    <AdvanceIdFilterMaster
-                      placeHolder="Tên người dùng"
-                      classFilter={AppUserFilter}
-                      onChange={handleChangeAppUserFilter}
-                      getList={userRepository.all}
-                      render={(item) => item.username}
-                      label="Tên người dùng"
-                      maxLengthItem={23}
-                    />
-                  </div>
-                  <div className="">
-                    <AdvanceIdFilterMaster
-                      placeHolder="Nhóm đi chung"
-                      classFilter={AppUserFilter}
-                      onChange={handleChangeGroupFilter}
-                      getList={carpoolingGroupRepository.search}
-                      render={(item) => item.groupName}
-                      label="Nhóm đi chung"
-                      maxLengthItem={23}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="m-b--xxxs m-l--sm">
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
+                <Col lg={6}>
+                  <Select
+                    label="Tên người dùng"
+                    classFilter={AppUserFilter}
+                    placeHolder="Chọn người dùng"
+                    getList={appUserSearchFunc}
+                    render={(item) => item?.username}
+                    onChange={handleChangeAppUserFilter}
+                    value={filter?.user}
+                  />
+                </Col>
+                <Col lg={6}>
+                  <Select
+                    label="Nhóm đi chung"
+                    classFilter={AppUserFilter}
+                    placeHolder="Chọn nhóm đi chung"
+                    getList={groupSearchFunc}
+                    render={(item) => item?.groupName}
+                    onChange={handleChangeGroupFilter}
+                    value={filter?.carpoolingGroup}
+                  />
+                </Col>
+
+                <Col lg={6}></Col>
+
+                <Col lg={6}></Col>
+              </Row>
             </div>
           </div>
           <div className="page-master__content-table">
