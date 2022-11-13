@@ -3,6 +3,7 @@ import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
 import Select from "components/Select/SingleSelect";
 import { formatNumber } from "helpers/number";
+import { renderMasterIndex } from "helpers/table";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { useMemo } from "react";
 import {
@@ -38,6 +39,13 @@ function CarpoolingLogMaster() {
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
+      {
+        title: <div className="text-center gradient-text">STT</div>,
+        key: "index",
+        width: 40,
+        align: "center",
+        render: renderMasterIndex<AppUser>(),
+      },
       {
         title: <LayoutHeader orderType="left" title="Tên người dùng" />,
         key: nameof(list[0].user),

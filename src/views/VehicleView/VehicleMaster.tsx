@@ -43,7 +43,7 @@ function VehicleMaster() {
       {
         title: <div className="text-center gradient-text">STT</div>,
         key: "index",
-        width: 80,
+        width: 40,
         align: "center",
         render: renderMasterIndex<AppUser>(),
       },
@@ -162,14 +162,15 @@ function VehicleMaster() {
         width: 80,
         align: "center",
         render(id: number, appUser: AppUser) {
-          return appUser.isVerified ? (
-            <></>
+          return appUser?.isVerified ? (
+            <div></div>
           ) : (
             <Tooltip title="Xác nhận thông tin phương tiện">
               <VirtualColumnKey16
                 color="#0f62fe"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleVerify(id)}
+                id="action"
               />
             </Tooltip>
           );
@@ -233,9 +234,11 @@ function VehicleMaster() {
               onChange={handleTableChange}
               onRow={(record, rowIndex) => {
                 return {
-                  onClick: (event) => {
-                    handleGoPreview(record);
-                  }, // click row
+                  onClick: (event: any) => {
+                    if (event?.target?.id !== "action") {
+                      handleGoPreview(record);
+                    }
+                  },
                 };
               }}
             />

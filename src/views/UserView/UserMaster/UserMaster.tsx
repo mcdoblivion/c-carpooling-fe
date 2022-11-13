@@ -19,6 +19,7 @@ import nameof from "ts-nameof.macro";
 import useUserMaster from "./UserMasterHook";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { OverflowMenuHorizontal24 } from "@carbon/icons-react";
+import { renderMasterIndex } from "helpers/table";
 
 /* end individual import */
 
@@ -59,6 +60,13 @@ function UserMaster() {
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
+      {
+        title: <div className="text-center gradient-text">STT</div>,
+        key: "index",
+        width: 40,
+        align: "center",
+        render: renderMasterIndex<AppUser>(),
+      },
       {
         title: <LayoutHeader orderType="left" title="Ảnh đại diện" />,
         key: nameof(list[0].avatarURL),

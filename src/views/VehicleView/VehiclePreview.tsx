@@ -22,24 +22,24 @@ function VehiclePreview(props: VehiclePreviewProps) {
       title="Thông tin chi tiết"
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col lg={24} className="m-b--xs">
+        <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Số đăng ký xe</span>
             <span>{model?.registrationCertificateNumber}</span>
           </div>
         </Col>
-        <Col lg={24} className="m-b--xs">
+        <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Tỷ lệ tiêu thụ nhiên liệu trên 100km</span>
             <span>{model?.fuelConsumptionPer100kms}</span>
           </div>
         </Col>
-        <Col lg={24} className="m-b--xs">
+        <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Ảnh mặt trước số đăng ký xe</span>
             {model?.registrationCertificateFrontPhotoURL ? (
               <img
-                className="rounded-circle img-preview"
+                className="img-preview"
                 src={model?.registrationCertificateFrontPhotoURL}
                 alt="Ảnh mặt trước số đăng ký xe"
               />
@@ -55,12 +55,12 @@ function VehiclePreview(props: VehiclePreviewProps) {
             )}
           </div>
         </Col>
-        <Col lg={24} className="m-b--xs">
+        <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Ảnh mặt sau số đăng ký xe</span>
             {model?.registrationCertificateBackPhotoURL ? (
               <img
-                className="rounded-circle img-preview"
+                className="img-preview"
                 src={model?.registrationCertificateBackPhotoURL}
                 alt="Ảnh mặt sau số đăng ký xe"
               />
@@ -76,12 +76,12 @@ function VehiclePreview(props: VehiclePreviewProps) {
             )}
           </div>
         </Col>
-        <Col lg={24} className="m-b--xs">
+        <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Ảnh phương tiện</span>
             {model?.photoURL ? (
               <img
-                className="rounded-circle img-preview"
+                className="img-preview"
                 src={model?.photoURL}
                 alt="Ảnh phương tiện"
               />
