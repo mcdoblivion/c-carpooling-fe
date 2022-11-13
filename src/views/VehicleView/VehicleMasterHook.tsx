@@ -1,9 +1,6 @@
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
-import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
-import { carpoolingLogRepository } from "repositories/carpooling-logs-repository";
-import { userRepository } from "repositories/user-repository";
-
+import { vehicleRepository } from "repositories/vehicles-repository";
 import { finalize, Observable } from "rxjs";
 import { webService } from "services/common-services/web-service";
 import { filterService } from "services/page-services/filter-service";
@@ -19,17 +16,11 @@ import {
   getOrderType,
 } from "services/page-services/table-service";
 
-export default function useCarpoolingLogMaster() {
+export default function useVehicleMaster() {
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
-    {
-      page: 1,
-      limit: 10,
-      userId: null,
-      carpoolingGroupId: null,
-      isAbsent: null,
-    }
+    { page: 1, limit: 10, fuelType: null, isVerified: null }
   );
 
   const { value: filter, handleChangeAllFilter } = filterService.useFilter(
@@ -42,14 +33,8 @@ export default function useCarpoolingLogMaster() {
   >(listReducer, { list: [], count: 0 });
 
   const [loadingList, setLoadingList] = useState<boolean>(false);
-
-  // const [defaultFilter] = useState<any>({
-  //   ...filter,
-  //   page: 1,
-  //   limit: 10,
-  //   userId: null,
-  //   carpoolingGroupId: null,
-  // });
+  const [visible, setVisible] = useState<boolean>(false);
+  const [currentItem, setCurrentItem] = useState<any>(null);
 
   const [subscription] = webService.useSubscription();
 
@@ -57,8 +42,8 @@ export default function useCarpoolingLogMaster() {
     (filterParam?: any) => {
       const filterValue = filterParam ? { ...filterParam } : { ...filter };
       subscription.add(
-        carpoolingLogRepository
-          .getCarpoolingLogs(filterValue)
+        vehicleRepository
+          .getVehicles(filterValue)
           .pipe(finalize(() => setLoadingList(false)))
           .subscribe(
             (res) => {
@@ -126,118 +111,89 @@ export default function useCarpoolingLogMaster() {
     [handleChangeAllFilter, filter]
   );
 
-  const handleChangeDirectionTypeFilter = useCallback(
+  const handleVerify = useCallback(
+    (id) => {
+      setLoadingList(true);
+      vehicleRepository
+        .verify(id)
+        .pipe(finalize(() => setLoadingList(false)))
+        .subscribe((res) => handleLoadList(filter));
+    },
+    [filter, handleLoadList]
+  );
+  const fuelTypeObservable = new Observable<any[]>((observer) => {
+    setTimeout(() => {
+      observer.next([
+        { id: 1, name: "Gasoline", code: "1" },
+        { id: 2, name: "Diesel", code: "2" },
+      ]);
+    }, 1000);
+  });
+  const fuelTypeSearchFunc = (TModelFilter?: any) => {
+    return fuelTypeObservable;
+  };
+  const isVerifiedObservable = new Observable<any[]>((observer) => {
+    setTimeout(() => {
+      observer.next([
+        { id: 1, name: "Đã xác minh", code: "3" },
+        { id: 2, name: "Chưa xác minh", code: "4" },
+      ]);
+    }, 1000);
+  });
+  const isVerifiedSearchFunc = (TModelFilter?: any) => {
+    return isVerifiedObservable;
+  };
+  const handleChangeFuelTypeFilter = useCallback(
     (value, object) => {
       handleChangeAllFilter({
         ...filter,
-        directionTypeId: value,
-        directionType: object?.name,
-        directionTypeValue: object,
+        fuelTypeId: value,
+        fuelType: object?.name,
+        fuelTypeValue: object,
       });
     },
     [handleChangeAllFilter, filter]
   );
 
-  const handleChangeStatusFilter = useCallback(
+  const handleChangeVerifiedFilter = useCallback(
     (value, object) => {
       handleChangeAllFilter({
         ...filter,
-        isAbsent: object
-          ? object?.name === "Có tham gia"
-            ? false
-            : true
+        isVerified: object
+          ? object.name === "Đã xác minh"
+            ? true
+            : false
           : null,
-        statusValue: object,
+        verifiedValue: object,
       });
     },
     [handleChangeAllFilter, filter]
   );
-
-  const handleChangeDateFilter = useCallback(
-    (value, object) => {
-      const formatDate = new Date(value);
-      const year = formatDate.getFullYear();
-      const month = formatDate.getMonth() + 1;
-      const day = formatDate.getDate();
-      const newDate = `${year}-${month < 10 ? `0${month}` : month}-${
-        day < 10 ? `0${day}` : day
-      }`;
-      handleChangeAllFilter({
-        ...filter,
-        date: value ? newDate : null,
-        dateValue: value,
-      });
+  const handleGoPreview = useCallback(
+    (model: AppUser) => {
+      setCurrentItem(model);
+      setVisible(true);
     },
-    [filter, handleChangeAllFilter]
+    [setCurrentItem, setVisible]
   );
-  const handleChangeSelectFilter = useCallback(
-    (field) => (value: any, object: any) => {
-      handleChangeAllFilter({
-        ...filter,
-        [`${field}Id`]: value,
-        [`${field}`]: object,
-      });
-    },
-    [handleChangeAllFilter, filter]
-  );
-
-  const appUserObservable = new Observable<any[]>((observer) => {
-    userRepository.all().subscribe((res) => {
-      setTimeout(() => {
-        observer.next(res?.data);
-      }, 1000);
-    });
-  });
-  const appUserSearchFunc = (TModelFilter?: any) => {
-    return appUserObservable;
-  };
-  const groupObservable = new Observable<any[]>((observer) => {
-    carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
-      setTimeout(() => {
-        observer.next(res?.data?.records);
-      }, 1000);
-    });
-  });
-  const groupSearchFunc = (TModelFilter?: any) => {
-    return groupObservable;
-  };
-
-  const directionTypeObservable = new Observable<any[]>((observer) => {
-    setTimeout(() => {
-      observer.next([
-        { id: 1, name: "Home to Work", code: "HTW" },
-        { id: 2, name: "Work to Home", code: "WTH" },
-      ]);
-    }, 1000);
-  });
-  const directionTypeSearchFunc = (TModelFilter?: any) => {
-    return directionTypeObservable;
-  };
-  const statusObservable = new Observable<any[]>((observer) => {
-    setTimeout(() => {
-      observer.next([
-        { id: 1, name: "Có tham gia", code: "join" },
-        { id: 2, name: "Nghỉ phép", code: "absent" },
-      ]);
-    }, 1000);
-  });
-  const statusSearchFunc = (TModelFilter?: any) => {
-    return statusObservable;
-  };
+  const handleClosePreview = useCallback(() => {
+    setVisible(false);
+  }, [setVisible]);
   return {
     filter,
     list,
     count,
     loadingList,
+    visible,
+    currentItem,
     handleTableChange,
     handlePagination,
-    handleChangeSelectFilter,
-    handleChangeDirectionTypeFilter,
-    handleChangeStatusFilter,
-    handleChangeDateFilter,
-    appUserSearchFunc,
-    groupSearchFunc,
-    directionTypeSearchFunc,
-    statusSearchFunc,
+    fuelTypeSearchFunc,
+    isVerifiedSearchFunc,
+    handleVerify,
+    handleChangeFuelTypeFilter,
+    handleChangeVerifiedFilter,
+    handleGoPreview,
+    handleClosePreview,
   };
 }

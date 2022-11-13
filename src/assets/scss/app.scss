@@ -148,3 +148,12 @@ File: Main Css File
     left: 0;
   }
 }
+.img-preview {
+  height: auto;
+  width: 60%;
+  background-color: $gray-300;
+  padding: 3px;
+}
+.drawer__container .drawer__content .drawer__body {
+  height: 100% !important;
+}

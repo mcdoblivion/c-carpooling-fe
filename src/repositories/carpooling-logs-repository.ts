@@ -22,7 +22,7 @@ export class CarpoolingLogRepository extends Repository {
         },"directionType":${
           filter.directionType ? `"${filter?.directionType}"` : null
         },"date":${filter.date ? `"${filter?.date}"` : null},"isAbsent":${
-          filter?.isAbsent || null
+          filter.isAbsent
         }}&sort=${filter?.sort}&order=${filter?.order}`
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));

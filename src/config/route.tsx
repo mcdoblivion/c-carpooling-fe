@@ -14,9 +14,11 @@ import {
   PAYMENT_ROUTE,
   USER_PREVIEW_ROUTE,
   USER_ROUTE,
+  VEHICLES_ROUTE,
 } from "./route-consts";
 import DayOffRequestMaster from "views/DayOffRequestView/DayOffRequestMaster";
 import CarpoolingLogMaster from "views/CarpoolingLogView/CarpoolingLogMaster";
+import VehicleMaster from "views/VehicleView/VehicleMaster";
 
 export interface Route {
   path: string;
@@ -40,6 +42,10 @@ const userRoutes: Route[] = [
   {
     path: CARPOOLING_LOG_ROUTE,
     component: CarpoolingLogMaster,
+  },
+  {
+    path: VEHICLES_ROUTE,
+    component: VehicleMaster,
   },
   {
     path: USER_PREVIEW_ROUTE,
