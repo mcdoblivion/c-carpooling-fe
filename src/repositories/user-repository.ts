@@ -57,6 +57,14 @@ export class UserRepository extends Repository {
       .put(`users/${appUser.id}`, appUser)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public create = (appUser: AppUser): Observable<AppUser> => {
+    return this.http
+      .put(`users/${appUser.id}/profile`, appUser)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public save = (appUser: AppUser): Observable<AppUser> => {
+    return appUser.userProfile ? this.update(appUser) : this.create(appUser);
+  };
 }
 
 export const userRepository = new UserRepository();

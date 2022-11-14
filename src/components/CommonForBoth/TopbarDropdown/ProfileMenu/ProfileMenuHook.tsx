@@ -25,7 +25,7 @@ export function useProfileMenu() {
     authenticationService.logout();
   }, []);
   const handleClickToProfile = React.useCallback(() => {
-    window.location.href = `/portal/app-user/app-user-detail?id=${user?.id}`;
+    window.location.href = `/users-preview?id=${user?.id}`;
   }, [user?.id]);
   const handleClickToChangePassword = React.useCallback(() => {
     window.location.href = `/portal/app-user/app-user-master?idChangePassword=${user?.id}`;
