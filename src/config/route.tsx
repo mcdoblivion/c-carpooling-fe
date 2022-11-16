@@ -14,6 +14,7 @@ import {
   LOGIN_ROUTE,
   LOGOUT_ROUTE,
   PAYMENT_ROUTE,
+  REGISTER_DRIVER_ROUTE,
   USER_PREVIEW_ROUTE,
   USER_ROUTE,
   VEHICLES_ROUTE,
@@ -23,6 +24,7 @@ import CarpoolingLogMaster from "views/CarpoolingLogView/CarpoolingLogMaster";
 import VehicleMaster from "views/VehicleView/VehicleMaster";
 import DriverMaster from "views/DriverView/DriverMaster";
 import CarpoolingGroupMaster from "views/CarpoolingGroupView/CarpoolingGroupMaster";
+import RegisterDriver from "views/RegisterDriverView/RegisterDriver";
 
 export interface Route {
   path: string;
@@ -58,6 +60,10 @@ const userRoutes: Route[] = [
   {
     path: DRIVERS_ROUTE,
     component: DriverMaster,
+  },
+  {
+    path: REGISTER_DRIVER_ROUTE,
+    component: RegisterDriver,
   },
   {
     path: USER_PREVIEW_ROUTE,

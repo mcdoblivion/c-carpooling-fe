@@ -59,3 +59,11 @@ export const CARPOOLING_LOG_ROUTE: string = ROOT_ROUTE
 export const CARPOOLING_GROUP_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/carpooling-groups")
   : "/carpooling-groups";
+
+export const REGISTER_DRIVER_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/register-driver")
+  : "/register-driver";
+
+export const ADDRESS_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/address")
+  : "/address";

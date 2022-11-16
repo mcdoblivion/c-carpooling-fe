@@ -23,6 +23,17 @@ export class DriverRepository extends Repository {
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public getDriver = (filter: any): Observable<AppUser> => {
+    return this.http
+      .get(
+        `drivers?page=${filter?.page}&limit=${
+          filter?.limit
+        }&filters={"status":${
+          filter.status ? `"${filter?.status}"` : null
+        }}&sort=${filter?.sort}&order=${filter?.order}`
+      )
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
   public verify = (id: any, payload: AppUser): Observable<AppUser> => {
     return this.http
       .put(`drivers/${id}`, payload)

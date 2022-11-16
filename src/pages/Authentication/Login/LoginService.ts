@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
-import { USER_PREVIEW_ROUTE, USER_ROUTE } from "config/route-consts";
+import { PAYMENT_ROUTE, USER_PREVIEW_ROUTE } from "config/route-consts";
 import { userRepository } from "repositories/user-repository";
 import { AppUser } from "models/AppUser";
 import store from "store";
@@ -27,10 +27,9 @@ export default function useLogin(
                   "currentUserInfo",
                   JSON.stringify(result.data)
                 );
-
                 if (!result.data.userProfile) {
                   window.location.href = `${USER_PREVIEW_ROUTE}?id=${result.data.id}`;
-                } else window.location.href = USER_ROUTE;
+                } else window.location.href = PAYMENT_ROUTE;
               } else {
                 authenticationService.logout();
               }
