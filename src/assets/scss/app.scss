@@ -157,3 +157,7 @@ File: Main Css File
 .drawer__container .drawer__content .drawer__body {
   height: 100% !important;
 }
+.error-notification-contents_block {
+  color: var(--palette-red-60);
+  font-size: 0.75em;
+}

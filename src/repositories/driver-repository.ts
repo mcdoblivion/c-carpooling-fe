@@ -3,7 +3,7 @@ import { BASE_API_URL } from "config/consts";
 import { httpConfig } from "config/http";
 import { AppUser } from "models/AppUser";
 import { Repository } from "react3l-common";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 
 export type KeyType = string | number;
 
@@ -38,6 +38,21 @@ export class DriverRepository extends Repository {
     return this.http
       .put(`drivers/${id}`, payload)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public create = (info: any): Observable<AppUser> => {
+    return this.http
+      .post("drivers", info)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public update = (info: any): Observable<AppUser> => {
+    return this.http
+      .post("drivers", info)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public uploadImage: any = (files?: any): Observable<any> => {
+    const formData: FormData = new FormData();
+    formData.append("file", files as Blob);
+    return this.http.post("upload-file", formData).pipe(map((r) => [r.data]));
   };
 }
 

@@ -1,28 +1,20 @@
 import PageHeader from "components/PageHeader/PageHeader";
-import {
-  Button,
-  DatePicker,
-  EnumSelect,
-  FormItem,
-  InputText,
-} from "react3l-ui-library";
+import { BadgeText, Button, FormItem, InputText } from "react3l-ui-library";
 import { Camera32, Close16, Save16 } from "@carbon/icons-react";
 import useRegisterDriver from "./RegisterDriverHook";
 import { Col, Row, Spin, Upload } from "antd";
 import "./RegisterDriver.scss";
-import { HereMap } from "components/HereMap/HereMap";
 
 function RegisterDriver() {
   const {
     loading,
     model,
-    imageUrl,
-    enumGender,
-    handleChangeAvatar,
-    handleChangeUserProfile,
-    singleListGender,
+    handleChangeDriverLicenseNumber,
+    handleChangeFrontPhoto,
+    handleChangeBackPhoto,
     handleSave,
   } = useRegisterDriver();
+
   return (
     <Spin spinning={loading}>
       <div className="page-content">
@@ -32,102 +24,84 @@ function RegisterDriver() {
         />
         <div className="page page-detail p-t--lg p-l--sm p-r--sm p-b--lg">
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-            <Col lg={18}>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-                <Col lg={12} className="m-b--sm">
+            {/* <Col lg={12} className="m-b--sm">
                   <HereMap
                     styles={{
                       height: "750px",
                       position: "relative",
                     }}
                   />
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <InputText
-                      label="Tên"
-                      type={0}
-                      value={model?.userProfile?.lastName}
-                      className={"tio-account_square_outlined"}
-                      onChange={handleChangeUserProfile("lastName")}
-                      placeHolder="Nhập tên..."
-                      isRequired
-                    />
-                  </FormItem>
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <InputText
-                      label="Số CMND/Số căn cước"
-                      type={0}
-                      value={model?.userProfile?.ICNumber}
-                      className={"tio-account_square_outlined"}
-                      onChange={handleChangeUserProfile("ICNumber")}
-                      placeHolder="Nhập số CMND/Số căn cước..."
-                      isRequired
-                    />
-                  </FormItem>
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <InputText
-                      label="Số điện thoại"
-                      type={0}
-                      value={model?.phoneNumber}
-                      className={"tio-account_square_outlined"}
-                      onChange={handleChangeUserProfile("phoneNumber")}
-                      placeHolder="Nhập số điện thoại..."
-                      isRequired
-                    />
-                  </FormItem>
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <DatePicker
-                      label="Ngày sinh"
-                      value={model?.userProfile?.dateOfBirth}
-                      type={0}
-                      placeholder="Nhập ngày sinh"
-                      onChange={handleChangeUserProfile("dateOfBirth")}
-                    />
-                  </FormItem>
-                </Col>
-                <Col lg={12} className="m-b--sm">
-                  <FormItem>
-                    <EnumSelect
-                      placeHolder="Chọn giới tính..."
-                      onChange={handleChangeUserProfile("gender")}
-                      type={0}
-                      getList={singleListGender}
-                      label="Giới tính"
-                      value={
-                        model?.userProfile?.gender === "Female"
-                          ? enumGender[0]
-                          : enumGender[1]
-                      }
-                    />
-                  </FormItem>
-                </Col>
-              </Row>
+                </Col> */}
+            <Col lg={12} className="m-b--sm">
+              <FormItem>
+                <InputText
+                  label="Số giấy phép lái xe"
+                  type={0}
+                  value={model?.driverLicenseNumber}
+                  className={"tio-account_square_outlined"}
+                  onChange={handleChangeDriverLicenseNumber()}
+                  placeHolder="Nhập số giấy phép lái xe..."
+                  isRequired
+                />
+              </FormItem>
             </Col>
-            <Col lg={6}>
+            <Col lg={12} className="m-b--sm">
+              <BadgeText
+                value={model?.status}
+                color={model?.status === "Pending" ? "#8e6a00" : "#921118"}
+                backgroundColor={
+                  model?.status === "Pending" ? "#f1c21b" : "#c21e25"
+                }
+              />
+            </Col>
+            <Col lg={12}>
               <Upload
-                name="avatar"
+                name="frontPhoto"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                onChange={handleChangeAvatar}
+                action="https://res.cloudinary.com/c-carpooling/image/upload"
+                onChange={handleChangeFrontPhoto}
               >
-                {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+                {model?.driverLicenseFrontPhotoURL ? (
+                  <img
+                    src={model?.driverLicenseFrontPhotoURL}
+                    alt="avatar"
+                    style={{ width: "100%" }}
+                  />
                 ) : (
                   <Camera32 />
                 )}
               </Upload>
               <div className="text-align-center">
                 <div className="text__with__label">
-                  <span>Ảnh đại diện</span>
+                  <span>Ảnh giấy phép lái xe mặt trước</span>
+                  <span>Recommended size: 500 x 600 px (maximum 1MB)</span>
+                </div>
+              </div>
+            </Col>
+            <Col lg={12}>
+              <Upload
+                name="backPhoto"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                onChange={handleChangeBackPhoto}
+              >
+                {model?.driverLicenseBackPhotoURL ? (
+                  <img
+                    src={model?.driverLicenseBackPhotoURL}
+                    alt="avatar"
+                    style={{ width: "100%" }}
+                  />
+                ) : (
+                  <Camera32 />
+                )}
+              </Upload>
+              <div className="text-align-center">
+                <div className="text__with__label">
+                  <span>Ảnh giấy phép lái xe mặt sau</span>
                   <span>Recommended size: 500 x 600 px (maximum 1MB)</span>
                 </div>
               </div>
