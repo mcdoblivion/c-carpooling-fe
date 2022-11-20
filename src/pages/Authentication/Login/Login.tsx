@@ -117,6 +117,25 @@ function Login() {
                     <div id="google-login-div"></div>
                   </div>
 
+                  <div
+                    className="login-page__button-wrapper m-b--lg"
+                    style={{ position: "relative" }}
+                  >
+                    <Button
+                      type="outline-primary"
+                      icon={
+                        <img
+                          src={require("assets/images/Facebook.svg").default}
+                          alt=""
+                        />
+                      }
+                      className="login-button btn--lg login-button--outline"
+                    >
+                      Đăng nhập với Facebook
+                    </Button>
+                    <div id="google-login-div"></div>
+                  </div>
+
                   <Divider className="login-page__content--divider" />
 
                   <div
@@ -135,6 +154,14 @@ function Login() {
                 </div>
               </div>
             }
+          </div>
+
+          <div>
+            <img
+              src={require("assets/images/carpooling.png").default}
+              alt=""
+              width={"70%"}
+            />
           </div>
         </div>
       </div>
