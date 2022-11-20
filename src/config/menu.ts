@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { TFunction } from "i18next";
 import {
   ADDRESS_ROUTE,
+  CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
@@ -38,6 +39,13 @@ export const menu: Menu[] = [
     name: "Địa chỉ",
     icon: "bx-home",
     link: ADDRESS_ROUTE,
+    show: user?.role === "NORMAL_USER" ? true : false,
+    active: false,
+  },
+  {
+    name: "Nhóm đi chung",
+    icon: "bx-home",
+    link: CARPOOLING_GROUP_NORMAL_ROUTE,
     show: user?.role === "NORMAL_USER" ? true : false,
     active: false,
   },
