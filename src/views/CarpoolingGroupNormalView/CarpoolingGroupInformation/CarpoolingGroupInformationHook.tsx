@@ -1,8 +1,10 @@
 import { ColumnProps } from "antd/lib/table";
+import { DAY_OFF_REQUEST_NORMAL_ROUTE } from "config/route-consts";
 import { renderMasterIndex } from "helpers/table";
 import { AppUser } from "models/AppUser";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Avatar, { ConfigProvider } from "react-avatar";
+import { useHistory } from "react-router";
 import { LayoutCell, LayoutHeader, OneLineText } from "react3l-ui-library";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 
@@ -21,6 +23,7 @@ export default function useCarpoolingGroupInformation(
     new AppUser()
   );
   const [carpoolers, setCarpoolers] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     if (firstLoad && carpoolingGroupId) {
@@ -44,6 +47,10 @@ export default function useCarpoolingGroupInformation(
       firstLoad.current = false;
     }
   }, [carpoolingGroupId, subscription]);
+
+  const handleGoDayOffRequest = useCallback(() => {
+    history.replace(DAY_OFF_REQUEST_NORMAL_ROUTE);
+  }, [history]);
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
@@ -140,5 +147,6 @@ export default function useCarpoolingGroupInformation(
     carpoolers,
     driverUser,
     vehicleForCarpooling,
+    handleGoDayOffRequest,
   };
 }

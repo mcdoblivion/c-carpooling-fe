@@ -19,7 +19,9 @@ import {
   getOrderType,
 } from "services/page-services/table-service";
 
-export default function useDayOffRequestMaster() {
+export default function useDayOffRequestNormal() {
+  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
@@ -30,7 +32,6 @@ export default function useDayOffRequestMaster() {
     modelFilter,
     dispatchFilter
   );
-
   const [{ list, count }, dispatch] = useReducer<
     Reducer<ListState<AppUser>, ListAction<AppUser>>
   >(listReducer, { list: [], count: 0 });
@@ -38,6 +39,14 @@ export default function useDayOffRequestMaster() {
   const [loadingList, setLoadingList] = useState<boolean>(false);
 
   const [subscription] = webService.useSubscription();
+
+  const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
+  const [visiblePreview, setVisiblePreview] = useState<boolean>(false);
+
+  const [currentItem, setCurrentItem] = useState<any>({
+    ...new AppUser(),
+    carpoolingGroupId: user?.carpoolingGroupId,
+  });
 
   const handleLoadList = useCallback(
     (filterParam?: any) => {
@@ -158,11 +167,54 @@ export default function useDayOffRequestMaster() {
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;
   };
+
+  const handleDelete = useCallback(
+    (id) => {
+      dayOffRequestRepository
+        .delete(id)
+        .subscribe((res) => handleLoadList(filter));
+    },
+    [filter, handleLoadList]
+  );
+  const handleGoCreate = useCallback(() => {
+    setCurrentItem({
+      ...new AppUser(),
+      carpoolingGroupId: user?.carpoolingGroupId,
+    });
+    setVisibleDetail(true);
+  }, [user?.carpoolingGroupId]);
+
+  const handleGoDetail = useCallback((model: AppUser) => {
+    setVisibleDetail(true);
+    setVisiblePreview(false);
+    setCurrentItem(model);
+  }, []);
+
+  const handleGoPreview = useCallback(
+    (model: AppUser) => {
+      setCurrentItem(model);
+      setVisiblePreview(true);
+      setVisibleDetail(false);
+    },
+    [setCurrentItem]
+  );
+  const handleClosePreview = useCallback(() => {
+    setVisiblePreview(false);
+  }, []);
+  const handleCloseDetail = useCallback(() => {
+    setVisibleDetail(false);
+  }, []);
+
   return {
     filter,
     list,
     count,
     loadingList,
+    visibleDetail,
+    visiblePreview,
+    currentItem,
+    handleCloseDetail,
+    handleClosePreview,
     handleTableChange,
     handlePagination,
     handleChangeSelectFilter,
@@ -170,5 +222,10 @@ export default function useDayOffRequestMaster() {
     appUserSearchFunc,
     groupSearchFunc,
     directionTypeSearchFunc,
+    handleDelete,
+    handleGoCreate,
+    handleGoPreview,
+    handleGoDetail,
+    handleLoadList,
   };
 }

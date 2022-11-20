@@ -16,6 +16,7 @@ function CarpoolingGroupInformation() {
     vehicleForCarpooling,
     columns,
     carpoolers,
+    handleGoDayOffRequest,
   } = useCarpoolingGroupInformation(user?.carpoolingGroupId);
 
   return (
@@ -180,7 +181,12 @@ function CarpoolingGroupInformation() {
               <Button type="secondary" className="btn--lg" icon={<Close16 />}>
                 Tạo yêu cầu rời nhóm
               </Button>
-              <Button type="primary" className="btn--lg" icon={<Save16 />}>
+              <Button
+                type="primary"
+                className="btn--lg"
+                icon={<Save16 />}
+                onClick={handleGoDayOffRequest}
+              >
                 Tạo yêu cầu nghỉ phép
               </Button>
             </div>

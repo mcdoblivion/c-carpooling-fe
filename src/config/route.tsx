@@ -10,6 +10,7 @@ import {
   CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
+  DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DEFAULT_ROUTE,
   DRIVERS_ROUTE,
@@ -30,6 +31,7 @@ import CarpoolingGroupMaster from "views/CarpoolingGroupView/CarpoolingGroupMast
 import RegisterDriver from "views/RegisterDriverView/RegisterDriver";
 import Address from "views/AddressView/Address";
 import CarpoolingGroupNormal from "views/CarpoolingGroupNormalView/CarpoolingGroupNormal";
+import DayOffRequestNormal from "views/DayOffRequestNormalView/DayOffRequestNormal";
 
 export interface Route {
   path: string;
@@ -50,6 +52,11 @@ const userRoutes: Route[] = [
     path: DAY_OFF_REQUEST_ROUTE,
     component: DayOffRequestMaster,
   },
+  {
+    path: DAY_OFF_REQUEST_NORMAL_ROUTE,
+    component: DayOffRequestNormal,
+  },
+
   {
     path: CARPOOLING_LOG_ROUTE,
     component: CarpoolingLogMaster,

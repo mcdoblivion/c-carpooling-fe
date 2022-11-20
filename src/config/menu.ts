@@ -5,6 +5,7 @@ import {
   CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
+  DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
@@ -49,6 +50,15 @@ export const menu: Menu[] = [
     show: user?.role === "NORMAL_USER" ? true : false,
     active: false,
   },
+  {
+    name: "Yêu cầu nghỉ phép",
+    icon: "bx-home",
+    link: DAY_OFF_REQUEST_NORMAL_ROUTE,
+    show:
+      user?.role === "NORMAL_USER" && user?.carpoolingGroupId ? true : false,
+    active: false,
+  },
+
   {
     name: "Người dùng",
     icon: "bx-home",

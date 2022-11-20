@@ -64,6 +64,17 @@ export const CARPOOLING_GROUP_NORMAL_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/carpooling-groups-normal")
   : "/carpooling-groups-normal";
 
+export const DAY_OFF_REQUEST_DETAIL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/day-off-requests-detail")
+  : "/day-off-requests-detail";
+
+export const DAY_OFF_REQUEST_NORMAL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/day-off-requests-normal")
+  : "/day-off-requests-normal";
+export const DAY_OFF_REQUEST_NORMAL_DETAIL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/day-off-requests-normal-detail")
+  : "/day-off-requests-normal-detail";
+
 export const REGISTER_DRIVER_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/register-driver")
   : "/register-driver";
