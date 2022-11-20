@@ -6,6 +6,7 @@ import UserView from "views/UserView/UserView";
 import Payment from "views/Payment/Payment";
 import UserPreview from "views/UserView/UserPreview/UserPreview";
 import {
+  ADDRESS_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
@@ -25,6 +26,7 @@ import VehicleMaster from "views/VehicleView/VehicleMaster";
 import DriverMaster from "views/DriverView/DriverMaster";
 import CarpoolingGroupMaster from "views/CarpoolingGroupView/CarpoolingGroupMaster";
 import RegisterDriver from "views/RegisterDriverView/RegisterDriver";
+import Address from "views/AddressView/Address";
 
 export interface Route {
   path: string;
@@ -72,6 +74,10 @@ const userRoutes: Route[] = [
   {
     path: PAYMENT_ROUTE,
     component: Payment,
+  },
+  {
+    path: ADDRESS_ROUTE,
+    component: Address,
   },
   {
     path: `${process.env.PUBLIC_URL}/`,

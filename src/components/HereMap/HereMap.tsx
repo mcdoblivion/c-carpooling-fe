@@ -1,4 +1,11 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import H from "@here/maps-api-for-javascript";
 import "./HereMap.scss";
 import {
@@ -10,10 +17,19 @@ import { useTranslation } from "react-i18next";
 export interface HereMapProps {
   styles?: React.CSSProperties;
   classNames?: any;
+  handleChangeAddress?: (fieldName: any) => void;
+  viewModelHome?: MutableRefObject<boolean>;
+  viewModelWork?: MutableRefObject<boolean>;
 }
 export function HereMap(props: HereMapProps) {
   const [translate] = useTranslation();
-  const { styles, classNames } = props;
+  const {
+    styles,
+    classNames,
+    handleChangeAddress,
+    viewModelHome,
+    viewModelWork,
+  } = props;
   const mapRef = useRef<HTMLElement>();
   const ctxRef = useRef<CanvasRenderingContext2D>();
   const renderingParamsRef = useRef<H.map.render.RenderingParams>();
@@ -109,6 +125,35 @@ export function HereMap(props: HereMapProps) {
     }
   }, []);
   // Hiển thị các quỹ đất lên map
+  const handleGetViewModel = useCallback(
+    (address, latitude, longitude) => {
+      map.getViewModel().setLookAtData({
+        position: { lat: latitude, lng: longitude },
+        zoom: 18,
+      });
+      addInfoBubble(latitude, longitude, address);
+    },
+    [addInfoBubble, map]
+  );
+
+  useEffect(() => {
+    if (viewModelHome) {
+      handleGetViewModel(
+        "Tháp Schmidt Tower (F.Studio By FPT Iph)",
+        21.03657,
+        105.78322
+      );
+      viewModelHome.current = false;
+    }
+    if (viewModelWork) {
+      handleGetViewModel(
+        "Giảng Đường G2 (Giang Duong G2)",
+        21.03679,
+        105.78215
+      );
+      viewModelWork.current = false;
+    }
+  }, [handleGetViewModel, viewModelHome, viewModelWork]);
 
   const handlePlacesChanged = useCallback(
     (places: SuggestLocationInterface[]) => {
@@ -119,14 +164,10 @@ export function HereMap(props: HereMapProps) {
         const latitude = place.position[0];
         const longitude = place.position[1];
         setAddressSearch(address);
-        map.getViewModel().setLookAtData({
-          position: { lat: latitude, lng: longitude },
-          zoom: 18,
-        });
-        addInfoBubble(latitude, longitude, address);
+        handleGetViewModel(address, latitude, longitude);
       }
     },
-    [addInfoBubble, map]
+    [handleGetViewModel]
   );
 
   useEffect(() => {
@@ -146,8 +187,9 @@ export function HereMap(props: HereMapProps) {
       <MapSearchBox
         className="map-search-box"
         onPlacesChanged={handlePlacesChanged}
+        handleChangeAddress={handleChangeAddress}
         value={addressSearch}
-        placeholder={translate("general.placeholder.search")}
+        placeholder={"Tìm kiếm..."}
       />
       <button
         className="full_screen_button"

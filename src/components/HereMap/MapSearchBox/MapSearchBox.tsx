@@ -26,11 +26,12 @@ export interface MapSearchBoxProps {
   disabled?: boolean;
   onPlacesChanged: any;
   value?: string;
+  handleChangeAddress?: (fieldName: any) => void;
 }
 
 export function MapSearchBox(props: MapSearchBoxProps) {
   const mapSearchBoxService = React.useRef<MapSearchBoxService>(null);
-  const { onPlacesChanged, disabled, value } = props;
+  const { onPlacesChanged, disabled, value, handleChangeAddress } = props;
   const [suggest, setSuggest] = React.useState<SuggestLocationInterface[]>([]);
   const wrapperRef: RefObject<HTMLDivElement> =
     React.useRef<HTMLDivElement>(null);
@@ -40,10 +41,11 @@ export function MapSearchBox(props: MapSearchBoxProps) {
 
   const handleChoosePlace = React.useCallback(
     (selectedPlace: SuggestLocationInterface) => {
+      handleChangeAddress(selectedPlace);
       onPlacesChanged([selectedPlace]);
       setSuggest([]);
     },
-    [onPlacesChanged]
+    [handleChangeAddress, onPlacesChanged]
   );
   const renderSuggest = React.useMemo(() => {
     return (
