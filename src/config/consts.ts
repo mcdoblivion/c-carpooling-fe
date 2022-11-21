@@ -73,3 +73,6 @@ export const ACTION_URL_REGEX = /^(\/?rpc)/;
  */
 export const FORBIDENT_ROUTE: string = "/403";
 export const NOT_FOUND_ROUTE: string = "/404";
+
+export const NORMAL_USER = "NORMAL_USER";
+export const ADMIN = "ADMIN";

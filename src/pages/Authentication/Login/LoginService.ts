@@ -1,11 +1,16 @@
+import { ADMIN } from "config/consts";
+import {
+  CARPOOLING_GROUP_NORMAL_ROUTE,
+  USER_PREVIEW_ROUTE,
+  USER_ROUTE,
+} from "config/route-consts";
+import { AppUser } from "models/AppUser";
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
-import { PAYMENT_ROUTE, USER_PREVIEW_ROUTE } from "config/route-consts";
 import { userRepository } from "repositories/user-repository";
-import { AppUser } from "models/AppUser";
+import authenticationService from "services/common-services/authentication-service";
 import store from "store";
 import { updateUser } from "store/global-state/actions";
-import authenticationService from "services/common-services/authentication-service";
 export default function useLogin(
   appUser: any,
   setAppUser: any,
@@ -27,9 +32,17 @@ export default function useLogin(
                   "currentUserInfo",
                   JSON.stringify(result.data)
                 );
+
+                let nextRoute = `${CARPOOLING_GROUP_NORMAL_ROUTE}`;
                 if (!result.data.userProfile) {
-                  window.location.href = `${USER_PREVIEW_ROUTE}?id=${result.data.id}`;
-                } else window.location.href = PAYMENT_ROUTE;
+                  nextRoute = `${USER_PREVIEW_ROUTE}?id=${result.data.id}`;
+                } else {
+                  const { role } = result.data;
+
+                  role === ADMIN && (nextRoute = USER_ROUTE);
+                }
+
+                window.location.href = nextRoute;
               } else {
                 authenticationService.logout();
               }
