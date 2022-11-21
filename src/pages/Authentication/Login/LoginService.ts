@@ -1,9 +1,3 @@
-import { ADMIN } from "config/consts";
-import {
-  CARPOOLING_GROUP_NORMAL_ROUTE,
-  USER_PREVIEW_ROUTE,
-  USER_ROUTE,
-} from "config/route-consts";
 import { AppUser } from "models/AppUser";
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
@@ -33,16 +27,7 @@ export default function useLogin(
                   JSON.stringify(result.data)
                 );
 
-                let nextRoute = `${CARPOOLING_GROUP_NORMAL_ROUTE}`;
-                if (!result.data.userProfile) {
-                  nextRoute = `${USER_PREVIEW_ROUTE}?id=${result.data.id}`;
-                } else {
-                  const { role } = result.data;
-
-                  role === ADMIN && (nextRoute = USER_ROUTE);
-                }
-
-                window.location.href = nextRoute;
+                window.location.href = "/";
               } else {
                 authenticationService.logout();
               }

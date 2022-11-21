@@ -82,6 +82,3 @@ export const REGISTER_DRIVER_ROUTE: string = ROOT_ROUTE
 export const ADDRESS_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/address")
   : "/address";
-export const DEFAULT_ROUTE: string = ROOT_ROUTE
-  ? join(ROOT_ROUTE + "/carpooling")
-  : "/carpooling";

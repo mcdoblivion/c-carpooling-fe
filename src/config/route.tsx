@@ -1,6 +1,5 @@
 import Login from "pages/Authentication/Login/Login";
 import Logout from "pages/Authentication/Logout";
-import { Redirect } from "react-router";
 import LeaveGroupRequestMaster from "views/LeaveGroupRequestView/LeaveGroupRequestMaster";
 import UserView from "views/UserView/UserView";
 import Payment from "views/Payment/Payment";
@@ -12,7 +11,6 @@ import {
   CARPOOLING_LOG_ROUTE,
   DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
-  DEFAULT_ROUTE,
   DRIVERS_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
   LOGIN_ROUTE,
@@ -32,6 +30,7 @@ import RegisterDriver from "views/RegisterDriverView/RegisterDriver";
 import Address from "views/AddressView/Address";
 import CarpoolingGroupNormal from "views/CarpoolingGroupNormalView/CarpoolingGroupNormal";
 import DayOffRequestNormal from "views/DayOffRequestNormalView/DayOffRequestNormal";
+import Home from "pages/HomePage/HomePage";
 
 export interface Route {
   path: string;
@@ -96,7 +95,7 @@ const userRoutes: Route[] = [
   {
     path: `${process.env.PUBLIC_URL}/`,
     exact: true,
-    component: () => <Redirect to={DEFAULT_ROUTE} />,
+    component: Home,
   },
 ];
 

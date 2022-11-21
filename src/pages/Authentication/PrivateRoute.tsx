@@ -1,8 +1,11 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
 import App from "app/App";
 import { Route as RouteInterface, userRoutes as routes } from "config/route";
 import { SIDE_BAR_PAGE_ROUTE } from "config/route-consts";
+import React, { useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
+import { userRepository } from "repositories/user-repository";
+import store from "store";
+import { updateUser } from "store/global-state/actions";
 
 /** Lazyload route  */
 const lazyRoutes: RouteInterface[] = [
@@ -15,6 +18,14 @@ const lazyRoutes: RouteInterface[] = [
 ];
 
 export const PrivateRoute = ({ ...rest }) => {
+  useEffect(() => {
+    const accessToken = JSON.parse(localStorage.getItem("token"));
+
+    userRepository.getMe(accessToken).subscribe((result) => {
+      store.dispatch(updateUser(result));
+    });
+  }, []);
+
   return (
     <Route
       {...rest}

@@ -19,4 +19,7 @@ const store = createStore(
 );
 sagaMiddleware.run(rootSaga);
 
+export const getCurrentUserInfo = () =>
+  store.getState()?.GlobalState?.user?.data;
+
 export default store;
