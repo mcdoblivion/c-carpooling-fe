@@ -2,8 +2,10 @@ import { Col, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
 import Select from "components/Select/SingleSelect";
+import { formatDate } from "helpers/date-time";
 import { renderMasterIndex } from "helpers/table";
 import { AppUser, AppUserFilter } from "models/AppUser";
+import { Moment } from "moment";
 import { useMemo } from "react";
 import {
   LayoutCell,
@@ -81,10 +83,10 @@ function DayOffRequestMaster() {
         dataIndex: nameof(list[0].date),
         ellipsis: true,
         width: 80,
-        render(...params: [string, AppUser, number]) {
+        render(...params: [Moment, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText value={params[0]} />
+              <OneLineText value={formatDate(params[0])} />
             </LayoutCell>
           );
         },

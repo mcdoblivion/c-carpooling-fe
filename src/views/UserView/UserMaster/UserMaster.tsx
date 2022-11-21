@@ -113,7 +113,9 @@ function UserMaster() {
         render(...params: [string, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText value={params[1]?.userProfile?.dateOfBirth} />
+              <OneLineText
+                value={formatDate(params[1]?.userProfile?.dateOfBirth)}
+              />
             </LayoutCell>
           );
         },

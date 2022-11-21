@@ -29,6 +29,7 @@ export default function useCarpoolingLogMaster() {
       userId: null,
       carpoolingGroupId: null,
       isAbsent: null,
+      sort: "date",
     }
   );
 

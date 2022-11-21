@@ -23,7 +23,14 @@ export default function useLeaveGroupRequestMaster() {
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
-    { page: 1, limit: 10, userId: null, carpoolingGroupId: null }
+    {
+      page: 1,
+      limit: 10,
+      userId: null,
+      carpoolingGroupId: null,
+      sort: "date",
+      order: "ASC",
+    }
   );
 
   const { value: filter, handleChangeAllFilter } = filterService.useFilter(
