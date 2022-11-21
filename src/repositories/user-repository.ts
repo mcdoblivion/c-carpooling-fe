@@ -57,6 +57,20 @@ export class UserRepository extends Repository {
       .put(`users/${appUser.id}`, appUser)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public createAddress = (id: number, payload: any): Observable<AppUser> => {
+    return this.http
+      .post(`users/${id}/addresses`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public updateAddress = (
+    id: number,
+    addressesId: number,
+    payload: any
+  ): Observable<AppUser> => {
+    return this.http
+      .put(`users/${id}/addresses/${addressesId}`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
   public create = (appUser: AppUser): Observable<AppUser> => {
     return this.http
       .put(`users/${appUser.id}/profile`, appUser)

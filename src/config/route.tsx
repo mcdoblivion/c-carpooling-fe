@@ -6,9 +6,13 @@ import UserView from "views/UserView/UserView";
 import Payment from "views/Payment/Payment";
 import UserPreview from "views/UserView/UserPreview/UserPreview";
 import {
+  ADDRESS_ROUTE,
+  CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
+  DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
+  DEFAULT_ROUTE,
   DRIVERS_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
   LOGIN_ROUTE,
@@ -25,6 +29,9 @@ import VehicleMaster from "views/VehicleView/VehicleMaster";
 import DriverMaster from "views/DriverView/DriverMaster";
 import CarpoolingGroupMaster from "views/CarpoolingGroupView/CarpoolingGroupMaster";
 import RegisterDriver from "views/RegisterDriverView/RegisterDriver";
+import Address from "views/AddressView/Address";
+import CarpoolingGroupNormal from "views/CarpoolingGroupNormalView/CarpoolingGroupNormal";
+import DayOffRequestNormal from "views/DayOffRequestNormalView/DayOffRequestNormal";
 
 export interface Route {
   path: string;
@@ -46,12 +53,21 @@ const userRoutes: Route[] = [
     component: DayOffRequestMaster,
   },
   {
+    path: DAY_OFF_REQUEST_NORMAL_ROUTE,
+    component: DayOffRequestNormal,
+  },
+
+  {
     path: CARPOOLING_LOG_ROUTE,
     component: CarpoolingLogMaster,
   },
   {
     path: CARPOOLING_GROUP_ROUTE,
     component: CarpoolingGroupMaster,
+  },
+  {
+    path: CARPOOLING_GROUP_NORMAL_ROUTE,
+    component: CarpoolingGroupNormal,
   },
   {
     path: VEHICLES_ROUTE,
@@ -74,9 +90,13 @@ const userRoutes: Route[] = [
     component: Payment,
   },
   {
+    path: ADDRESS_ROUTE,
+    component: Address,
+  },
+  {
     path: `${process.env.PUBLIC_URL}/`,
     exact: true,
-    component: () => <Redirect to={USER_ROUTE} />,
+    component: () => <Redirect to={DEFAULT_ROUTE} />,
   },
 ];
 

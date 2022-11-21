@@ -31,7 +31,7 @@ function VehiclePreview(props: VehiclePreviewProps) {
         <Col lg={24} className="m-b--lg">
           <div className="text__with__label">
             <span>Tỷ lệ tiêu thụ nhiên liệu trên 100km</span>
-            <span>{model?.fuelConsumptionPer100kms}</span>
+            <span>{model?.fuelConsumptionPer100kms} (lít)</span>
           </div>
         </Col>
         <Col lg={24} className="m-b--lg">

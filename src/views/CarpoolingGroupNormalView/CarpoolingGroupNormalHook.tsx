@@ -1,7 +1,7 @@
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
-import { dayOffRequestRepository } from "repositories/day-off-requests-repository";
+import { carpoolingLogRepository } from "repositories/carpooling-logs-repository";
 import { userRepository } from "repositories/user-repository";
 
 import { finalize, Observable } from "rxjs";
@@ -19,11 +19,17 @@ import {
   getOrderType,
 } from "services/page-services/table-service";
 
-export default function useDayOffRequestMaster() {
+export default function useCarpoolingGroupNormal() {
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
-    { page: 1, limit: 10, userId: null, carpoolingGroupId: null }
+    {
+      page: 1,
+      limit: 10,
+      userId: null,
+      carpoolingGroupId: null,
+      isAbsent: null,
+    }
   );
 
   const { value: filter, handleChangeAllFilter } = filterService.useFilter(
@@ -37,14 +43,22 @@ export default function useDayOffRequestMaster() {
 
   const [loadingList, setLoadingList] = useState<boolean>(false);
 
+  // const [defaultFilter] = useState<any>({
+  //   ...filter,
+  //   page: 1,
+  //   limit: 10,
+  //   userId: null,
+  //   carpoolingGroupId: null,
+  // });
+
   const [subscription] = webService.useSubscription();
 
   const handleLoadList = useCallback(
     (filterParam?: any) => {
       const filterValue = filterParam ? { ...filterParam } : { ...filter };
       subscription.add(
-        dayOffRequestRepository
-          .getDayOffRequests(filterValue)
+        carpoolingLogRepository
+          .getCarpoolingLogs(filterValue)
           .pipe(finalize(() => setLoadingList(false)))
           .subscribe(
             (res) => {
@@ -70,6 +84,15 @@ export default function useDayOffRequestMaster() {
     },
     [filter, subscription]
   );
+
+  // const handleResetList = useCallback(() => {
+  //   dispatchFilter({
+  //     type: FilterActionEnum.UPDATE,
+  //     payload: {
+  //       ...defaultFilter,
+  //     },
+  //   });
+  // }, [defaultFilter, dispatchFilter]);
 
   useEffect(() => {
     if (filter && autoCallListByChange) {
@@ -115,6 +138,38 @@ export default function useDayOffRequestMaster() {
     [handleChangeAllFilter, filter]
   );
 
+  const handleChangeStatusFilter = useCallback(
+    (value, object) => {
+      handleChangeAllFilter({
+        ...filter,
+        isAbsent: object
+          ? object?.name === "Có tham gia"
+            ? false
+            : true
+          : null,
+        statusValue: object,
+      });
+    },
+    [handleChangeAllFilter, filter]
+  );
+
+  const handleChangeDateFilter = useCallback(
+    (value, object) => {
+      const formatDate = new Date(value);
+      const year = formatDate.getFullYear();
+      const month = formatDate.getMonth() + 1;
+      const day = formatDate.getDate();
+      const newDate = `${year}-${month < 10 ? `0${month}` : month}-${
+        day < 10 ? `0${day}` : day
+      }`;
+      handleChangeAllFilter({
+        ...filter,
+        date: value ? newDate : null,
+        dateValue: value,
+      });
+    },
+    [filter, handleChangeAllFilter]
+  );
   const handleChangeSelectFilter = useCallback(
     (field) => (value: any, object: any) => {
       handleChangeAllFilter({
@@ -158,6 +213,17 @@ export default function useDayOffRequestMaster() {
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;
   };
+  const statusObservable = new Observable<any[]>((observer) => {
+    setTimeout(() => {
+      observer.next([
+        { id: 1, name: "Có tham gia", code: "join" },
+        { id: 2, name: "Nghỉ phép", code: "absent" },
+      ]);
+    }, 1000);
+  });
+  const statusSearchFunc = (TModelFilter?: any) => {
+    return statusObservable;
+  };
   return {
     filter,
     list,
@@ -167,8 +233,11 @@ export default function useDayOffRequestMaster() {
     handlePagination,
     handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
+    handleChangeStatusFilter,
+    handleChangeDateFilter,
     appUserSearchFunc,
     groupSearchFunc,
     directionTypeSearchFunc,
+    statusSearchFunc,
   };
 }

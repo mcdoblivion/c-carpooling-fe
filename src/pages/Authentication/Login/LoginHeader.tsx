@@ -4,7 +4,7 @@ import { Document20, Help20 } from "@carbon/icons-react";
 function LoginHeader() {
   return (
     <div className="login-header__wrapper  p-y--xs">
-      <div className="login-header__logo p-x--sm">Portal</div>
+      <div className="login-header__logo p-x--sm">C-Carpooling</div>
       <div className="login-header__list-icon">
         <div className="login-header__icon login-header__icon-document d-flex align-items-center justify-content-center">
           <Document20 color={"#fff"} />
