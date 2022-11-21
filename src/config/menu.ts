@@ -10,7 +10,6 @@ import {
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
-  LEAVE_REQUEST_NORMAL_ROUTE,
   USER_ROUTE,
   VEHICLES_ROUTE,
 } from "./route-consts";
@@ -56,13 +55,6 @@ export const menu: Menu[] = [
     name: "Yêu cầu nghỉ phép",
     icon: "bx-question-mark",
     link: DAY_OFF_REQUEST_NORMAL_ROUTE,
-    show: user?.role === NORMAL_USER && user?.carpoolingGroupId ? true : false,
-    active: false,
-  },
-  {
-    name: "Yêu cầu rời nhóm",
-    icon: "bxs-log-out",
-    link: LEAVE_REQUEST_NORMAL_ROUTE,
     show: user?.role === NORMAL_USER && user?.carpoolingGroupId ? true : false,
     active: false,
   },
