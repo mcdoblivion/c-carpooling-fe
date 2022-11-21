@@ -71,9 +71,10 @@ export const DAY_OFF_REQUEST_DETAIL_ROUTE: string = ROOT_ROUTE
 export const DAY_OFF_REQUEST_NORMAL_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/day-off-requests-normal")
   : "/day-off-requests-normal";
-export const DAY_OFF_REQUEST_NORMAL_DETAIL_ROUTE: string = ROOT_ROUTE
-  ? join(ROOT_ROUTE + "/day-off-requests-normal-detail")
-  : "/day-off-requests-normal-detail";
+
+export const LEAVE_REQUEST_NORMAL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/leave-requets-normal")
+  : "/leave-requets-normal";
 
 export const REGISTER_DRIVER_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/register-driver")

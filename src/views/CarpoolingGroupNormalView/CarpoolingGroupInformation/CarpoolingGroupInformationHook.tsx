@@ -1,12 +1,13 @@
 import { ColumnProps } from "antd/lib/table";
 import { DAY_OFF_REQUEST_NORMAL_ROUTE } from "config/route-consts";
 import { renderMasterIndex } from "helpers/table";
-import { AppUser } from "models/AppUser";
+import { AppUser, AppUserFilter } from "models/AppUser";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { useHistory } from "react-router";
 import { LayoutCell, LayoutHeader, OneLineText } from "react3l-ui-library";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
+import { leaveGroupRequestRepository } from "repositories/leave-group-request-repository";
 
 import { finalize } from "rxjs";
 import { webService } from "services/common-services/web-service";
@@ -14,6 +15,8 @@ import { webService } from "services/common-services/web-service";
 export default function useCarpoolingGroupInformation(
   carpoolingGroupId?: number
 ) {
+  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+
   const [loading, setLoading] = useState<boolean>(false);
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -24,6 +27,38 @@ export default function useCarpoolingGroupInformation(
   );
   const [carpoolers, setCarpoolers] = useState([]);
   const history = useHistory();
+  const [currentItem, setCurrentItem] = useState<any>({
+    ...new AppUser(),
+    carpoolingGroupId: user?.carpoolingGroupId,
+    carpoolingGroup: user?.carpoolingGroup,
+  });
+  const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
+
+  const handleGoCreate = useCallback(() => {
+    leaveGroupRequestRepository
+      .getLeaveGroupRequests(new AppUserFilter())
+      .subscribe((res) => {
+        if (res?.data?.records[0]) {
+          setCurrentItem(res?.data?.records[0]);
+        } else {
+          setCurrentItem({
+            ...new AppUser(),
+            carpoolingGroupId: user?.carpoolingGroupId,
+            carpoolingGroup: user?.carpoolingGroup,
+          });
+        }
+        setVisibleDetail(true);
+      });
+  }, [user?.carpoolingGroup, user?.carpoolingGroupId]);
+
+  const handleCloseDetail = useCallback(() => {
+    setVisibleDetail(false);
+    setCurrentItem({
+      ...new AppUser(),
+      carpoolingGroupId: user?.carpoolingGroupId,
+      carpoolingGroup: user?.carpoolingGroup,
+    });
+  }, [user?.carpoolingGroup, user?.carpoolingGroupId]);
 
   useEffect(() => {
     if (firstLoad && carpoolingGroupId) {
@@ -48,9 +83,39 @@ export default function useCarpoolingGroupInformation(
     }
   }, [carpoolingGroupId, subscription]);
 
+  const handleLoadList = useCallback(() => {
+    setLoading(true);
+    subscription.add(
+      carpoolingGroupRepository
+        .getCarpoolingGroups(carpoolingGroupId)
+        .pipe(finalize(() => setLoading(false)))
+        .subscribe({
+          next: (res) => {
+            setModel(res?.data);
+            setDriverUser(res?.data?.driverUser);
+            setVehicleForCarpooling(
+              res?.data?.driverUser?.driver?.vehicleForCarpooling
+            );
+            setCarpoolers(res?.data?.carpoolers);
+          },
+          error: (_err) => {},
+        })
+    );
+  }, [carpoolingGroupId, subscription]);
+
   const handleGoDayOffRequest = useCallback(() => {
     history.replace(DAY_OFF_REQUEST_NORMAL_ROUTE);
   }, [history]);
+
+  const handleDeleteLeaveGroupRequest = useCallback(
+    (id) => {
+      leaveGroupRequestRepository.delete(id).subscribe((res) => {
+        handleLoadList();
+        handleCloseDetail();
+      });
+    },
+    [handleCloseDetail, handleLoadList]
+  );
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
@@ -147,6 +212,11 @@ export default function useCarpoolingGroupInformation(
     carpoolers,
     driverUser,
     vehicleForCarpooling,
+    currentItem,
+    visibleDetail,
+    handleGoCreate,
+    handleCloseDetail,
     handleGoDayOffRequest,
+    handleDeleteLeaveGroupRequest,
   };
 }

@@ -4,6 +4,7 @@ import PageHeader from "components/PageHeader/PageHeader";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { Button, StandardTable } from "react3l-ui-library";
 import useCarpoolingGroupInformation from "./CarpoolingGroupInformationHook";
+import LeaveGroupRequestNormalDetail from "./LeaveGroupRequestNormalDetail/LeaveGroupRequestNormalDetail";
 
 /* end individual import */
 
@@ -16,7 +17,12 @@ function CarpoolingGroupInformation() {
     vehicleForCarpooling,
     columns,
     carpoolers,
+    currentItem,
+    visibleDetail,
+    handleGoCreate,
+    handleCloseDetail,
     handleGoDayOffRequest,
+    handleDeleteLeaveGroupRequest,
   } = useCarpoolingGroupInformation(user?.carpoolingGroupId);
 
   return (
@@ -178,7 +184,12 @@ function CarpoolingGroupInformation() {
         <footer className="app-footer">
           <div className="app-footer__full d-flex justify-content-end align-items-center">
             <div className="app-footer__actions d-flex justify-content-end">
-              <Button type="secondary" className="btn--lg" icon={<Close16 />}>
+              <Button
+                type="secondary"
+                className="btn--lg"
+                icon={<Close16 />}
+                onClick={handleGoCreate}
+              >
                 Tạo yêu cầu rời nhóm
               </Button>
               <Button
@@ -193,6 +204,12 @@ function CarpoolingGroupInformation() {
           </div>
         </footer>
       </div>
+      <LeaveGroupRequestNormalDetail
+        visible={visibleDetail}
+        handleClose={handleCloseDetail}
+        model={currentItem}
+        handleDeleteLeaveGroupRequest={handleDeleteLeaveGroupRequest}
+      />
     </Spin>
   );
 }

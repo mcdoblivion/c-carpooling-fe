@@ -23,6 +23,24 @@ export class LeaveGroupRequestRepository extends Repository {
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public create = (payload: AppUser): Observable<AppUser> => {
+    return this.http
+      .post(`leave-group-requests`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public update = (payload: AppUser): Observable<AppUser> => {
+    return this.http
+      .put(`leave-group-requests/${payload.id}`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public save = (payload: AppUser): Observable<AppUser> => {
+    return payload.id ? this.update(payload) : this.create(payload);
+  };
+  public delete = (id: any): Observable<AppUser> => {
+    return this.http
+      .delete(`leave-group-requests/${id}`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
 }
 
 export const leaveGroupRequestRepository = new LeaveGroupRequestRepository();
