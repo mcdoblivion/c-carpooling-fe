@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Add16, OverflowMenuHorizontal24 } from "@carbon/icons-react";
 import { Col, Dropdown, Menu, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
@@ -20,6 +19,7 @@ import {
 import nameof from "ts-nameof.macro";
 import DayOffRequestNormalDetail from "./DayOffRequestNormalDetail";
 import useDayOffRequestNormal from "./DayOffRequestNormalHook";
+import DayOffRequestNormalPreview from "./DayOffRequestNormalPreview";
 
 /* end individual import */
 
@@ -43,6 +43,7 @@ function DayOffRequestNormal() {
     handleDelete,
     handleGoCreate,
     handleGoDetail,
+    handleGoPreview,
     handleLoadList,
   } = useDayOffRequestNormal();
 
@@ -52,19 +53,27 @@ function DayOffRequestNormal() {
         <Menu.Item key="1">
           <div
             className="ant-action-menu"
+            onClick={() => handleGoPreview(appUser)}
+          >
+            Xem
+          </div>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <div
+            className="ant-action-menu"
             onClick={() => handleGoDetail(appUser)}
           >
             Sửa
           </div>
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="3">
           <div className="ant-action-menu" onClick={() => handleDelete(id)}>
             Xóa
           </div>
         </Menu.Item>
       </Menu>
     ),
-    [handleDelete, handleGoDetail]
+    [handleDelete, handleGoDetail, handleGoPreview]
   );
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
@@ -74,6 +83,20 @@ function DayOffRequestNormal() {
         width: 40,
         align: "center",
         render: renderMasterIndex<AppUser>(),
+      },
+      {
+        title: <LayoutHeader orderType="left" title="Số yêu cầu nghỉ phép" />,
+        key: nameof(list[0].id),
+        dataIndex: nameof(list[0].id),
+        width: 100,
+        ellipsis: true,
+        render(...params: [any, AppUser, number]) {
+          return (
+            <LayoutCell orderType="left" tableSize="md">
+              <OneLineText value={params[0]} />
+            </LayoutCell>
+          );
+        },
       },
       {
         title: <LayoutHeader orderType="left" title="Tên nhóm" />,
@@ -218,6 +241,11 @@ function DayOffRequestNormal() {
         handleClose={handleCloseDetail}
         model={currentItem}
         handleLoadList={handleLoadList}
+      />
+      <DayOffRequestNormalPreview
+        visible={visiblePreview}
+        model={currentItem}
+        handleClose={handleClosePreview}
       />
     </Spin>
   );

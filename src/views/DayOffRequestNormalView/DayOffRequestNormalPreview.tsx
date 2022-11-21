@@ -1,66 +1,42 @@
 /* begin general import */
 import { Col, Row } from "antd";
-import { AppUser, AppUserFilter } from "models/AppUser";
-import { DatePicker, FormItem, Select } from "react3l-ui-library";
+import { AppUser } from "models/AppUser";
 import Drawer, {
   DrawerProps,
 } from "react3l-ui-library/build/components/Drawer/Drawer";
-import useDayOffRequestNormalDetail from "./DayOffRequestNormalDetailHook";
 
-export interface DayOffRequestNormalDetailProps extends DrawerProps {
+export interface DayOffRequestNormalPreviewProps extends DrawerProps {
   model?: AppUser;
-  handleLoadList?: (filterParam?: any) => void;
 }
 
-function DayOffRequestNormalDetail(props: DayOffRequestNormalDetailProps) {
-  const { visible, model, handleClose, handleLoadList } = props;
-  const {
-    currentModel,
-    directionTypeSearchFunc,
-    handleChangeDayOfRequest,
-    handleSave,
-  } = useDayOffRequestNormalDetail(model, handleLoadList, handleClose);
+function DayOffRequestNormalPreview(props: DayOffRequestNormalPreviewProps) {
+  const { visible, model, handleClose } = props;
 
   return (
     <Drawer
       visible={visible}
       handleClose={handleClose}
-      handleSave={handleSave}
-      visibleFooter={true}
-      titleButtonApply="Lưu"
-      titleButtonCancel="Đóng"
+      visibleFooter={false}
       loading={false}
       size={"sm"}
-      title={currentModel?.id ? currentModel?.id : "Tạo mới yêu cầu nghỉ phép"}
+      title={`Yêu cầu nghỉ phép số ${model?.id}`}
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col lg={24} className="m-b--lg">
-          <FormItem>
-            <DatePicker
-              label="Ngày nghỉ phép"
-              value={currentModel?.date}
-              type={0}
-              placeholder="Chọn ngày"
-              onChange={handleChangeDayOfRequest("date")}
-            />
-          </FormItem>
+          <div className="text__with__label">
+            <span>Ngày nghỉ phép</span>
+            <span>{model?.date}</span>
+          </div>
         </Col>
         <Col lg={24} className="m-b--lg">
-          <FormItem>
-            <Select
-              type={0}
-              label="Chiều di chuyển"
-              classFilter={AppUserFilter}
-              placeHolder="Chọn chiều di chuyển"
-              getList={directionTypeSearchFunc}
-              onChange={handleChangeDayOfRequest("directionType")}
-              value={currentModel?.directionTypeValue}
-            />
-          </FormItem>
+          <div className="text__with__label">
+            <span>Chiều di chuyển</span>
+            <span>{model?.directionType}</span>
+          </div>
         </Col>
       </Row>
     </Drawer>
   );
 }
 
-export default DayOffRequestNormalDetail;
+export default DayOffRequestNormalPreview;
