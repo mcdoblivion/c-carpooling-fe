@@ -134,3 +134,15 @@ tr
 .text-align-center {
   text-align: center;
 }
+
+.badget-text-container {
+  place-self: center;
+  .text-in-table-cell {
+    width: fit-content;
+    line-height: 30px;
+  }
+  .badget-text {
+    height: 30px;
+    font-size: 14px;
+  }
+}

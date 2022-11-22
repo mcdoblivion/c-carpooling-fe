@@ -24,14 +24,6 @@ function RegisterDriver() {
         />
         <div className="page page-detail p-t--lg p-l--sm p-r--sm p-b--lg">
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-            {/* <Col lg={12} className="m-b--sm">
-                  <HereMap
-                    styles={{
-                      height: "750px",
-                      position: "relative",
-                    }}
-                  />
-                </Col> */}
             <Col lg={12} className="m-b--sm">
               <FormItem>
                 <InputText
@@ -45,15 +37,24 @@ function RegisterDriver() {
                 />
               </FormItem>
             </Col>
-            <Col lg={12} className="m-b--sm">
-              <BadgeText
-                value={model?.status}
-                color={model?.status === "Pending" ? "#8e6a00" : "#921118"}
-                backgroundColor={
-                  model?.status === "Pending" ? "#f1c21b" : "#c21e25"
-                }
-              />
+
+            <Col
+              lg={12}
+              style={{ placeSelf: "center" }}
+              className="badget-text-container"
+            >
+              {model?.status && (
+                <BadgeText
+                  value={model?.status}
+                  color={model?.status === "Pending" ? "#8e6a00" : "#921118"}
+                  backgroundColor={
+                    model?.status === "Pending" ? "#f1c21b" : "#c21e25"
+                  }
+                  className="badget-text"
+                />
+              )}
             </Col>
+
             <Col lg={12}>
               <Upload
                 name="frontPhoto"
