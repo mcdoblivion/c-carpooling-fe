@@ -34,9 +34,9 @@ export const menu: Menu[] = [
     icon: "bx-home",
     link: REGISTER_DRIVER_ROUTE,
     show:
-      !user?.driver || user?.driver?.status !== RequestStatus.ACCEPTED
-        ? true
-        : false,
+      user?.role === NORMAL_USER &&
+      user?.driver?.status !== RequestStatus.ACCEPTED,
+
     active: false,
   },
   {
