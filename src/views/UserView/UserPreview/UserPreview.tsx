@@ -10,6 +10,7 @@ import { Camera32, Close16, Save16 } from "@carbon/icons-react";
 import useUserPreview from "./UserPreviewHook";
 import { Col, Row, Spin, Upload } from "antd";
 import "./UserPreview.scss";
+import { Observable } from "rxjs";
 
 function UserPreview() {
   const {
@@ -109,6 +110,25 @@ function UserPreview() {
                           ? enumGender[0]
                           : enumGender[1]
                       }
+                    />
+                  </FormItem>
+                </Col>
+                <Col lg={12} className="m-b--sm">
+                  <FormItem>
+                    <EnumSelect
+                      placeHolder="Chọn phương thức xác thực..."
+                      type={0}
+                      getList={() =>
+                        new Observable((observer) =>
+                          observer.next([
+                            { id: 1, name: "OFF" },
+                            { id: 2, name: "Email" },
+                            { id: 3, name: "SMS" },
+                          ])
+                        )
+                      }
+                      label="Phương thức xác thực 2 bước"
+                      value={{ id: 1, name: "OFF" }}
                     />
                   </FormItem>
                 </Col>
