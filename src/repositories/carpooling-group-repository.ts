@@ -24,6 +24,13 @@ export class CarpoolingGroupRepository extends Repository {
       .get(`carpooling-groups/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public findCarpoolingGroups = (filter?: any): Observable<AppUser> => {
+    return this.http
+      .get(
+        `carpooling-groups?departureTime=${filter?.departureTime}&comebackTime=${filter?.comebackTime}`
+      )
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
 }
 
 export const carpoolingGroupRepository = new CarpoolingGroupRepository();
