@@ -3,6 +3,7 @@ import { Reducer, useCallback, useReducer, useState } from "react";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 
 import { finalize } from "rxjs";
+import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
 import {
   ListAction,
@@ -12,8 +13,6 @@ import {
 } from "services/page-services/list-service";
 
 export default function useCarpoolingGroupFinding() {
-  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
-
   const [{ list }, dispatch] = useReducer<
     Reducer<ListState<AppUser>, ListAction<AppUser>>
   >(listReducer, { list: [], count: 0 });
@@ -22,18 +21,19 @@ export default function useCarpoolingGroupFinding() {
 
   const [subscription] = webService.useSubscription();
 
-  const [departureTimeValue, setDepartureTimeValue] =
-    useState<string>(undefined);
-  const [comebackTimeValue, setComebackTimeValue] = useState<string>(undefined);
+  const [departureTimeValue, setDepartureTimeValue] = useState<string>("08:25");
+  const [comebackTimeValue, setComebackTimeValue] = useState<string>("17:30");
   const [departureTime, setDepartureTime] = useState<string>(undefined);
   const [comebackTime, setComebackTime] = useState<string>(undefined);
-
+  const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
   const [visiblePreview, setVisiblePreview] = useState<boolean>(false);
+  const [visiblePopupFee, setVisiblePopupFee] = useState<boolean>(false);
+  const [popupFeeContent, setPopupFeeContent] = useState<AppUser>(
+    new AppUser()
+  );
+  const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
-  const [currentItem, setCurrentItem] = useState<any>({
-    ...new AppUser(),
-    carpoolingGroupId: user?.carpoolingGroupId,
-  });
+  const [currentItem, setCurrentItem] = useState<any>(new AppUser());
 
   const handleFindingGroup = useCallback(() => {
     if (departureTimeValue && comebackTimeValue) {
@@ -82,42 +82,63 @@ export default function useCarpoolingGroupFinding() {
     []
   );
 
-  const handleGoCreate = useCallback(() => {
-    setCurrentItem({
-      ...new AppUser(),
-      carpoolingGroupId: user?.carpoolingGroupId,
-    });
-  }, [user?.carpoolingGroupId]);
-
-  const handleGoDetail = useCallback((model: AppUser) => {
-    setVisiblePreview(false);
-    setCurrentItem(model);
-  }, []);
-
   const handleGoPreview = useCallback(
     (model: AppUser) => {
-      setCurrentItem(model);
-      setVisiblePreview(true);
+      carpoolingGroupRepository
+        .getCarpoolingGroups(model?.id)
+        .subscribe((res) => {
+          setCurrentItem(res?.data);
+          setVisiblePreview(true);
+          setVisibleDetail(false);
+        });
     },
     [setCurrentItem]
   );
   const handleClosePreview = useCallback(() => {
     setVisiblePreview(false);
   }, []);
-  const handleCloseDetail = useCallback(() => {}, []);
+  const handleOpenPopupFee = useCallback(() => {
+    carpoolingGroupRepository.getFee(currentItem?.id).subscribe((res) => {
+      setPopupFeeContent(res?.data);
+      setVisiblePopupFee(true);
+    });
+  }, [currentItem?.id]);
+
+  const handleClosePopupFee = useCallback(() => {
+    setVisiblePopupFee(false);
+  }, [setVisiblePopupFee]);
+
+  const handleConfirm = useCallback(() => {
+    carpoolingGroupRepository
+      .join(currentItem?.id)
+      .subscribe((res) => notifyUpdateItemSuccess());
+    setVisiblePopupFee(false);
+  }, [currentItem?.id, notifyUpdateItemSuccess]);
+
+  const handleGoCreate = useCallback(() => {
+    setVisibleDetail(true);
+  }, []);
+  const handleCloseDetail = useCallback(() => {
+    setVisibleDetail(false);
+  }, []);
   return {
     list,
-    departureTime,
-    comebackTime,
     loadingList,
     visiblePreview,
+    visibleDetail,
     currentItem,
-    handleCloseDetail,
+    departureTime,
+    comebackTime,
+    popupFeeContent,
+    visiblePopupFee,
+    handleConfirm,
+    handleClosePopupFee,
     handleClosePreview,
     handleChangeTimeFilter,
-    handleGoCreate,
     handleGoPreview,
-    handleGoDetail,
     handleFindingGroup,
+    handleOpenPopupFee,
+    handleCloseDetail,
+    handleGoCreate,
   };
 }

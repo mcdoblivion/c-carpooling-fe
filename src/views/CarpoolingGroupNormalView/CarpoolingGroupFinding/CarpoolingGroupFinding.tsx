@@ -1,49 +1,49 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Add16, OverflowMenuHorizontal24 } from "@carbon/icons-react";
-import { Col, Dropdown, Menu, Row, Spin } from "antd";
+import { Add16 } from "@carbon/icons-react";
+import { Col, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
-import Select from "components/Select/SingleSelect";
 import TimePicker from "components/TimePicker";
-import { formatDate } from "helpers/date-time";
 import { formatNumber } from "helpers/number";
 import { renderMasterIndex } from "helpers/table";
-import { AppUser, AppUserFilter } from "models/AppUser";
-import { Moment } from "moment";
-import { useCallback, useMemo } from "react";
+import { AppUser } from "models/AppUser";
+import { useMemo } from "react";
 import {
   Button,
-  DatePicker,
   LayoutCell,
   LayoutHeader,
+  Modal,
   OneLineText,
-  Pagination,
   StandardTable,
 } from "react3l-ui-library";
+import { MODAL_SIZE } from "react3l-ui-library/build/components/Modal/Modal";
 import nameof from "ts-nameof.macro";
+import CarpoolingGroupCreate from "../CarpoolingGroupCreate/CarpoolingGroupCreate";
 import useCarpoolingGroupFinding from "./CarpoolingGroupFindingHook";
 import CarpoolingGroupFindingPreview from "./CarpoolingGroupFindingPreview";
 
 /* end individual import */
 
-function CarpoolingGroupFinding() {
+function CarpoolingGroupFinding(user: AppUser) {
   const {
     list,
     loadingList,
     visiblePreview,
+    visibleDetail,
     currentItem,
     departureTime,
     comebackTime,
-    handleCloseDetail,
+    popupFeeContent,
+    visiblePopupFee,
+    handleConfirm,
+    handleClosePopupFee,
     handleClosePreview,
-    handleChangeTimeFilter,
+    handleCloseDetail,
     handleGoCreate,
+    handleChangeTimeFilter,
     handleGoPreview,
-    handleGoDetail,
     handleFindingGroup,
+    handleOpenPopupFee,
   } = useCarpoolingGroupFinding();
-
-  console.log(list);
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
@@ -174,8 +174,8 @@ function CarpoolingGroupFinding() {
                   />
                 </Col>
 
-                <Col lg={6}></Col>
-                <Col lg={6} style={{ alignSelf: "end", textAlign: "right" }}>
+                <Col lg={4}></Col>
+                <Col lg={8} style={{ alignSelf: "end", textAlign: "right" }}>
                   <Button
                     type="primary"
                     className="btn--lg"
@@ -185,6 +185,18 @@ function CarpoolingGroupFinding() {
                   >
                     Tìm nhóm đi chung
                   </Button>
+                  {user?.driver?.status === "Accepted" ? (
+                    <Button
+                      type="primary"
+                      className="btn--lg m-l--xxs"
+                      icon={<Add16 />}
+                      onClick={handleGoCreate}
+                    >
+                      Tạo nhóm đi chung
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
                 </Col>
               </Row>
             </div>
@@ -197,14 +209,62 @@ function CarpoolingGroupFinding() {
               isDragable={true}
               tableSize={"md"}
               scroll={{ x: 1000 }}
+              onRow={(record) => {
+                return {
+                  onClick: () => {
+                    handleGoPreview(record);
+                  },
+                };
+              }}
             />
           </div>
         </div>
       </div>
       <CarpoolingGroupFindingPreview
         visible={visiblePreview}
-        handleClose={handleCloseDetail}
+        handleClose={handleClosePreview}
         model={currentItem}
+        handleOpenPopupFee={handleOpenPopupFee}
+      />
+      <Modal
+        size={MODAL_SIZE.SIZE_520}
+        open={visiblePopupFee}
+        visibleFooter
+        handleCancel={handleClosePopupFee}
+        handleSave={handleConfirm}
+        onCancel={handleClosePopupFee}
+        titleButtonCancel="Hủy"
+        titleButtonApply="Đồng ý"
+        title="Chi phí đi chung dự kiến"
+      >
+        Chi phí đi chung dự kiến của bao gồm:
+        <div style={{ padding: "10px" }}>
+          <div className="d-flex">
+            <span>Chi phí tháng:</span>
+            <span className="m-l--xxxs" style={{ fontWeight: 600 }}>
+              {formatNumber(popupFeeContent?.priceForCurrentMonth)}VNĐ
+            </span>
+          </div>
+          <div className="d-flex">
+            <span>Chi phí mỗi lượt đi:</span>
+            <span className="m-l--xxxs" style={{ fontWeight: 600 }}>
+              {formatNumber(popupFeeContent?.pricePerUserPerMoveTurn)}VNĐ
+            </span>
+          </div>
+          <div className="d-flex">
+            <span>Chi phí tiết kiệm được:</span>
+            <span className="m-l--xxxs" style={{ fontWeight: 600 }}>
+              {formatNumber(popupFeeContent?.savingCostInPercentage)}%
+            </span>
+          </div>
+        </div>
+        Phần chi phí chênh lệch so với thực tế sẽ được hoàn trả/truy thu vào
+        ngày đầu tiên của mỗi tháng. Bạn có chắc muốn tham gia nhóm?
+      </Modal>
+      <CarpoolingGroupCreate
+        visible={visibleDetail}
+        handleClose={handleCloseDetail}
+        handleLoadList={handleFindingGroup}
       />
     </Spin>
   );

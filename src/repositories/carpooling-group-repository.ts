@@ -24,11 +24,26 @@ export class CarpoolingGroupRepository extends Repository {
       .get(`carpooling-groups/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public getFee = (id: number): Observable<AppUser> => {
+    return this.http
+      .get(`carpooling-groups/${id}/fee`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public join = (id: number): Observable<AppUser> => {
+    return this.http
+      .post(`carpooling-groups/${id}/join`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
   public findCarpoolingGroups = (filter?: any): Observable<AppUser> => {
     return this.http
       .get(
         `carpooling-groups?departureTime=${filter?.departureTime}&comebackTime=${filter?.comebackTime}`
       )
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public create = (payload: AppUser): Observable<AppUser> => {
+    return this.http
+      .post(`carpooling-groups`, payload)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
 }
