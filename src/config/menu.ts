@@ -5,7 +5,6 @@ import {
   ADDRESS_ROUTE,
   CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
-  CARPOOLING_LOG_NORMAL_ROUTE,
   CARPOOLING_LOG_ROUTE,
   CRON_JOB_ROUTE,
   DAY_OFF_REQUEST_NORMAL_ROUTE,
@@ -101,8 +100,7 @@ export const menu: Menu[] = [
   {
     name: "Lịch sử đi chung",
     icon: "bx-home",
-    link:
-      user?.role === ADMIN ? CARPOOLING_LOG_ROUTE : CARPOOLING_LOG_NORMAL_ROUTE,
+    link: CARPOOLING_LOG_ROUTE,
     show: true,
     active: false,
   },
