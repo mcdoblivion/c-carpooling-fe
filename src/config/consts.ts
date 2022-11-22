@@ -76,3 +76,9 @@ export const NOT_FOUND_ROUTE: string = "/404";
 
 export const NORMAL_USER = "NORMAL_USER";
 export const ADMIN = "ADMIN";
+
+export const enum RequestStatus {
+  ACCEPTED = "Accepted",
+  PENDING = "Pending",
+  REJECTED = "Rejected",
+}

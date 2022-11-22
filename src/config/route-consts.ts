@@ -32,6 +32,10 @@ export const LEAVE_GROUP_REQUEST_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/leave-group-requests")
   : "/leave-group-requests";
 
+export const LEAVE_GROUP_REQUEST_NORMAL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/leave-group-requests-normal")
+  : "/leave-group-requests-normal";
+
 export const PAYMENT_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/payment")
   : "/payment";
@@ -39,6 +43,10 @@ export const PAYMENT_ROUTE: string = ROOT_ROUTE
 export const VEHICLES_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/vehicles")
   : "/vehicles";
+
+export const VEHICLES_NORMAL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/vehicles-normal")
+  : "/vehicles-normal";
 
 export const DRIVERS_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/drivers")
@@ -56,9 +64,21 @@ export const CARPOOLING_LOG_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/carpooling-logs")
   : "/carpooling-logs";
 
+export const CARPOOLING_LOG_NORMAL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/carpooling-logs-normal")
+  : "/carpooling-logs-normal";
+
 export const CARPOOLING_GROUP_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/carpooling-groups")
   : "/carpooling-groups";
+
+export const CRON_JOB_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/cron-jobs")
+  : "/cron-jobs";
+
+export const WALLET_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/wallet")
+  : "/wallet";
 
 export const CARPOOLING_GROUP_NORMAL_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/carpooling-groups-normal")
