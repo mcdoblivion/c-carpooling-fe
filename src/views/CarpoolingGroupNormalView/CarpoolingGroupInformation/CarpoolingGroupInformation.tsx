@@ -190,7 +190,7 @@ function CarpoolingGroupInformation() {
                 icon={<Close16 />}
                 onClick={handleGoCreate}
               >
-                Tạo yêu cầu rời nhóm
+                Yêu cầu rời nhóm
               </Button>
               <Button
                 type="primary"

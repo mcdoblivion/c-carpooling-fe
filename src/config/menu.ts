@@ -10,7 +10,6 @@ import {
   DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
-  LEAVE_GROUP_REQUEST_NORMAL_ROUTE,
   LEAVE_GROUP_REQUEST_ROUTE,
   REGISTER_DRIVER_ROUTE,
   USER_ROUTE,
@@ -90,11 +89,9 @@ export const menu: Menu[] = [
   {
     name: "Yêu cầu rời nhóm",
     icon: "bx-log-out-circle",
-    link:
-      user?.role === ADMIN
-        ? LEAVE_GROUP_REQUEST_ROUTE
-        : LEAVE_GROUP_REQUEST_NORMAL_ROUTE,
-    show: true,
+    link: LEAVE_GROUP_REQUEST_ROUTE,
+
+    show: user?.role === ADMIN ? true : false,
     active: false,
   },
   {

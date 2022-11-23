@@ -8,7 +8,7 @@ function CarpoolingGroupNormal() {
 
   return (
     <>
-      {!user.carpoolingGroupId ? (
+      {user.carpoolingGroupId ? (
         <CarpoolingGroupInformation />
       ) : (
         <CarpoolingGroupFinding user={user} />

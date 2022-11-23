@@ -237,18 +237,18 @@ function CarpoolingGroupFinding(user: AppUser) {
         titleButtonApply="Đồng ý"
         title="Chi phí đi chung dự kiến"
       >
-        Chi phí đi chung dự kiến của bao gồm:
+        Chi phí đi chung dự kiến của nhóm bao gồm:
         <div style={{ padding: "10px" }}>
           <div className="d-flex">
             <span>Chi phí tháng:</span>
             <span className="m-l--xxxs" style={{ fontWeight: 600 }}>
-              {formatNumber(popupFeeContent?.priceForCurrentMonth)}VNĐ
+              {formatNumber(popupFeeContent?.priceForCurrentMonth)} VNĐ
             </span>
           </div>
           <div className="d-flex">
             <span>Chi phí mỗi lượt đi:</span>
             <span className="m-l--xxxs" style={{ fontWeight: 600 }}>
-              {formatNumber(popupFeeContent?.pricePerUserPerMoveTurn)}VNĐ
+              {formatNumber(popupFeeContent?.pricePerUserPerMoveTurn)} VNĐ
             </span>
           </div>
           <div className="d-flex">

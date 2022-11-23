@@ -35,7 +35,11 @@ function LeaveGroupRequestNormalDetail(
       titleButtonCancel="Đóng"
       loading={false}
       size={"sm"}
-      title={currentModel?.id ? currentModel?.id : "Tạo mới yêu cầu rời nhóm"}
+      title={
+        currentModel?.id
+          ? `Thông tin Yêu cầu rời nhóm`
+          : "Tạo mới Yêu cầu rời nhóm"
+      }
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col lg={24} className="m-b--lg">
