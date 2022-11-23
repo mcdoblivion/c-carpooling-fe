@@ -146,9 +146,9 @@ function Login() {
                     }}
                     className="contact-admin"
                   >
-                    Cần hỗ trợ?{" "}
+                    Chưa có tài khoản?{" "}
                     <span style={{ color: "var(--palette-blue-40)" }}>
-                      Liên hệ admin
+                      Đăng ký tài khoản mới
                     </span>
                   </div>
                 </div>
