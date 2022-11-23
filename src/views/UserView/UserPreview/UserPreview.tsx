@@ -1,4 +1,7 @@
+import { Camera32, Close16, Save16 } from "@carbon/icons-react";
+import { Col, Row, Spin, Upload } from "antd";
 import PageHeader from "components/PageHeader/PageHeader";
+import { getUploadActionAndHeaders } from "helpers/antd";
 import {
   Button,
   DatePicker,
@@ -6,22 +9,19 @@ import {
   FormItem,
   InputText,
 } from "react3l-ui-library";
-import { Camera32, Close16, Save16 } from "@carbon/icons-react";
-import useUserPreview from "./UserPreviewHook";
-import { Col, Row, Spin, Upload } from "antd";
-import "./UserPreview.scss";
 import { Observable } from "rxjs";
+import "./UserPreview.scss";
+import useUserPreview from "./UserPreviewHook";
 
 function UserPreview() {
   const {
     loading,
     model,
-    imageUrl,
-    enumGender,
     handleChangeAvatar,
     handleChangeUserProfile,
     singleListGender,
     handleSave,
+    goToHomePage,
   } = useUserPreview();
   return (
     <Spin spinning={loading}>
@@ -63,13 +63,12 @@ function UserPreview() {
                 <Col lg={12} className="m-b--sm">
                   <FormItem>
                     <InputText
-                      label="Số CMND/Số căn cước"
+                      label="Tên người dùng"
                       type={0}
-                      value={model?.userProfile?.ICNumber}
+                      value={model?.username}
                       className={"tio-account_square_outlined"}
-                      onChange={handleChangeUserProfile("ICNumber")}
-                      placeHolder="Nhập số CMND/Số căn cước..."
-                      isRequired
+                      onChange={handleChangeUserProfile("username")}
+                      placeHolder="Nhập tên người dùng..."
                     />
                   </FormItem>
                 </Col>
@@ -82,6 +81,19 @@ function UserPreview() {
                       className={"tio-account_square_outlined"}
                       onChange={handleChangeUserProfile("phoneNumber")}
                       placeHolder="Nhập số điện thoại..."
+                      isRequired
+                    />
+                  </FormItem>
+                </Col>
+                <Col lg={12} className="m-b--sm">
+                  <FormItem>
+                    <InputText
+                      label="Số CMND/Số căn cước"
+                      type={0}
+                      value={model?.userProfile?.ICNumber}
+                      className={"tio-account_square_outlined"}
+                      onChange={handleChangeUserProfile("ICNumber")}
+                      placeHolder="Nhập số CMND/Số căn cước..."
                       isRequired
                     />
                   </FormItem>
@@ -105,11 +117,7 @@ function UserPreview() {
                       type={0}
                       getList={singleListGender}
                       label="Giới tính"
-                      value={
-                        model?.userProfile?.gender === "Female"
-                          ? enumGender[0]
-                          : enumGender[1]
-                      }
+                      value={{ id: 0, name: model?.userProfile?.gender }}
                     />
                   </FormItem>
                 </Col>
@@ -136,15 +144,20 @@ function UserPreview() {
             </Col>
             <Col lg={6}>
               <Upload
-                name="avatar"
+                name="file"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                accept="image/png, image/jpeg, image/gif"
+                {...getUploadActionAndHeaders()}
                 onChange={handleChangeAvatar}
               >
-                {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+                {model?.userProfile?.avatarURL ? (
+                  <img
+                    src={model.userProfile.avatarURL}
+                    alt="avatar"
+                    style={{ width: "100%" }}
+                  />
                 ) : (
                   <Camera32 />
                 )}
@@ -165,7 +178,7 @@ function UserPreview() {
                 type="secondary"
                 className="btn--lg"
                 icon={<Close16 />}
-                // onClick={handleGoMaster}
+                onClick={goToHomePage}
               >
                 Đóng
               </Button>

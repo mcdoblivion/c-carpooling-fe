@@ -4,6 +4,7 @@ import { Camera32, Close16, Save16 } from "@carbon/icons-react";
 import useRegisterDriver from "./RegisterDriverHook";
 import { Col, Row, Spin, Upload } from "antd";
 import "./RegisterDriver.scss";
+import { getUploadActionAndHeaders } from "helpers/antd";
 
 function RegisterDriver() {
   const {
@@ -57,11 +58,12 @@ function RegisterDriver() {
 
             <Col lg={12}>
               <Upload
-                name="frontPhoto"
+                name="file"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://res.cloudinary.com/c-carpooling/image/upload"
+                accept="image/png, image/jpeg, image/gif"
+                {...getUploadActionAndHeaders()}
                 onChange={handleChangeFrontPhoto}
               >
                 {model?.driverLicenseFrontPhotoURL ? (
@@ -83,11 +85,12 @@ function RegisterDriver() {
             </Col>
             <Col lg={12}>
               <Upload
-                name="backPhoto"
+                name="file"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                accept="image/png, image/jpeg, image/gif"
+                {...getUploadActionAndHeaders()}
                 onChange={handleChangeBackPhoto}
               >
                 {model?.driverLicenseBackPhotoURL ? (

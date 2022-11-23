@@ -1,27 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { AxiosError } from "axios";
+import { notification } from "antd";
+import { UploadChangeParam } from "antd/lib/upload";
 import { AppUser } from "models/AppUser";
+import { Moment } from "moment";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { userRepository } from "repositories/user-repository";
 import { finalize, Observable } from "rxjs";
 import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
-import {
-  detailService,
-  ModelActionEnum,
-} from "services/page-services/detail-service";
-import { fieldService } from "services/page-services/field-service";
-import { queryStringService } from "services/page-services/query-string-service";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import { USER_ROUTE } from "config/route-consts";
-import { notification } from "antd";
 export default function useUserPreview() {
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
   const [model, setModel] = useState(new AppUser());
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [isCreatingProfile, setIsCreatingProfile] = useState(false);
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -34,15 +26,14 @@ export default function useUserPreview() {
           .pipe(finalize(() => setLoading(false)))
           .subscribe((res) => {
             setModel(res?.data);
-            setImageUrl(res?.data?.userProfile?.avatarURL);
+            setIsCreatingProfile(!res?.data?.userProfile);
           })
       );
       firstLoad.current = false;
     }
   }, [subscription, token]);
 
-  const { notifyUpdateItemSuccess, notifyUpdateItemError } =
-    appMessageService.useCRUDMessage();
+  const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
   const enumGender = useMemo(() => {
     return [
@@ -61,7 +52,7 @@ export default function useUserPreview() {
     return new Observable<any>((observer) => {
       setTimeout(() => {
         observer.next(enumGender);
-      }, 3000);
+      }, 1000);
     });
   }, [enumGender]);
 
@@ -72,86 +63,93 @@ export default function useUserPreview() {
   const handleChangeUserProfile = useCallback(
     (fieldName: string) => (value: any) => {
       const userProfile = { ...model?.userProfile };
-      if (fieldName === "phoneNumber") {
-        setModel({ ...model, phoneNumber: value });
-      } else if (fieldName === "dateOfBirth") {
-        const formatDate = new Date(value);
-        const year = formatDate.getFullYear();
-        const month = formatDate.getMonth() + 1;
-        const day = formatDate.getDate();
-        const newDate = `${year}-${month < 10 ? `0${month}` : month}-${
-          day < 10 ? `0${day}` : day
-        }`;
-        userProfile["dateOfBirth"] = newDate;
-        setModel({ ...model, userProfile: userProfile });
-      } else if (fieldName === "gender") {
-        if (value === 1) {
-          userProfile[fieldName] = "Female";
-        } else userProfile[fieldName] = "Male";
-        setModel({ ...model, userProfile: userProfile });
-      } else {
-        userProfile[fieldName] = value;
-        setModel({ ...model, userProfile: userProfile });
+
+      switch (fieldName) {
+        case "username":
+          setModel({ ...model, username: value });
+          break;
+
+        case "phoneNumber":
+          setModel({ ...model, phoneNumber: value });
+          break;
+
+        case "dateOfBirth":
+          userProfile["dateOfBirth"] = (value as Moment).format("YYYY-MM-DD");
+          break;
+
+        case "gender":
+          userProfile["gender"] = enumGender.find(
+            ({ id }) => id === value
+          )?.name;
+          break;
+
+        default:
+          userProfile[fieldName] = value;
+      }
+
+      setModel((previousModel) => ({ ...previousModel, userProfile }));
+    },
+    [enumGender, model]
+  );
+
+  const handleChangeAvatar = useCallback(
+    (info: UploadChangeParam) => {
+      if (info.file.status === "done") {
+        const fileUrl = info.file.response?.data?.fileUrl;
+
+        const userProfile = { ...model?.userProfile, avatarURL: fileUrl };
+
+        setModel({ ...model, userProfile });
+      } else if (info.file.status === "error") {
+        notification.error({
+          placement: "bottomRight",
+          message: "Có lỗi xảy ra khi tải lên ảnh!",
+        });
       }
     },
     [model]
   );
 
-  const getBase64 = useCallback(
-    (img: RcFile, callback: (url: string) => void) => {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => callback(reader.result as string));
-      reader.readAsDataURL(img);
-    },
-    []
-  );
-
-  const handleChangeAvatar = useCallback(
-    (info: any) => {
-      const userProfile = { ...model?.userProfile };
-
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-        userProfile["avatarURL"] = url;
-        setModel({ ...model, userProfile: userProfile });
-      });
-    },
-    [getBase64, model]
-  );
-
-  const handleGoMaster = useCallback(() => {
-    history.replace(USER_ROUTE);
+  const goToHomePage = useCallback(() => {
+    history.replace("/");
   }, [history]);
 
+  const handleSuccess = useCallback(
+    (res) => {
+      setModel(res?.data);
+      notifyUpdateItemSuccess();
+
+      isCreatingProfile && (window.location.href = "/"); // go to home page after created profile
+    },
+    [isCreatingProfile, notifyUpdateItemSuccess]
+  );
+
+  const handleError = useCallback((error) => {
+    if (error.response && error.response.status === 400)
+      notification.error({
+        placement: "bottomRight",
+        message: "Cập nhật có lỗi",
+        description:
+          error.response?.data?.message &&
+          error.response?.data?.message?.length > 0 &&
+          error.response?.data?.message.map((mess: string) => {
+            return <>{mess}</>;
+          }),
+      });
+  }, []);
+
   const handleSave = useCallback(() => {
-    userRepository.update(model).subscribe(
-      (res) => {
-        setModel(res?.data);
-        notifyUpdateItemSuccess();
-        handleGoMaster(); // go master
-      },
-      (error) => {
-        if (error.response && error.response.status === 400)
-          notification.error({
-            placement: "bottomRight",
-            message: "Cập nhật có lỗi",
-            description:
-              error.response?.data?.message &&
-              error.response?.data?.message?.length > 0 &&
-              error.response?.data?.message.map((mess: string) => {
-                return <>{mess}</>;
-              }),
-          });
-      }
-    );
-  }, [handleGoMaster, model, notifyUpdateItemSuccess]);
+    const userObservable = isCreatingProfile
+      ? userRepository.create(model)
+      : userRepository.update(model);
+
+    userObservable.subscribe(handleSuccess, handleError);
+  }, [handleError, handleSuccess, isCreatingProfile, model]);
 
   return {
     loading,
     model,
-    imageUrl,
-    enumGender,
+    goToHomePage,
     handleChangeAvatar,
     handleChangeUserProfile,
     singleListGender,

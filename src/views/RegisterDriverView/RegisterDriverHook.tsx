@@ -6,6 +6,7 @@ import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
 import { notification } from "antd";
 import { driverRepository } from "repositories/driver-repository";
+import { UploadChangeParam } from "antd/lib/upload";
 export default function useRegisterDriver() {
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -37,33 +38,35 @@ export default function useRegisterDriver() {
     [model]
   );
 
-  const handleChangeFrontPhoto = useCallback(
-    (info: any) => {
-      const file = info && info?.file && info.file.originFileObj;
-      if (info)
-        driverRepository.uploadImage(file).subscribe((res: any) =>
-          setModel({
-            ...model,
-            driverLicenseFrontPhotoURL: res[0]?.data?.fileUrl,
-          })
-        );
+  const handleChangePhoto = useCallback(
+    (
+      info: UploadChangeParam,
+      photoField: "driverLicenseFrontPhotoURL" | "driverLicenseBackPhotoURL"
+    ) => {
+      if (info.file.status === "done") {
+        const fileUrl = info.file.response?.data?.fileUrl;
+
+        setModel({
+          ...model,
+          [photoField]: fileUrl,
+        });
+      } else if (info.file.status === "error") {
+        notification.error({
+          placement: "bottomRight",
+          message: "Có lỗi xảy ra khi tải lên ảnh!",
+        });
+      }
     },
     [model]
   );
 
-  const handleChangeBackPhoto = useCallback(
-    (info: any) => {
-      const file = info && info?.file && info.file.originFileObj;
-      if (info)
-        driverRepository.uploadImage(file).subscribe((res: any) =>
-          setModel({
-            ...model,
-            driverLicenseBackPhotoURL: res[0]?.data?.fileUrl,
-          })
-        );
-    },
-    [model]
-  );
+  const handleChangeFrontPhoto = (info: UploadChangeParam) => {
+    handleChangePhoto(info, "driverLicenseFrontPhotoURL");
+  };
+
+  const handleChangeBackPhoto = (info: UploadChangeParam) => {
+    handleChangePhoto(info, "driverLicenseBackPhotoURL");
+  };
 
   const handleSave = useCallback(() => {
     driverRepository.create(model).subscribe(
