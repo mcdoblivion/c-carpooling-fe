@@ -15,10 +15,8 @@ function CarpoolingGroupFindingPreview(
   props: CarpoolingGroupFindingPreviewProps
 ) {
   const { visible, model, handleClose, handleOpenPopupFee } = props;
-
   const driverUser = model?.driverUser;
-  const vehicleForCarpooling = model?.driverUser?.driver;
-
+  const vehicleForCarpooling = model?.driverUser?.driver?.vehicleForCarpooling;
   return (
     <Drawer
       visible={visible}
@@ -70,10 +68,22 @@ function CarpoolingGroupFindingPreview(
           </Col>
           <Col lg={24} className="m-b--xs">
             <div className="text__with__label">
+              <span>Khoảng cách</span>
+              <span>{model?.homeDistance} m</span>
+            </div>
+          </Col>
+          <Col lg={24} className="m-b--xs">
+            <div className="text__with__label">
               <span>Địa chỉ công ty</span>
               <span>
                 {driverUser?.addresses && driverUser?.addresses[1]?.fullAddress}
               </span>
+            </div>
+          </Col>
+          <Col lg={24} className="m-b--xs">
+            <div className="text__with__label">
+              <span>Khoảng cách</span>
+              <span>{model?.workDistance} m</span>
             </div>
           </Col>
         </Row>

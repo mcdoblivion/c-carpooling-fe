@@ -84,10 +84,13 @@ export default function useCarpoolingGroupFinding() {
 
   const handleGoPreview = useCallback(
     (model: AppUser) => {
+      const homeDistance = model?.homeDistance;
+      const workDistance = model?.workDistance;
+
       carpoolingGroupRepository
         .getCarpoolingGroups(model?.id)
         .subscribe((res) => {
-          setCurrentItem(res?.data);
+          setCurrentItem({ ...res?.data, homeDistance, workDistance });
           setVisiblePreview(true);
           setVisibleDetail(false);
         });
