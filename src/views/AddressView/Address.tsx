@@ -16,8 +16,8 @@ function Address() {
     handleSave,
   } = useAddress();
 
-  const viewModelHome = useRef(true);
-  const viewModelWork = useRef(true);
+  const viewModel = useRef(true);
+
   return (
     <Spin spinning={loading}>
       <div className="page-content">
@@ -25,56 +25,43 @@ function Address() {
         <div className="page page-detail p-t--lg p-l--sm p-r--sm p-b--lg">
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
             <Col lg={12} className="m-b--sm">
-              <Col lg={24}>
-                <FormItem>
-                  <InputText
-                    label="Địa chỉ nhà"
-                    type={0}
-                    value={model[0]?.fullAddress}
-                    className={"tio-account_square_outlined"}
-                    placeHolder="Nhập địa chỉ nhà..."
-                    isRequired
-                    disabled
-                  />
-                </FormItem>
-              </Col>
-              <Col lg={24}>
-                <HereMap
-                  styles={{
-                    height: "750px",
-                    position: "relative",
-                  }}
-                  viewModel={model?.length > 0 ? viewModelHome : undefined}
-                  currentAddress={model[0]}
-                  handleChangeAddress={handleChangeHomeAddress}
+              <FormItem>
+                <InputText
+                  label="Địa chỉ nhà"
+                  type={0}
+                  value={model[0]?.fullAddress}
+                  className={"tio-account_square_outlined"}
+                  placeHolder="Nhập địa chỉ nhà..."
+                  isRequired
+                  disabled
                 />
-              </Col>
+              </FormItem>
             </Col>
             <Col lg={12} className="m-b--sm">
-              <Col lg={24}>
-                <FormItem>
-                  <InputText
-                    label="Địa chỉ công ty"
-                    type={0}
-                    value={model[1]?.fullAddress}
-                    className={"tio-account_square_outlined"}
-                    placeHolder="Nhập địa công ty..."
-                    isRequired
-                    disabled
-                  />
-                </FormItem>
-              </Col>
-              <Col lg={24}>
-                <HereMap
-                  styles={{
-                    height: "750px",
-                    position: "relative",
-                  }}
-                  handleChangeAddress={handleChangeWorkAddress}
-                  currentAddress={model[1]}
-                  viewModel={model?.length > 0 ? viewModelWork : undefined}
+              <FormItem>
+                <InputText
+                  label="Địa chỉ công ty"
+                  type={0}
+                  value={model[1]?.fullAddress}
+                  className={"tio-account_square_outlined"}
+                  placeHolder="Nhập địa công ty..."
+                  isRequired
+                  disabled
                 />
-              </Col>
+              </FormItem>
+            </Col>
+            <Col lg={24}>
+              <HereMap
+                styles={{
+                  height: "750px",
+                  position: "relative",
+                }}
+                handleChangeHomeAddress={handleChangeHomeAddress}
+                handleChangeWorkAddress={handleChangeWorkAddress}
+                currentWorkAddress={model[1]}
+                currentHomeAddress={model[0]}
+                viewModel={model?.length > 0 ? viewModel : undefined}
+              />
             </Col>
           </Row>
         </div>

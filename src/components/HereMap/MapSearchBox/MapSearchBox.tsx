@@ -85,7 +85,6 @@ export function MapSearchBox(props: MapSearchBoxProps) {
     >
       <InputText
         value={value}
-        type={0}
         placeHolder={props.placeholder}
         className={"tio-account_square_outlined"}
         onChange={handleChangePlaces}

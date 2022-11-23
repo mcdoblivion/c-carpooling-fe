@@ -48,10 +48,18 @@
 .draw_button-disabled {
   background-color: var(--palette-gray-30) !important;
 }
-.map-search-box {
+.map-search-box-1 {
   position: absolute;
   top: 15px;
   left: 15px;
+  z-index: 99;
+  width: 300px;
+}
+
+.map-search-box-2 {
+  position: absolute;
+  top: 15px;
+  left: 325px;
   z-index: 99;
   width: 300px;
 }

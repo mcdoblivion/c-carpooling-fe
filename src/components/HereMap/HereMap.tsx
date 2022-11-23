@@ -3,6 +3,7 @@ import {
   RefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -17,67 +18,80 @@ import { useTranslation } from "react-i18next";
 export interface HereMapProps {
   styles?: React.CSSProperties;
   classNames?: any;
-  handleChangeAddress?: (fieldName: any) => void;
+  handleChangeHomeAddress?: (fieldName: any) => void;
+  handleChangeWorkAddress?: (fieldName: any) => void;
   viewModel?: MutableRefObject<boolean>;
-  currentAddress?: any;
+  currentHomeAddress?: any;
+  currentWorkAddress?: any;
 }
 export function HereMap(props: HereMapProps) {
   const [translate] = useTranslation();
-  const { styles, classNames, handleChangeAddress, viewModel, currentAddress } =
-    props;
+  const {
+    styles,
+    classNames,
+    handleChangeHomeAddress,
+    handleChangeWorkAddress,
+    viewModel,
+    currentHomeAddress,
+    currentWorkAddress,
+  } = props;
   const mapRef = useRef<HTMLElement>();
   const ctxRef = useRef<CanvasRenderingContext2D>();
   const renderingParamsRef = useRef<H.map.render.RenderingParams>();
   const [map, setMap] = useState<H.Map>();
   const [ui, setUI] = useState<any>();
-  const [addressSearch, setAddressSearch] = useState<string>("");
+  const platform = useMemo(() => {
+    return new H.service.Platform({
+      apikey: "ohvnoVs8d_Eb17BxASziYhuKsTMXHIZJzgh96NID5pw",
+    });
+  }, []);
 
   const fullScreenButton = useRef<HTMLButtonElement>(null);
 
-  const initMap = useCallback((lat: number, lng: number) => {
-    if (mapRef.current) {
-      const platform = new H.service.Platform({
-        apikey: "ohvnoVs8d_Eb17BxASziYhuKsTMXHIZJzgh96NID5pw",
-      });
-      const layers = platform.createDefaultLayers();
-      const mapObj = new H.Map(mapRef.current, layers.vector.normal.map, {
-        pixelRatio: window.devicePixelRatio,
-        center: { lat, lng },
-        zoom: 5,
-      });
-      mapObj.addLayer(
-        new H.map.layer.CanvasLayer(function (
-          ctx: CanvasRenderingContext2D | WebGLRenderingContext,
-          renderingParams
-        ) {
-          if (ctx instanceof WebGLRenderingContext)
-            return H.map.render.RenderState.PENDING;
-          ctxRef.current = ctx;
-          renderingParamsRef.current = renderingParams;
-          return H.map.render.RenderState.DONE;
-        })
-      );
-      window.addEventListener("resize", () => mapObj.getViewPort().resize());
-      const behavior = new H.mapevents.Behavior(
-        new H.mapevents.MapEvents(mapObj)
-      );
-      // Chặn cho map zoom lên khi click vào map
-      behavior.disable(H.mapevents.Behavior.Feature.DBL_TAP_ZOOM);
-      const uiH = H.ui.UI.createDefault(mapObj, layers);
-      /** config lại position cho ui control trên map */
-      const mapSettings = uiH.getControl("mapsettings");
-      const zoom = uiH.getControl("zoom");
-      const scalebar = uiH.getControl("scalebar");
-      mapSettings.setAlignment(H.ui.LayoutAlignment.TOP_RIGHT);
-      zoom.setAlignment(H.ui.LayoutAlignment.TOP_RIGHT);
-      scalebar
-        .setAlignment(H.ui.LayoutAlignment.TOP_RIGHT)
-        .setVisibility(false);
-      /** */
-      setUI(uiH);
-      setMap(mapObj);
-    }
-  }, []);
+  const initMap = useCallback(
+    (lat: number, lng: number) => {
+      if (mapRef.current) {
+        const layers = platform.createDefaultLayers();
+        const mapObj = new H.Map(mapRef.current, layers.vector.normal.map, {
+          pixelRatio: window.devicePixelRatio,
+          center: { lat, lng },
+          zoom: 5,
+        });
+        mapObj.addLayer(
+          new H.map.layer.CanvasLayer(function (
+            ctx: CanvasRenderingContext2D | WebGLRenderingContext,
+            renderingParams
+          ) {
+            if (ctx instanceof WebGLRenderingContext)
+              return H.map.render.RenderState.PENDING;
+            ctxRef.current = ctx;
+            renderingParamsRef.current = renderingParams;
+            return H.map.render.RenderState.DONE;
+          })
+        );
+        window.addEventListener("resize", () => mapObj.getViewPort().resize());
+        const behavior = new H.mapevents.Behavior(
+          new H.mapevents.MapEvents(mapObj)
+        );
+        // Chặn cho map zoom lên khi click vào map
+        behavior.disable(H.mapevents.Behavior.Feature.DBL_TAP_ZOOM);
+        const uiH = H.ui.UI.createDefault(mapObj, layers);
+        /** config lại position cho ui control trên map */
+        const mapSettings = uiH.getControl("mapsettings");
+        const zoom = uiH.getControl("zoom");
+        const scalebar = uiH.getControl("scalebar");
+        mapSettings.setAlignment(H.ui.LayoutAlignment.TOP_RIGHT);
+        zoom.setAlignment(H.ui.LayoutAlignment.TOP_RIGHT);
+        scalebar
+          .setAlignment(H.ui.LayoutAlignment.TOP_RIGHT)
+          .setVisibility(false);
+        /** */
+        setUI(uiH);
+        setMap(mapObj);
+      }
+    },
+    [platform]
+  );
 
   useEffect(() => {
     initMap(21.03679, 105.78215);
@@ -110,6 +124,46 @@ export function HereMap(props: HereMapProps) {
     [addMarkerToGroup, map, ui]
   );
 
+  const routingParameters = useCallback(
+    (origin: { lat: any; lng: any }, destination: { lat: any; lng: any }) => {
+      return {
+        routingMode: "fast",
+        transportMode: "car",
+        origin: `${origin.lat},${origin.lng}`,
+        destination: `${destination.lat},${destination.lng}`,
+        return: "polyline",
+      };
+    },
+    []
+  );
+  const handleRemoveBubbles = useCallback(() => {
+    ui?.getBubbles().forEach((o: any) => ui.removeBubble(o));
+  }, [ui]);
+
+  const drawRoutingBetweenTwoPoint = useCallback(
+    (result) => {
+      if (result.routes.length) {
+        result.routes[0].sections.forEach((section: any) => {
+          let linestring = H.geo.LineString.fromFlexiblePolyline(
+            section.polyline
+          );
+          let routeLine = new H.map.Polyline(linestring, {
+            style: { strokeColor: "red", lineWidth: 3 },
+            data: undefined,
+          });
+          let startMarker = new H.map.Marker(section.departure.place.location);
+          let endMarker = new H.map.Marker(section.arrival.place.location);
+          map.addObjects([routeLine, startMarker, endMarker]);
+          map
+            .getViewModel()
+            .setLookAtData({ bounds: routeLine.getBoundingBox() });
+        });
+      }
+    },
+    [map]
+  );
+  var router = platform.getRoutingService(null, 8);
+
   const toggleFullScreen = useCallback((fullScreen: any) => {
     if (!document.fullscreenElement) {
       fullScreen.requestFullscreen();
@@ -133,18 +187,34 @@ export function HereMap(props: HereMapProps) {
 
   useEffect(() => {
     if (viewModel) {
-      handleGetViewModel(
-        currentAddress?.fullAddress,
-        currentAddress?.latitude,
-        currentAddress?.longitude
+      router.calculateRoute(
+        routingParameters(
+          {
+            lat: currentHomeAddress?.latitude,
+            lng: currentHomeAddress?.longitude,
+          },
+          {
+            lat: currentWorkAddress?.latitude,
+            lng: currentWorkAddress?.longitude,
+          }
+        ),
+        drawRoutingBetweenTwoPoint,
+        function (error) {
+          alert(error.message);
+        }
       );
+
       viewModel.current = false;
     }
   }, [
-    currentAddress?.fullAddress,
-    currentAddress?.latitude,
-    currentAddress?.longitude,
+    currentHomeAddress?.latitude,
+    currentHomeAddress?.longitude,
+    currentWorkAddress?.latitude,
+    currentWorkAddress?.longitude,
+    drawRoutingBetweenTwoPoint,
     handleGetViewModel,
+    router,
+    routingParameters,
     viewModel,
   ]);
 
@@ -156,7 +226,6 @@ export function HereMap(props: HereMapProps) {
         const address = place.title;
         const latitude = place.position[0];
         const longitude = place.position[1];
-        setAddressSearch(address);
         handleGetViewModel(address, latitude, longitude);
       }
     },
@@ -169,7 +238,34 @@ export function HereMap(props: HereMapProps) {
         toggleFullScreen(mapRef.current)
       );
     }
-  }, [toggleFullScreen]);
+    if (currentHomeAddress && currentWorkAddress) {
+      handleRemoveBubbles();
+      router.calculateRoute(
+        routingParameters(
+          {
+            lat: currentHomeAddress?.latitude,
+            lng: currentHomeAddress?.longitude,
+          },
+          {
+            lat: currentWorkAddress?.latitude,
+            lng: currentWorkAddress?.longitude,
+          }
+        ),
+        drawRoutingBetweenTwoPoint,
+        function (error) {
+          alert(error.message);
+        }
+      );
+    }
+  }, [
+    currentHomeAddress,
+    currentWorkAddress,
+    drawRoutingBetweenTwoPoint,
+    handleRemoveBubbles,
+    router,
+    routingParameters,
+    toggleFullScreen,
+  ]);
 
   return (
     <div
@@ -178,11 +274,19 @@ export function HereMap(props: HereMapProps) {
       style={styles}
     >
       <MapSearchBox
-        className="map-search-box"
+        className="map-search-box-1"
         onPlacesChanged={handlePlacesChanged}
-        handleChangeAddress={handleChangeAddress}
-        value={addressSearch}
-        placeholder={"Tìm kiếm..."}
+        handleChangeAddress={handleChangeHomeAddress}
+        value={currentHomeAddress?.fullAddress}
+        placeholder={"Nhập địa chỉ nhà..."}
+      />
+
+      <MapSearchBox
+        className="map-search-box-2"
+        onPlacesChanged={handlePlacesChanged}
+        handleChangeAddress={handleChangeWorkAddress}
+        value={currentWorkAddress?.fullAddress}
+        placeholder={"Nhập địa chỉ công ty..."}
       />
       <button
         className="full_screen_button"
