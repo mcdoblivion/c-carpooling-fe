@@ -22,7 +22,7 @@ function CarpoolingGroupNormal() {
       {user.carpoolingGroupId ? (
         <CarpoolingGroupInformation />
       ) : (
-        <CarpoolingGroupFinding user={user} />
+        <CarpoolingGroupFinding {...user} />
       )}
     </>
   );
