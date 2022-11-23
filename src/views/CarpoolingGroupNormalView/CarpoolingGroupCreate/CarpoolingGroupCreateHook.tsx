@@ -26,8 +26,7 @@ export default function useCarpoolingGroupCreate(
     (field) => (value: any) => {
       setCurrentModel({
         ...currentModel,
-        [`${field}`]:
-          field === "delayDurationInMinutes" ? Number(value) : value,
+        [`${field}`]: value,
       });
     },
     [currentModel]

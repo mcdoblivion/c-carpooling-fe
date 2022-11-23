@@ -1,7 +1,7 @@
 /* begin general import */
 import { Col, Row } from "antd";
 import TimePicker from "components/TimePicker";
-import { FormItem, InputText } from "react3l-ui-library";
+import { FormItem, InputNumber, InputText } from "react3l-ui-library";
 import Drawer, {
   DrawerProps,
 } from "react3l-ui-library/build/components/Drawer/Drawer";
@@ -66,7 +66,7 @@ function CarpoolingGroupCreate(props: CarpoolingGroupCreateProps) {
         </Col>
         <Col lg={24} className="m-b--lg">
           <FormItem>
-            <InputText
+            <InputNumber
               value={currentModel.delayDurationInMinutes}
               label="Thời gian trễ tối đa (phút)"
               placeHolder="Nhập tên nhóm đi chung"

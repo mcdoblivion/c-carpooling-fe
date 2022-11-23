@@ -3,7 +3,13 @@ import { Col, Row, Spin, Upload } from "antd";
 import PageHeader from "components/PageHeader/PageHeader";
 import { getUploadActionAndHeaders } from "helpers/antd";
 import { AppUserFilter } from "models/AppUser";
-import { Button, FormItem, InputText, Select } from "react3l-ui-library";
+import {
+  Button,
+  FormItem,
+  InputNumber,
+  InputText,
+  Select,
+} from "react3l-ui-library";
 import useVehicleNormalDetail from "./VehicleNormalDetailHook";
 
 function VehicleNormalDetail() {
@@ -17,6 +23,7 @@ function VehicleNormalDetail() {
     fuelTypeSearchFunc,
     handleChangeFuelType,
   } = useVehicleNormalDetail();
+
   return (
     <Spin spinning={loading}>
       <div className="page-content">
@@ -43,7 +50,7 @@ function VehicleNormalDetail() {
             </Col>
             <Col lg={8} className="m-b--sm">
               <FormItem>
-                <InputText
+                <InputNumber
                   label="Biển số"
                   type={0}
                   value={model?.licensePlate}
@@ -56,7 +63,7 @@ function VehicleNormalDetail() {
             </Col>
             <Col lg={8} className="m-b--sm">
               <FormItem>
-                <InputText
+                <InputNumber
                   label="Số chỗ ngồi"
                   type={0}
                   value={model?.numberOfSeats}
@@ -95,7 +102,7 @@ function VehicleNormalDetail() {
             </Col>
             <Col lg={8} className="m-b--sm">
               <FormItem>
-                <InputText
+                <InputNumber
                   label="Tỷ lệ tiêu thụ nhiên liệu trên 100km"
                   type={0}
                   value={model?.fuelConsumptionPer100kms}

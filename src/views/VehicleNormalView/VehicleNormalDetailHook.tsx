@@ -68,11 +68,7 @@ export default function useVehicleNormalDetail() {
     (fieldName: string) => (value: any) => {
       setModel({
         ...model,
-        [`${fieldName}`]:
-          fieldName === "numberOfSeats" ||
-          fieldName === "fuelConsumptionPer100kms"
-            ? Number(value)
-            : value,
+        [`${fieldName}`]: value,
       });
     },
     [model]
