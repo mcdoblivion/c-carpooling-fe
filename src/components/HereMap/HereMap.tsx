@@ -55,7 +55,7 @@ export function HereMap(props: HereMapProps) {
         const mapObj = new H.Map(mapRef.current, layers.vector.normal.map, {
           pixelRatio: window.devicePixelRatio,
           center: { lat, lng },
-          zoom: 5,
+          zoom: -50,
         });
         mapObj.addLayer(
           new H.map.layer.CanvasLayer(function (
@@ -137,12 +137,13 @@ export function HereMap(props: HereMapProps) {
     []
   );
   const handleRemoveBubbles = useCallback(() => {
-    ui?.getBubbles().forEach((o: any) => ui.removeBubble(o));
-  }, [ui]);
+    map?.getObjects().forEach((o: any) => map.removeObject(o));
+  }, [map]);
 
   const drawRoutingBetweenTwoPoint = useCallback(
     (result) => {
       if (result.routes.length) {
+        handleRemoveBubbles();
         result.routes[0].sections.forEach((section: any) => {
           let linestring = H.geo.LineString.fromFlexiblePolyline(
             section.polyline
@@ -160,8 +161,9 @@ export function HereMap(props: HereMapProps) {
         });
       }
     },
-    [map]
+    [handleRemoveBubbles, map]
   );
+
   var router = platform.getRoutingService(null, 8);
 
   const toggleFullScreen = useCallback((fullScreen: any) => {
@@ -239,7 +241,6 @@ export function HereMap(props: HereMapProps) {
       );
     }
     if (currentHomeAddress && currentWorkAddress) {
-      handleRemoveBubbles();
       router.calculateRoute(
         routingParameters(
           {
@@ -261,7 +262,6 @@ export function HereMap(props: HereMapProps) {
     currentHomeAddress,
     currentWorkAddress,
     drawRoutingBetweenTwoPoint,
-    handleRemoveBubbles,
     router,
     routingParameters,
     toggleFullScreen,

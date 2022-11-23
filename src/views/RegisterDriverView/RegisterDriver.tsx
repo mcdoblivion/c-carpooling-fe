@@ -47,7 +47,7 @@ function RegisterDriver() {
               {model?.status && (
                 <BadgeText
                   value={model?.status}
-                  color={model?.status === "Pending" ? "#8e6a00" : "#921118"}
+                  color={"#fff"}
                   backgroundColor={
                     model?.status === "Pending" ? "#f1c21b" : "#c21e25"
                   }
