@@ -5,11 +5,11 @@ import Drawer, {
   DrawerProps,
 } from "react3l-ui-library/build/components/Drawer/Drawer";
 
-export interface VehiclePreviewProps extends DrawerProps {
+export interface VehicleNormalPreviewProps extends DrawerProps {
   model: any;
 }
 
-function VehiclePreview(props: VehiclePreviewProps) {
+function VehicleNormalPreview(props: VehicleNormalPreviewProps) {
   const { visible, model, handleClose } = props;
 
   return (
@@ -32,6 +32,12 @@ function VehiclePreview(props: VehiclePreviewProps) {
           <div className="text__with__label">
             <span>Tỷ lệ tiêu thụ nhiên liệu trên 100km</span>
             <span>{model?.fuelConsumptionPer100kms} (lít)</span>
+          </div>
+        </Col>
+        <Col lg={24} className="m-b--lg">
+          <div className="text__with__label">
+            <span>Loại nhiên liệu</span>
+            <span>{model?.fuelType}</span>
           </div>
         </Col>
         <Col lg={24} className="m-b--lg">
@@ -102,4 +108,4 @@ function VehiclePreview(props: VehiclePreviewProps) {
   );
 }
 
-export default VehiclePreview;
+export default VehicleNormalPreview;

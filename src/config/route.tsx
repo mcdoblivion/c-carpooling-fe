@@ -19,6 +19,8 @@ import {
   REGISTER_DRIVER_ROUTE,
   USER_PREVIEW_ROUTE,
   USER_ROUTE,
+  VEHICLES_NORMAL_DETAIL_ROUTE,
+  VEHICLES_NORMAL_ROUTE,
   VEHICLES_ROUTE,
 } from "./route-consts";
 import DayOffRequestMaster from "views/DayOffRequestView/DayOffRequestMaster";
@@ -31,6 +33,8 @@ import Address from "views/AddressView/Address";
 import CarpoolingGroupNormal from "views/CarpoolingGroupNormalView/CarpoolingGroupNormal";
 import DayOffRequestNormal from "views/DayOffRequestNormalView/DayOffRequestNormal";
 import Home from "pages/HomePage/HomePage";
+import VehicleNormalMaster from "views/VehicleNormalView/VehicleNormalMaster";
+import VehicleNormalDetail from "views/VehicleNormalView/VehicleNormalDetail";
 
 export interface Route {
   path: string;
@@ -71,6 +75,14 @@ const userRoutes: Route[] = [
   {
     path: VEHICLES_ROUTE,
     component: VehicleMaster,
+  },
+  {
+    path: VEHICLES_NORMAL_ROUTE,
+    component: VehicleNormalMaster,
+  },
+  {
+    path: VEHICLES_NORMAL_DETAIL_ROUTE,
+    component: VehicleNormalDetail,
   },
   {
     path: DRIVERS_ROUTE,

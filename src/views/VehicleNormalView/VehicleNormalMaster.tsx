@@ -1,42 +1,77 @@
-import { VirtualColumnKey16 } from "@carbon/icons-react";
-import { Col, Row, Spin, Tooltip } from "antd";
+import { Add16, OverflowMenuHorizontal24 } from "@carbon/icons-react";
+import { Col, Dropdown, Menu, Row, Spin } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import PageHeader from "components/PageHeader/PageHeader";
-import Select from "components/Select/SingleSelect";
 import { renderMasterIndex } from "helpers/table";
-import { AppUser, AppUserFilter } from "models/AppUser";
-import { useMemo } from "react";
+import { AppUser } from "models/AppUser";
+import { useCallback, useMemo } from "react";
 import {
+  Button,
   LayoutCell,
   LayoutHeader,
   OneLineText,
-  Pagination,
   StandardTable,
 } from "react3l-ui-library";
 import nameof from "ts-nameof.macro";
-import useVehicleMaster from "./VehicleMasterHook";
-import VehiclePreview from "./VehiclePreview";
+import useVehicleMaster from "./VehicleNormalMasterHook";
+import VehicleNormalPreview from "./VehicleNormalPreview";
 
 /* end individual import */
 
-function VehicleMaster() {
+function VehicleNormalMaster() {
   const {
-    filter,
     list,
-    count,
     loadingList,
-    handleTableChange,
     visible,
     currentItem,
-    handlePagination,
-    fuelTypeSearchFunc,
-    isVerifiedSearchFunc,
-    handleVerify,
-    handleChangeFuelTypeFilter,
     handleGoPreview,
-    handleChangeVerifiedFilter,
+    handleGoDetail,
     handleClosePreview,
+    handleDelete,
+    handleGoCreate,
+    handleSetMainVehicle,
   } = useVehicleMaster();
+
+  const menuAction = useCallback(
+    (model: AppUser) => (
+      <Menu>
+        <Menu.Item key="1">
+          <div
+            className="ant-action-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleGoDetail(model?.id);
+            }}
+          >
+            Cập nhật thông tin phương tiện
+          </div>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <div
+            className="ant-action-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(model?.id);
+            }}
+          >
+            Xóa phương tiện
+          </div>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <div
+            className="ant-action-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSetMainVehicle(model?.id);
+            }}
+          >
+            Chọn làm phương tiện đi chung
+          </div>
+        </Menu.Item>
+      </Menu>
+    ),
+    [handleDelete, handleGoDetail, handleSetMainVehicle]
+  );
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
@@ -47,27 +82,7 @@ function VehicleMaster() {
         align: "center",
         render: renderMasterIndex<AppUser>(),
       },
-      {
-        title: <LayoutHeader orderType="left" title="Họ tên chủ xe" />,
-        key: nameof(list[0].driver),
-        dataIndex: nameof(list[0].driver),
-        ellipsis: true,
-        width: 150,
-        render(...params: [AppUser, AppUser, number]) {
-          return (
-            <LayoutCell orderType="left" tableSize="md">
-              <OneLineText
-                countCharacters={30}
-                value={
-                  params[0]?.user?.userProfile?.firstName +
-                  " " +
-                  params[0]?.user?.userProfile?.lastName
-                }
-              />
-            </LayoutCell>
-          );
-        },
-      },
+
       {
         title: <LayoutHeader orderType="left" title="Loại nhiên liệu" />,
         key: nameof(list[0].fuelType),
@@ -162,64 +177,58 @@ function VehicleMaster() {
         width: 80,
         align: "center",
         render(id: number, appUser: AppUser) {
-          return appUser?.isVerified ? (
-            <div></div>
-          ) : (
-            <Tooltip title="Xác nhận thông tin phương tiện">
-              <VirtualColumnKey16
-                color="#0f62fe"
-                style={{ cursor: "pointer" }}
-                onClick={() => handleVerify(id)}
-                id="action"
-              />
-            </Tooltip>
+          return (
+            <div
+              className="d-flex justify-content-center button-action-table"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <Dropdown
+                overlay={menuAction(appUser)}
+                trigger={["click"]}
+                placement="bottomRight"
+                arrow
+              >
+                <OverflowMenuHorizontal24 id="action" />
+              </Dropdown>
+            </div>
           );
         },
       },
     ],
-    [handleVerify, list]
+    [list, menuAction]
   );
   return (
     <Spin spinning={loadingList}>
       <div className="page-content">
         <PageHeader
           title="Quản lý phương tiện"
-          breadcrumbItems={[
-            "Quản lý phương tiện",
-            "Danh sách Quản lý phương tiện",
-          ]}
+          breadcrumbItems={["Quản lý phương tiện", "Danh sách phương tiện"]}
         />
         <div className="page page-master m-t--lg m-l--sm m-r--xxl m-b--xxs">
           <div className="page-master__title p-l--sm p-t--sm p-r--sm p-b--xs">
-            Danh sách Quản lý phương tiện
+            Danh sách phương tiện
           </div>
           <div className="page-master__content">
             <div className="m-b--xxxs m-l--sm">
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-                <Col lg={6}>
-                  <Select
-                    label="Loại nhiên liệu"
-                    classFilter={AppUserFilter}
-                    placeHolder="Chọn loại nhiên liệu"
-                    getList={fuelTypeSearchFunc}
-                    onChange={handleChangeFuelTypeFilter}
-                    value={filter?.fuelTypeValue}
-                  />
-                </Col>
-                <Col lg={6}>
-                  <Select
-                    label="Trạng thái xác minh"
-                    classFilter={AppUserFilter}
-                    placeHolder="Chọn trạng thái"
-                    getList={isVerifiedSearchFunc}
-                    onChange={handleChangeVerifiedFilter}
-                    value={filter?.verifiedValue}
-                  />
-                </Col>
+                <Col lg={6}></Col>
 
                 <Col lg={6}></Col>
 
                 <Col lg={6}></Col>
+                <Col lg={6} style={{ alignSelf: "end", textAlign: "right" }}>
+                  <Button
+                    type="primary"
+                    className="btn--lg"
+                    icon={<Add16 />}
+                    onClick={handleGoCreate}
+                    disabled={list?.length > 2}
+                  >
+                    Tạo mới
+                  </Button>
+                </Col>
               </Row>
             </div>
           </div>
@@ -231,7 +240,6 @@ function VehicleMaster() {
               isDragable={true}
               tableSize={"md"}
               scroll={{ x: 1000 }}
-              onChange={handleTableChange}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: (event: any) => {
@@ -242,21 +250,20 @@ function VehicleMaster() {
                 };
               }}
             />
-            <Pagination
-              skip={(filter?.page - 1) * filter?.limit}
-              take={filter?.limit}
-              total={count * filter?.limit}
-              onChange={handlePagination}
-            />
           </div>
         </div>
       </div>
-      <VehiclePreview
+      <VehicleNormalPreview
         visible={visible}
         model={currentItem}
         handleClose={handleClosePreview}
       />
+      {/* <VehicleNormalDetail
+        visible={visibleDetail}
+        handleClose={handleCloseDetail}
+        model={currentItem}
+      /> */}
     </Spin>
   );
 }
-export default VehicleMaster;
+export default VehicleNormalMaster;

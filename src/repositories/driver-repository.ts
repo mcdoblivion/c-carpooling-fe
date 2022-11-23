@@ -34,6 +34,50 @@ export class DriverRepository extends Repository {
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+  public getVehicle = (id: number): Observable<AppUser> => {
+    return this.http
+      .get(`drivers/${id}/vehicles`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public deleteVehicle = (
+    id: number,
+    vehicleId: number
+  ): Observable<AppUser> => {
+    return this.http
+      .delete(`drivers/${id}/vehicles/${vehicleId}`)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public createVehicle = (
+    id: number,
+    payload: AppUser
+  ): Observable<AppUser> => {
+    return this.http
+      .post(`drivers/${id}/vehicles`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public updateVehicle = (
+    id: number,
+    vehicleId: number,
+    payload: AppUser
+  ): Observable<AppUser> => {
+    return this.http
+      .put(`drivers/${id}/vehicles/${vehicleId}`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public saveVehicle = (
+    id: number,
+    vehicleId: number,
+    payload: AppUser
+  ): Observable<AppUser> => {
+    return vehicleId
+      ? this.updateVehicle(id, vehicleId, payload)
+      : this.createVehicle(id, payload);
+  };
+  public mainVehicle = (id: number, vehicleId: number): Observable<AppUser> => {
+    return this.http
+      .put(`drivers/${id}/main-vehicle`, { vehicleId })
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
   public verify = (id: any, payload: AppUser): Observable<AppUser> => {
     return this.http
       .put(`drivers/${id}`, payload)

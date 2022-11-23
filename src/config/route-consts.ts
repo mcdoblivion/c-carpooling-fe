@@ -48,6 +48,10 @@ export const VEHICLES_NORMAL_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/vehicles-normal")
   : "/vehicles-normal";
 
+export const VEHICLES_NORMAL_DETAIL_ROUTE: string = ROOT_ROUTE
+  ? join(ROOT_ROUTE + "/vehicles-normal-detail")
+  : "/vehicles-normal-detail";
+
 export const DRIVERS_ROUTE: string = ROOT_ROUTE
   ? join(ROOT_ROUTE + "/drivers")
   : "/drivers";
