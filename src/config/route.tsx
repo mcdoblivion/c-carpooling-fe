@@ -22,6 +22,7 @@ import {
   VEHICLES_NORMAL_DETAIL_ROUTE,
   VEHICLES_NORMAL_ROUTE,
   VEHICLES_ROUTE,
+  WALLET_ROUTE,
 } from "./route-consts";
 import DayOffRequestMaster from "views/DayOffRequestView/DayOffRequestMaster";
 import CarpoolingLogMaster from "views/CarpoolingLogView/CarpoolingLogMaster";
@@ -35,6 +36,7 @@ import DayOffRequestNormal from "views/DayOffRequestNormalView/DayOffRequestNorm
 import Home from "pages/HomePage/HomePage";
 import VehicleNormalMaster from "views/VehicleNormalView/VehicleNormalMaster";
 import VehicleNormalDetail from "views/VehicleNormalView/VehicleNormalDetail";
+import WalletMaster from "views/WalletView/WalletMaster";
 
 export interface Route {
   path: string;
@@ -99,6 +101,10 @@ const userRoutes: Route[] = [
   {
     path: PAYMENT_ROUTE,
     component: Payment,
+  },
+  {
+    path: WALLET_ROUTE,
+    component: WalletMaster,
   },
   {
     path: ADDRESS_ROUTE,

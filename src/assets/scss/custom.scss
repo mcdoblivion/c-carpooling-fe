@@ -146,3 +146,31 @@ tr
     font-size: 14px;
   }
 }
+.text__with__label_vertical {
+  span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--palette-gray-70);
+  }
+
+  span:first-child {
+    word-wrap: break-word;
+    letter-spacing: 0.16px;
+    margin-right: 3px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 150%;
+    color: var(--palette-gray-70);
+  }
+}
+.custom-credit-card-table {
+  .ant-table-cell {
+    height: 200px !important;
+  }
+  .custom-header {
+    place-content: center;
+  }
+}
