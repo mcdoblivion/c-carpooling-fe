@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import appMessageService from "services/common-services/app-message-service";
-import { notification } from "antd";
 import { AppUser } from "models/AppUser";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useCarpoolingGroupCreate(
   model: AppUser,
@@ -42,16 +42,7 @@ export default function useCarpoolingGroupCreate(
       },
       (error) => {
         if (error.response && error.response.status === 400)
-          notification.error({
-            placement: "bottomRight",
-            message: "Cập nhật có lỗi",
-            description:
-              error.response?.data?.message &&
-              error.response?.data?.message?.length > 0 &&
-              error.response?.data?.message.map((mess: string) => {
-                return <>{mess}</>;
-              }),
-          });
+          handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, handleLoadList, notifyUpdateItemSuccess]);

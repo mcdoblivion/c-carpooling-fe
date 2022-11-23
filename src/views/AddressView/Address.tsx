@@ -44,7 +44,8 @@ function Address() {
                     height: "750px",
                     position: "relative",
                   }}
-                  viewModelHome={model?.length > 0 ? viewModelHome : undefined}
+                  viewModel={model?.length > 0 ? viewModelHome : undefined}
+                  currentAddress={model[0]}
                   handleChangeAddress={handleChangeHomeAddress}
                 />
               </Col>
@@ -70,7 +71,8 @@ function Address() {
                     position: "relative",
                   }}
                   handleChangeAddress={handleChangeWorkAddress}
-                  viewModelWork={model?.length > 0 ? viewModelWork : undefined}
+                  currentAddress={model[1]}
+                  viewModel={model?.length > 0 ? viewModelWork : undefined}
                 />
               </Col>
             </Col>

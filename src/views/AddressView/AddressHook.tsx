@@ -5,6 +5,22 @@ import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
 import { ADDRESS_ROUTE } from "config/route-consts";
 import { notification } from "antd";
+
+export const handleErrorNoti = (error: any) => {
+  return notification.error({
+    placement: "bottomRight",
+    message: "Cập nhật có lỗi",
+    description:
+      typeof error.response?.data?.message === "string"
+        ? error.response?.data?.message
+        : error.response?.data?.message &&
+          error.response?.data?.message?.length > 0 &&
+          error.response?.data?.message.map((mess: string) => {
+            return <>{mess}</>;
+          }),
+  });
+};
+
 export default function useAddress() {
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -83,31 +99,13 @@ export default function useAddress() {
             },
             (error) => {
               if (error.response && error.response.status === 400)
-                notification.error({
-                  placement: "bottomRight",
-                  message: "Cập nhật có lỗi",
-                  description:
-                    error.response?.data?.message &&
-                    error.response?.data?.message?.length > 0 &&
-                    error.response?.data?.message.map((mess: string) => {
-                      return <>{mess}</>;
-                    }),
-                });
+                handleErrorNoti(error);
             }
           );
         },
         (error) => {
           if (error.response && error.response.status === 400)
-            notification.error({
-              placement: "bottomRight",
-              message: "Cập nhật có lỗi",
-              description:
-                error.response?.data?.message &&
-                error.response?.data?.message?.length > 0 &&
-                error.response?.data?.message.map((mess: string) => {
-                  return <>{mess}</>;
-                }),
-            });
+            handleErrorNoti(error);
         }
       );
     } else {
@@ -124,31 +122,13 @@ export default function useAddress() {
                 },
                 (error) => {
                   if (error.response && error.response.status === 400)
-                    notification.error({
-                      placement: "bottomRight",
-                      message: "Cập nhật có lỗi",
-                      description:
-                        error.response?.data?.message &&
-                        error.response?.data?.message?.length > 0 &&
-                        error.response?.data?.message.map((mess: string) => {
-                          return <>{mess}</>;
-                        }),
-                    });
+                    handleErrorNoti(error);
                 }
               );
           },
           (error) => {
             if (error.response && error.response.status === 400)
-              notification.error({
-                placement: "bottomRight",
-                message: "Cập nhật có lỗi",
-                description:
-                  error.response?.data?.message &&
-                  error.response?.data?.message?.length > 0 &&
-                  error.response?.data?.message.map((mess: string) => {
-                    return <>{mess}</>;
-                  }),
-              });
+              handleErrorNoti(error);
           }
         );
     }

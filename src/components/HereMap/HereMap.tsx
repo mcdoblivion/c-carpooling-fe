@@ -18,18 +18,13 @@ export interface HereMapProps {
   styles?: React.CSSProperties;
   classNames?: any;
   handleChangeAddress?: (fieldName: any) => void;
-  viewModelHome?: MutableRefObject<boolean>;
-  viewModelWork?: MutableRefObject<boolean>;
+  viewModel?: MutableRefObject<boolean>;
+  currentAddress?: any;
 }
 export function HereMap(props: HereMapProps) {
   const [translate] = useTranslation();
-  const {
-    styles,
-    classNames,
-    handleChangeAddress,
-    viewModelHome,
-    viewModelWork,
-  } = props;
+  const { styles, classNames, handleChangeAddress, viewModel, currentAddress } =
+    props;
   const mapRef = useRef<HTMLElement>();
   const ctxRef = useRef<CanvasRenderingContext2D>();
   const renderingParamsRef = useRef<H.map.render.RenderingParams>();
@@ -137,23 +132,21 @@ export function HereMap(props: HereMapProps) {
   );
 
   useEffect(() => {
-    if (viewModelHome) {
+    if (viewModel) {
       handleGetViewModel(
-        "Tháp Schmidt Tower (F.Studio By FPT Iph)",
-        21.03657,
-        105.78322
+        currentAddress?.fullAddress,
+        currentAddress?.latitude,
+        currentAddress?.longitude
       );
-      viewModelHome.current = false;
+      viewModel.current = false;
     }
-    if (viewModelWork) {
-      handleGetViewModel(
-        "Giảng Đường G2 (Giang Duong G2)",
-        21.03679,
-        105.78215
-      );
-      viewModelWork.current = false;
-    }
-  }, [handleGetViewModel, viewModelHome, viewModelWork]);
+  }, [
+    currentAddress?.fullAddress,
+    currentAddress?.latitude,
+    currentAddress?.longitude,
+    handleGetViewModel,
+    viewModel,
+  ]);
 
   const handlePlacesChanged = useCallback(
     (places: SuggestLocationInterface[]) => {

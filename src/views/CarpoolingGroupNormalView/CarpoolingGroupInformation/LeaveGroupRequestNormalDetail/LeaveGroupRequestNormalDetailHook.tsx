@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import appMessageService from "services/common-services/app-message-service";
-import { notification } from "antd";
 import { AppUser } from "models/AppUser";
 import { leaveGroupRequestRepository } from "repositories/leave-group-request-repository";
 import { CARPOOLING_GROUP_NORMAL_ROUTE } from "config/route-consts";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useLeaveGroupRequestNormalDetail(
   model: AppUser,
@@ -47,16 +47,7 @@ export default function useLeaveGroupRequestNormalDetail(
       (error) => {
         window.location.href = CARPOOLING_GROUP_NORMAL_ROUTE;
         if (error.response && error.response.status === 400)
-          notification.error({
-            placement: "bottomRight",
-            message: "Cập nhật có lỗi",
-            description:
-              error.response?.data?.message &&
-              error.response?.data?.message?.length > 0 &&
-              error.response?.data?.message.map((mess: string) => {
-                return <>{mess}</>;
-              }),
-          });
+          handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, notifyUpdateItemSuccess]);

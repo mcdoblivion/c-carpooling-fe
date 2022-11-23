@@ -7,6 +7,7 @@ import { webService } from "services/common-services/web-service";
 import { notification } from "antd";
 import { driverRepository } from "repositories/driver-repository";
 import { UploadChangeParam } from "antd/lib/upload";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 export default function useRegisterDriver() {
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -76,16 +77,7 @@ export default function useRegisterDriver() {
       },
       (error) => {
         if (error.response && error.response.status === 400)
-          notification.error({
-            placement: "bottomRight",
-            message: "Cập nhật có lỗi",
-            description:
-              error.response?.data?.message &&
-              error.response?.data?.message?.length > 0 &&
-              error.response?.data?.message.map((mess: string) => {
-                return <>{mess}</>;
-              }),
-          });
+          handleErrorNoti(error);
       }
     );
   }, [model, notifyUpdateItemSuccess]);
