@@ -156,7 +156,7 @@ function UserPreview() {
                   <img
                     src={model.userProfile.avatarURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />

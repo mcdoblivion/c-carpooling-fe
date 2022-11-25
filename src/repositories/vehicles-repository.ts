@@ -25,6 +25,7 @@ export class VehicleRepository extends Repository {
       )
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
+
   public verify = (id: any): Observable<AppUser> => {
     return this.http
       .put(`vehicles/${id}/verify`)

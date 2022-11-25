@@ -23,7 +23,14 @@ import CarpoolingGroupFindingPreview from "./CarpoolingGroupFindingPreview";
 
 /* end individual import */
 
-function CarpoolingGroupFinding(user: AppUser) {
+export interface CarpoolingGroupFindingProps {
+  user: AppUser;
+  reloadUser: () => void;
+}
+
+function CarpoolingGroupFinding(props: CarpoolingGroupFindingProps) {
+  const { user, reloadUser } = props;
+
   const {
     list,
     loadingList,
@@ -264,7 +271,7 @@ function CarpoolingGroupFinding(user: AppUser) {
       <CarpoolingGroupCreate
         visible={visibleDetail}
         handleClose={handleCloseDetail}
-        handleLoadList={handleFindingGroup}
+        handleLoadGroupInfo={reloadUser}
       />
     </Spin>
   );

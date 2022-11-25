@@ -42,28 +42,33 @@ export const menu: Menu[] = [
     name: "Địa chỉ",
     icon: "bx-location-plus",
     link: ADDRESS_ROUTE,
-    show: user?.role === NORMAL_USER ? true : false,
+    show: user?.role === NORMAL_USER,
     active: false,
   },
   {
     name: "Người dùng",
     icon: "bx-user",
     link: USER_ROUTE,
-    show: user?.role === ADMIN ? true : false,
+    show: user?.role === ADMIN,
     active: false,
   },
   {
     name: "Tài xế",
     icon: "bx-user-pin",
     link: DRIVERS_ROUTE,
-    show: user?.role === ADMIN ? true : false,
+    show: user?.role === ADMIN,
     active: false,
   },
   {
     name: "Phương tiện",
     icon: "bx-car",
-    link: user?.role === ADMIN ? VEHICLES_ROUTE : VEHICLES_NORMAL_ROUTE,
-    show: user?.role === ADMIN || !!user?.driver,
+    link:
+      user?.role === ADMIN
+        ? VEHICLES_ROUTE
+        : user?.role === NORMAL_USER && user?.driver
+        ? VEHICLES_NORMAL_ROUTE
+        : "",
+    show: user?.role === ADMIN || user?.driver,
     active: false,
   },
   {
@@ -80,18 +85,19 @@ export const menu: Menu[] = [
     name: "Yêu cầu nghỉ phép",
     icon: "bx-question-mark",
     link:
-      user?.role === NORMAL_USER && user?.carpoolingGroupId
+      user?.role === ADMIN
+        ? DAY_OFF_REQUEST_ROUTE
+        : user?.role === NORMAL_USER && user?.carpoolingGroupId
         ? DAY_OFF_REQUEST_NORMAL_ROUTE
-        : DAY_OFF_REQUEST_ROUTE,
-    show: true,
+        : "",
+    show: user?.role === ADMIN || user?.carpoolingGroupId,
     active: false,
   },
   {
     name: "Yêu cầu rời nhóm",
     icon: "bx-log-out-circle",
     link: LEAVE_GROUP_REQUEST_ROUTE,
-
-    show: user?.role === ADMIN ? true : false,
+    show: user?.role === ADMIN,
     active: false,
   },
   {
@@ -105,7 +111,7 @@ export const menu: Menu[] = [
     name: "Quản lý tác vụ",
     icon: "bx-task",
     link: CRON_JOB_ROUTE,
-    show: user?.role === ADMIN ? true : false,
+    show: user?.role === ADMIN,
     active: false,
   },
   {

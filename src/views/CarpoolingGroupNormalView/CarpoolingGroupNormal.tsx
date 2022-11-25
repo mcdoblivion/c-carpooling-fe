@@ -1,17 +1,34 @@
+import { AppUser } from "models/AppUser";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { userRepository } from "repositories/user-repository";
 import CarpoolingGroupFinding from "./CarpoolingGroupFinding/CarpoolingGroupFinding";
 import CarpoolingGroupInformation from "./CarpoolingGroupInformation/CarpoolingGroupInformation";
 
 /* end individual import */
 
 function CarpoolingGroupNormal() {
-  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+  const token = JSON.parse(localStorage.getItem("token"));
+  const [user, setUser] = useState(new AppUser());
+  const firstLoad = useRef(true);
+
+  const getUserInfo = useCallback(
+    () => userRepository.getMe(token).subscribe((res) => setUser(res?.data)),
+    [token]
+  );
+
+  useEffect(() => {
+    if (firstLoad) {
+      getUserInfo();
+      firstLoad.current = false;
+    }
+  }, [getUserInfo]);
 
   return (
     <>
       {user.carpoolingGroupId ? (
-        <CarpoolingGroupInformation />
+        <CarpoolingGroupInformation user={user} />
       ) : (
-        <CarpoolingGroupFinding user={user} />
+        <CarpoolingGroupFinding user={user} reloadUser={getUserInfo} />
       )}
     </>
   );

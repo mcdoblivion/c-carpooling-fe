@@ -47,7 +47,7 @@ function RegisterDriver() {
               {model?.status && (
                 <BadgeText
                   value={model?.status}
-                  color={model?.status === "Pending" ? "#8e6a00" : "#921118"}
+                  color={"#fff"}
                   backgroundColor={
                     model?.status === "Pending" ? "#f1c21b" : "#c21e25"
                   }
@@ -70,7 +70,7 @@ function RegisterDriver() {
                   <img
                     src={model?.driverLicenseFrontPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -97,7 +97,7 @@ function RegisterDriver() {
                   <img
                     src={model?.driverLicenseBackPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />

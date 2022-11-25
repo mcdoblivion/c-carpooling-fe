@@ -5,8 +5,7 @@ import { carpoolingGroupRepository } from "repositories/carpooling-group-reposit
 import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useCarpoolingGroupCreate(
-  model: AppUser,
-  handleLoadList?: (filterParam?: any) => void,
+  handleLoadGroupInfo?: (filterParam?: any) => void,
   handleClose?: () => void
 ) {
   const [currentModel, setCurrentModel] = useState(new AppUser());
@@ -26,8 +25,7 @@ export default function useCarpoolingGroupCreate(
     (field) => (value: any) => {
       setCurrentModel({
         ...currentModel,
-        [`${field}`]:
-          field === "delayDurationInMinutes" ? Number(value) : value,
+        [`${field}`]: value,
       });
     },
     [currentModel]
@@ -38,14 +36,14 @@ export default function useCarpoolingGroupCreate(
       (res) => {
         notifyUpdateItemSuccess();
         handleClose();
-        handleLoadList();
+        handleLoadGroupInfo();
       },
       (error) => {
         if (error.response && error.response.status === 400)
           handleErrorNoti(error);
       }
     );
-  }, [currentModel, handleClose, handleLoadList, notifyUpdateItemSuccess]);
+  }, [currentModel, handleClose, handleLoadGroupInfo, notifyUpdateItemSuccess]);
 
   return {
     currentModel,
