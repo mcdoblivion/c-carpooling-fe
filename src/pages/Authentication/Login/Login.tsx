@@ -17,7 +17,30 @@ function Login() {
     useState<string>(null);
   const [errorMessagePass, setErrorMessagePass] = useState<string>(null);
 
-  const { handleLogin, handleChangeField, handleEnter } = useLogin(
+  const {
+    loginVisible,
+    forgotPasswordVisible,
+    getOtpVisible,
+    changePassVisible,
+    checkPass,
+    confirmPass,
+    showForgotPassword,
+    handleChangeEmail,
+    handleChangeOtp,
+    handleSendOtp,
+    handleSendMail,
+    handleChangeNewPass,
+    handleChangeConfirmPassword,
+    handleChangePass,
+    showLogin,
+    handleLogin,
+    handleChangeField,
+    handleEnter,
+    otp,
+    email,
+    newPass,
+    successViewVisible,
+  } = useLogin(
     appUser,
     setAppUser,
     setErrorMessageUsername,
@@ -28,10 +51,9 @@ function Login() {
     <>
       <div className="login-page">
         <LoginHeader />
-
         <div className="login-page__content d-flex align-items-start m-l--xxl">
           <div className="main-content-form">
-            {
+            {loginVisible && (
               <div>
                 <div className="login-page__content--logo">
                   <div>
@@ -153,7 +175,7 @@ function Login() {
                   </div>
                 </div>
               </div>
-            }
+            )}
           </div>
 
           <div>

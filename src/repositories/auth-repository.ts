@@ -19,6 +19,7 @@ export class AuthRepository extends Repository {
       .post(kebabCase(nameof(this.login)), account)
       .pipe(Repository.responseMapToModel<Model>(Model));
   };
+  
 }
 
 export const authRepository = new AuthRepository();
