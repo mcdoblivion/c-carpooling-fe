@@ -143,7 +143,7 @@ function WalletDetail() {
                   <img
                     src={model.photoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -172,7 +172,7 @@ function WalletDetail() {
                   <img
                     src={model.registrationCertificateFrontPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -201,7 +201,7 @@ function WalletDetail() {
                   <img
                     src={model.registrationCertificateBackPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />

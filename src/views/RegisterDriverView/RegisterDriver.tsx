@@ -70,7 +70,7 @@ function RegisterDriver() {
                   <img
                     src={model?.driverLicenseFrontPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -97,7 +97,7 @@ function RegisterDriver() {
                   <img
                     src={model?.driverLicenseBackPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />

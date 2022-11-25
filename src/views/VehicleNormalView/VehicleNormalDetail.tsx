@@ -50,7 +50,7 @@ function VehicleNormalDetail() {
             </Col>
             <Col lg={8} className="m-b--sm">
               <FormItem>
-                <InputNumber
+                <InputText
                   label="Biển số"
                   type={0}
                   value={model?.licensePlate}
@@ -143,7 +143,7 @@ function VehicleNormalDetail() {
                   <img
                     src={model.photoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -151,7 +151,7 @@ function VehicleNormalDetail() {
               </Upload>
               <div className="text-align-center">
                 <div className="text__with__label">
-                  <span>Ảnh đại diện</span>
+                  <span>Ảnh phương tiện</span>
                   <span>Recommended size: 500 x 600 px (maximum 1MB)</span>
                 </div>
               </div>
@@ -172,7 +172,7 @@ function VehicleNormalDetail() {
                   <img
                     src={model.registrationCertificateFrontPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />
@@ -201,7 +201,7 @@ function VehicleNormalDetail() {
                   <img
                     src={model.registrationCertificateBackPhotoURL}
                     alt="avatar"
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", objectFit: "contain" }}
                   />
                 ) : (
                   <Camera32 />

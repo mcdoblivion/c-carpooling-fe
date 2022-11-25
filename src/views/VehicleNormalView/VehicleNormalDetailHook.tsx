@@ -25,7 +25,7 @@ export default function useVehicleNormalDetail() {
 
   useEffect(() => {
     if (firstLoad) {
-      setLoading(true);
+      setLoading(isDetail);
       subscription.add(
         userRepository
           .getMe(token)

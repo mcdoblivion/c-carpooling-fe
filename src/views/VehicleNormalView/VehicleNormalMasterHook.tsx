@@ -28,7 +28,7 @@ export default function useVehicleNormalMaster() {
     Reducer<ListState<AppUser>, ListAction<AppUser>>
   >(listReducer, { list: [], count: 0 });
 
-  const [loadingList, setLoadingList] = useState<boolean>(false);
+  const [loadingList, setLoadingList] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
   const [user, setUser] = useState(new AppUser());

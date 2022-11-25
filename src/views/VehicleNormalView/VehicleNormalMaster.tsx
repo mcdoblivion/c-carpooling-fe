@@ -224,7 +224,6 @@ function VehicleNormalMaster() {
                     className="btn--lg"
                     icon={<Add16 />}
                     onClick={handleGoCreate}
-                    disabled={list?.length > 2}
                   >
                     Tạo mới
                   </Button>
