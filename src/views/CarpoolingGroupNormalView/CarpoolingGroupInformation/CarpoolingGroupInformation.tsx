@@ -1,15 +1,20 @@
 import { Close16, Save16 } from "@carbon/icons-react";
 import { Col, Row, Spin } from "antd";
 import PageHeader from "components/PageHeader/PageHeader";
+import { AppUser } from "models/AppUser";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { Button, StandardTable } from "react3l-ui-library";
 import useCarpoolingGroupInformation from "./CarpoolingGroupInformationHook";
 import LeaveGroupRequestNormalDetail from "./LeaveGroupRequestNormalDetail/LeaveGroupRequestNormalDetail";
 
 /* end individual import */
+export interface CarpoolingGroupInformationProps {
+  user: AppUser;
+}
 
-function CarpoolingGroupInformation() {
-  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+function CarpoolingGroupInformation(props: CarpoolingGroupInformationProps) {
+  const { user } = props;
+
   const {
     loading,
     model,

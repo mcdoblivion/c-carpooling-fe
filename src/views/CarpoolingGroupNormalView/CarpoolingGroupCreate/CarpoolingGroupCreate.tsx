@@ -8,17 +8,19 @@ import Drawer, {
 import useCarpoolingGroupCreate from "./CarpoolingGroupCreateHook";
 
 export interface CarpoolingGroupCreateProps extends DrawerProps {
-  handleLoadList?: (filterParam?: any) => void;
+  visible: boolean;
+  handleClose?: () => void;
+  handleLoadGroupInfo?: (filterParam?: any) => void;
 }
 
 function CarpoolingGroupCreate(props: CarpoolingGroupCreateProps) {
-  const { visible, handleClose, handleLoadList } = props;
+  const { visible, handleClose, handleLoadGroupInfo } = props;
   const {
     currentModel,
     handleSave,
     handleChangeTime,
     handleChangeSingleField,
-  } = useCarpoolingGroupCreate(handleLoadList, handleClose);
+  } = useCarpoolingGroupCreate(handleLoadGroupInfo, handleClose);
 
   return (
     <Drawer
@@ -69,7 +71,7 @@ function CarpoolingGroupCreate(props: CarpoolingGroupCreateProps) {
             <InputNumber
               value={currentModel.delayDurationInMinutes}
               label="Thời gian trễ tối đa (phút)"
-              placeHolder="Nhập tên nhóm đi chung"
+              placeHolder="Nhập thời gian trễ tối đa"
               onChange={handleChangeSingleField("delayDurationInMinutes")}
             />
           </FormItem>

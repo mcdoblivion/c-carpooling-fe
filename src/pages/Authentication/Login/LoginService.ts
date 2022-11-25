@@ -1,4 +1,3 @@
-import { CARPOOLING_LOG_ROUTE } from "config/route-consts";
 import { AppUser } from "models/AppUser";
 import React, { useCallback } from "react";
 import { authRepository } from "repositories/auth-repository";
@@ -28,7 +27,7 @@ export default function useLogin(
                   JSON.stringify(result.data)
                 );
 
-                window.location.href = CARPOOLING_LOG_ROUTE;
+                window.location.href = "/";
               } else {
                 authenticationService.logout();
               }
