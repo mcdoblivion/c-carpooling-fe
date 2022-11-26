@@ -202,7 +202,7 @@ export function HereMap(props: HereMapProps) {
         ),
         drawRoutingBetweenTwoPoint,
         function (error) {
-          alert(error.message);
+          // alert(error.message);
         }
       );
 
