@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Reducer } from "react";
+import React, { Reducer, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { connect, ConnectedComponent } from "react-redux";
 import ErrorPage, { errorHandler } from "pages/ErrorPage/ErrorPage";
@@ -9,6 +9,8 @@ import VerticalLayout from "../components/VerticalLayout";
 import HorizontalLayout from "../components/HorizontalLayout";
 import { AppAction, appReducer, AppState } from "./AppReducer";
 import { AppStateContext } from "./AppContext";
+import { reloadUserInfo } from "store";
+import { useHistory } from "react-router";
 
 const App = (props: any) => {
   const Layout: ConnectedComponent<any, any> = React.useMemo(() => {
@@ -27,6 +29,14 @@ const App = (props: any) => {
   const [appState, appDispatch] = React.useReducer<
     Reducer<AppState, AppAction>
   >(appReducer, {});
+
+  const history = useHistory();
+
+  useEffect(() => {
+    history.listen(() => {
+      reloadUserInfo();
+    });
+  }, []);
 
   return (
     <React.Fragment>
