@@ -19,7 +19,16 @@ export class AuthRepository extends Repository {
       .post(kebabCase(nameof(this.login)), account)
       .pipe(Repository.responseMapToModel<Model>(Model));
   };
-  
+  public signup = (account: any): Observable<Model> => {
+    return this.http
+      .post(kebabCase(nameof(this.signup)), account)
+      .pipe(Repository.responseMapToModel<Model>(Model));
+  };
+  public verifySignup = (account: any): Observable<Model> => {
+    return this.http
+      .post(kebabCase(nameof(this.verifySignup)), account)
+      .pipe(Repository.responseMapToModel<Model>(Model));
+  };
 }
 
 export const authRepository = new AuthRepository();
