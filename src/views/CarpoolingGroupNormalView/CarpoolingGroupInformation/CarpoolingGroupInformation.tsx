@@ -28,7 +28,10 @@ function CarpoolingGroupInformation(props: CarpoolingGroupInformationProps) {
     handleCloseDetail,
     handleGoDayOffRequest,
     handleDeleteLeaveGroupRequest,
-  } = useCarpoolingGroupInformation(user?.carpoolingGroupId);
+  } = useCarpoolingGroupInformation(
+    user?.carpoolingGroupId,
+    user?.carpoolingGroup
+  );
 
   return (
     <Spin spinning={loading}>

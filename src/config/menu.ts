@@ -27,6 +27,7 @@ export interface Menu {
   show?: boolean;
 }
 const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+
 export const menu: Menu[] = [
   {
     name: "Đăng ký trở thành tài xế",

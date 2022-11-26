@@ -1,6 +1,8 @@
 // import { useGlobalState } from "app/AppStore";
-import React from "react";
+import { AppUser } from "models/AppUser";
+import React, { useEffect, useRef, useState } from "react";
 import { Model } from "react3l-common";
+import { userRepository } from "repositories/user-repository";
 import authenticationService from "services/common-services/authentication-service";
 
 export class Site extends Model {
@@ -18,7 +20,16 @@ export class AppUserSiteMapping extends Model {
 }
 
 export function useProfileMenu() {
-  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
+  const token = JSON.parse(localStorage.getItem("token"));
+  const [user, setUser] = useState(new AppUser());
+  const firstLoad = useRef(true);
+
+  useEffect(() => {
+    if (firstLoad) {
+      userRepository.getMe(token).subscribe((res) => setUser(res?.data));
+      firstLoad.current = false;
+    }
+  }, [token]);
 
   const [profileDrop, setProfileDrop] = React.useState(false);
   const handleLogout = React.useCallback(() => {
