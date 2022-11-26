@@ -22,7 +22,6 @@ const ProfileMenu = (props: any) => {
     handleLogout,
     handleClickToChangePassword,
   } = useProfileMenu();
-
   return (
     <React.Fragment>
       <Dropdown

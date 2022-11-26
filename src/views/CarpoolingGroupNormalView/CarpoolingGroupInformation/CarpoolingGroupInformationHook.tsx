@@ -13,10 +13,9 @@ import { finalize } from "rxjs";
 import { webService } from "services/common-services/web-service";
 
 export default function useCarpoolingGroupInformation(
-  carpoolingGroupId?: number
+  carpoolingGroupId?: number,
+  carpoolingGroup?: AppUser
 ) {
-  const user = JSON.parse(localStorage.getItem("currentUserInfo"));
-
   const [loading, setLoading] = useState<boolean>(false);
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -29,8 +28,8 @@ export default function useCarpoolingGroupInformation(
   const history = useHistory();
   const [currentItem, setCurrentItem] = useState<any>({
     ...new AppUser(),
-    carpoolingGroupId: user?.carpoolingGroupId,
-    carpoolingGroup: user?.carpoolingGroup,
+    carpoolingGroupId: carpoolingGroupId,
+    carpoolingGroup: carpoolingGroup,
   });
   const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
 
@@ -43,22 +42,22 @@ export default function useCarpoolingGroupInformation(
         } else {
           setCurrentItem({
             ...new AppUser(),
-            carpoolingGroupId: user?.carpoolingGroupId,
-            carpoolingGroup: user?.carpoolingGroup,
+            carpoolingGroupId: carpoolingGroupId,
+            carpoolingGroup: carpoolingGroup,
           });
         }
         setVisibleDetail(true);
       });
-  }, [user?.carpoolingGroup, user?.carpoolingGroupId]);
+  }, [carpoolingGroupId, carpoolingGroup]);
 
   const handleCloseDetail = useCallback(() => {
     setVisibleDetail(false);
     setCurrentItem({
       ...new AppUser(),
-      carpoolingGroupId: user?.carpoolingGroupId,
-      carpoolingGroup: user?.carpoolingGroup,
+      carpoolingGroupId: carpoolingGroupId,
+      carpoolingGroup: carpoolingGroup,
     });
-  }, [user?.carpoolingGroup, user?.carpoolingGroupId]);
+  }, [carpoolingGroup, carpoolingGroupId]);
 
   useEffect(() => {
     if (firstLoad && carpoolingGroupId) {

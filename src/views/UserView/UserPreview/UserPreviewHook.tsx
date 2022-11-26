@@ -61,6 +61,26 @@ export default function useUserPreview() {
     return genderObservable;
   }, [genderObservable]);
 
+  const enum2FAMethod = useMemo(() => {
+    return [
+      { id: 1, name: "OFF" },
+      { id: 2, name: "Email" },
+      { id: 3, name: "SMS" },
+    ];
+  }, []);
+
+  const FAMethodObservable = useMemo(() => {
+    return new Observable<any>((observer) => {
+      setTimeout(() => {
+        observer.next(enum2FAMethod);
+      }, 1000);
+    });
+  }, [enum2FAMethod]);
+
+  const singleList2FAMethod = useCallback(() => {
+    return FAMethodObservable;
+  }, [FAMethodObservable]);
+
   const handleChangeUserProfile = useCallback(
     (fieldName: string) => (value: any) => {
       const userProfile = { ...model?.userProfile };
@@ -84,13 +104,19 @@ export default function useUserPreview() {
           )?.name;
           break;
 
+        case "2FAMethod":
+          model["2FAMethod"] = enum2FAMethod.find(
+            ({ id }) => id === value
+          )?.name;
+          break;
+
         default:
           userProfile[fieldName] = value;
       }
 
       setModel((previousModel) => ({ ...previousModel, userProfile }));
     },
-    [enumGender, model]
+    [enum2FAMethod, enumGender, model]
   );
 
   const handleChangeAvatar = useCallback(
@@ -144,6 +170,7 @@ export default function useUserPreview() {
     handleChangeAvatar,
     handleChangeUserProfile,
     singleListGender,
+    singleList2FAMethod,
     handleSave,
   };
 }

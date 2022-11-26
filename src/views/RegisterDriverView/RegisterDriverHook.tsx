@@ -8,6 +8,7 @@ import { notification } from "antd";
 import { driverRepository } from "repositories/driver-repository";
 import { UploadChangeParam } from "antd/lib/upload";
 import { handleErrorNoti } from "views/AddressView/AddressHook";
+import { REGISTER_DRIVER_ROUTE } from "config/route-consts";
 export default function useRegisterDriver() {
   const firstLoad = useRef(true);
   const [subscription] = webService.useSubscription();
@@ -73,14 +74,21 @@ export default function useRegisterDriver() {
     driverRepository.create(model).subscribe(
       (res) => {
         setModel(res?.data);
-        notifyUpdateItemSuccess();
+        userRepository
+          .getMe(token)
+          .pipe(finalize(() => setLoading(false)))
+          .subscribe((me) => {
+            notifyUpdateItemSuccess();
+            localStorage.setItem("currentUserInfo", JSON.stringify(me.data));
+            window.location.href = REGISTER_DRIVER_ROUTE;
+          });
       },
       (error) => {
         if (error.response && error.response.status === 400)
           handleErrorNoti(error);
       }
     );
-  }, [model, notifyUpdateItemSuccess]);
+  }, [model, notifyUpdateItemSuccess, token]);
 
   return {
     loading,

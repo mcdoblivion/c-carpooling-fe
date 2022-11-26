@@ -9,7 +9,6 @@ import {
   FormItem,
   InputText,
 } from "react3l-ui-library";
-import { Observable } from "rxjs";
 import "./UserPreview.scss";
 import useUserPreview from "./UserPreviewHook";
 
@@ -19,10 +18,12 @@ function UserPreview() {
     model,
     handleChangeAvatar,
     handleChangeUserProfile,
+    singleList2FAMethod,
     singleListGender,
     handleSave,
     goToHomePage,
   } = useUserPreview();
+
   return (
     <Spin spinning={loading}>
       <div className="page-content">
@@ -126,17 +127,10 @@ function UserPreview() {
                     <EnumSelect
                       placeHolder="Chọn phương thức xác thực..."
                       type={0}
-                      getList={() =>
-                        new Observable((observer) =>
-                          observer.next([
-                            { id: 1, name: "OFF" },
-                            { id: 2, name: "Email" },
-                            { id: 3, name: "SMS" },
-                          ])
-                        )
-                      }
+                      getList={singleList2FAMethod}
+                      onChange={handleChangeUserProfile("2FAMethod")}
                       label="Phương thức xác thực 2 bước"
-                      value={{ id: 1, name: "OFF" }}
+                      value={{ id: 0, name: model["2FAMethod"] }}
                     />
                   </FormItem>
                 </Col>
