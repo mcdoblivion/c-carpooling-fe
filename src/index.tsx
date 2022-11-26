@@ -10,6 +10,7 @@ import { PrivateRoute } from "pages/Authentication/PrivateRoute";
 // Import scss
 import "assets/scss/theme.scss";
 import Login from "pages/Authentication/Login/Login";
+import Signup from "pages/Authentication/Login/Signup/Signup";
 
 WebFont.load({
   google: {
@@ -25,6 +26,11 @@ const app = (
           exact
           path={`${process.env.PUBLIC_URL}/login`}
           component={Login}
+        />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/signup`}
+          component={Signup}
         />
         <PrivateRoute path="/" />
       </Switch>

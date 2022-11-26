@@ -1,21 +1,19 @@
 import { ArrowLeft16, ArrowRight16, Loop32 } from "@carbon/icons-react";
 import { Divider } from "antd";
-// import Countdown from "react-countdown";
-// import OtpInput from "react-otp-input";
 import { Button, FormItem } from "react3l-ui-library";
-import InputTextLogin from "./InputTextLogin/InputTextLogin";
+import InputTextLogin from "../InputTextLogin/InputTextLogin";
 
 export interface GetOtpProps {
   onChangeOtp?: (ev: any) => void;
   onSendOtp?: () => void;
-  showLogin?: () => void;
+  showSignup?: () => void;
   otp?: string;
 }
 
 export default function GetOtp({
   onChangeOtp,
   onSendOtp,
-  showLogin,
+  showSignup,
   otp,
 }: GetOtpProps) {
   return (
@@ -27,12 +25,12 @@ export default function GetOtp({
       </div>
 
       <h2 className="login-page__content--title forgot-password">
-        Đổi mật khẩu
+        Xác thực Email
       </h2>
 
       <div className="login-page__content--under-title m-t--xxs">
         Hệ thống đã gửi một mail kèm mã OTP tới địa chỉ Email bạn vừa nhập. Vui
-        lòng kiểm tra hộp thư và điền thông tin mã OTP sau đó bấm Xác nhận.
+        lòng kiểm tra hộp thư và điền thông tin mã OTP sau đó bấm Xác thực.
       </div>
 
       <Divider className="login-page__content--divider" />
@@ -56,13 +54,13 @@ export default function GetOtp({
             className="login-button btn--lg"
             onClick={onSendOtp}
           >
-            Xác nhận
+            Xác thực
           </Button>
         </div>
 
-        <div className="login-page__button--go-back" onClick={showLogin}>
+        <div className="login-page__button--go-back" onClick={showSignup}>
           <ArrowLeft16 />
-          <div className="go-back__label">Quay lại trang đăng nhập</div>
+          <div className="go-back__label">Quay lại trang đăng ký</div>
         </div>
       </div>
     </div>

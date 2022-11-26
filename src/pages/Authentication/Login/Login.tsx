@@ -7,46 +7,36 @@ import LoginHeader from "./LoginHeader";
 import { Loop32, UserAvatar16, View16, Login16 } from "@carbon/icons-react";
 import { FormItem, Button } from "react3l-ui-library";
 import InputTextLogin from "./InputTextLogin/InputTextLogin";
+import GetOtp from "./GetOtp";
+import ForgotPassword from "./ForgotPassword";
+import { useHistory } from "react-router";
+import { SIGNUP_ROUTE } from "config/route-consts";
 
 function Login() {
   const [appUser, setAppUser] = useState<any>({
     usernameOrEmail: "",
     password: "",
   });
-  const [errorMessageUsername, setErrorMessageUsername] =
-    useState<string>(null);
-  const [errorMessagePass, setErrorMessagePass] = useState<string>(null);
 
   const {
+    otp,
+    email,
+    newPass,
     loginVisible,
     forgotPasswordVisible,
     getOtpVisible,
-    changePassVisible,
-    checkPass,
-    confirmPass,
     showForgotPassword,
     handleChangeEmail,
     handleChangeOtp,
     handleSendOtp,
-    handleSendMail,
     handleChangeNewPass,
-    handleChangeConfirmPassword,
-    handleChangePass,
+    handleSendMail,
     showLogin,
     handleLogin,
     handleChangeField,
     handleEnter,
-    otp,
-    email,
-    newPass,
-    successViewVisible,
-  } = useLogin(
-    appUser,
-    setAppUser,
-    setErrorMessageUsername,
-    setErrorMessagePass
-  );
-
+  } = useLogin(appUser, setAppUser);
+  const history = useHistory();
   return (
     <>
       <div className="login-page">
@@ -66,7 +56,7 @@ function Login() {
 
                 <div className="login-page__content--form">
                   <div className="login-page__username m-b--sm">
-                    <FormItem message={errorMessageUsername}>
+                    <FormItem>
                       <InputTextLogin
                         inputType="text"
                         label="Tên đăng nhập"
@@ -76,12 +66,16 @@ function Login() {
                           nameof(appUser.usernameOrEmail)
                         )}
                         placeHolder="Nhập tên đăng nhập"
+                        action={{
+                          name: "Quên mật khẩu",
+                          action: () => showForgotPassword(),
+                        }}
                         onKeyDown={handleEnter}
                       />
                     </FormItem>
                   </div>
                   <div className="login-page__password m-b--sm">
-                    <FormItem message={errorMessagePass}>
+                    <FormItem>
                       <InputTextLogin
                         inputType="password"
                         label="Mật khẩu"
@@ -99,10 +93,6 @@ function Login() {
                       icon={<Login16 />}
                       className="login-button btn--lg"
                       onClick={handleLogin}
-                      disabled={
-                        errorMessagePass !== null ||
-                        errorMessageUsername !== null
-                      }
                     >
                       Đăng nhập
                     </Button>
@@ -167,6 +157,9 @@ function Login() {
                       paddingBottom: "60px",
                     }}
                     className="contact-admin"
+                    onClick={() => {
+                      return history.push(SIGNUP_ROUTE);
+                    }}
                   >
                     Chưa có tài khoản?{" "}
                     <span style={{ color: "var(--palette-blue-40)" }}>
@@ -177,6 +170,25 @@ function Login() {
               </div>
             )}
           </div>
+          {forgotPasswordVisible && (
+            <ForgotPassword
+              onChangeEmail={handleChangeEmail}
+              onChangeNewPass={handleChangeNewPass}
+              onSendMail={handleSendMail}
+              showLogin={showLogin}
+              email={email}
+              newPass={newPass}
+            />
+          )}
+
+          {getOtpVisible && (
+            <GetOtp
+              onChangeOtp={handleChangeOtp}
+              onSendOtp={handleSendOtp}
+              otp={otp}
+              showLogin={showLogin}
+            />
+          )}
 
           <div>
             <img

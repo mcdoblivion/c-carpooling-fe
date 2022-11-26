@@ -4,6 +4,9 @@ export const ROOT_ROUTE: string = process.env.PUBLIC_URL;
 export const LOGIN_ROUTE: string = ROOT_ROUTE
   ? ROOT_ROUTE + "/login"
   : "/login";
+export const SIGNUP_ROUTE: string = ROOT_ROUTE
+  ? ROOT_ROUTE + "/signup"
+  : "/signup";
 export const LOGOUT_ROUTE: string = ROOT_ROUTE
   ? ROOT_ROUTE + "/logout"
   : "/logout";

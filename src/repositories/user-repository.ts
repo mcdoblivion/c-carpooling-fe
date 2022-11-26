@@ -79,6 +79,19 @@ export class UserRepository extends Repository {
   public save = (appUser: AppUser): Observable<AppUser> => {
     return appUser.userProfile ? this.update(appUser) : this.create(appUser);
   };
+  public changePassword = (
+    id: number,
+    payload: AppUser
+  ): Observable<AppUser> => {
+    return this.http
+      .put(`users/${id}/password`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+  public forgotPassword = (payload: AppUser): Observable<AppUser> => {
+    return this.http
+      .post(`users/password`, payload)
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
 }
 
 export const userRepository = new UserRepository();

@@ -1,16 +1,35 @@
 import { AppUser } from "models/AppUser";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { authRepository } from "repositories/auth-repository";
 import { userRepository } from "repositories/user-repository";
 import authenticationService from "services/common-services/authentication-service";
 import store from "store";
 import { updateUser } from "store/global-state/actions";
-export default function useLogin(
-  appUser: any,
-  setAppUser: any,
-  setErrorMessageUsername: any,
-  setErrorMessagePass: any
-) {
+import { AxiosError } from "axios";
+import { notification } from "antd";
+import { LOGIN_ROUTE } from "config/route-consts";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
+
+export default function useLogin(appUser: any, setAppUser: any) {
+  const [loginVisible, setLoginVisible] = useState(true);
+  const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
+  const [getOtpVisible, setGetOtpVisible] = useState(false);
+  const [email, setEmail] = useState<string>(null);
+  const [otp, setOtp] = useState<string>(null);
+  const [newPass, setNewPass] = useState<string>(null);
+
+  const showForgotPassword = () => {
+    setLoginVisible(false);
+    setForgotPasswordVisible(true);
+  };
+  const showLogin = () => {
+    setLoginVisible(true);
+    setForgotPasswordVisible(false);
+    setGetOtpVisible(false);
+    setOtp(null);
+    setEmail(null);
+    setNewPass(null);
+  };
   const handleLogin = useCallback(() => {
     authRepository.login(appUser).subscribe(
       (res) => {
@@ -36,14 +55,67 @@ export default function useLogin(
       },
       (error) => {
         if (error.response && error.response.status === 400) {
-          const { username, password } = error.response.data?.errors;
-          if (typeof username !== "undefined")
-            setErrorMessageUsername(username);
-          if (typeof password !== "undefined") setErrorMessagePass(password);
+          handleErrorNoti(error);
         }
       }
     );
-  }, [appUser, setErrorMessagePass, setErrorMessageUsername]);
+  }, [appUser]);
+
+  const handleChangeEmail = useCallback((event) => {
+    setEmail(event);
+  }, []);
+
+  // handle change otp
+  const handleChangeOtp = useCallback((event) => {
+    setOtp(event);
+  }, []);
+
+  // SendOtp
+
+  const handleSendOtp = useCallback(() => {
+    userRepository
+      .forgotPassword({
+        usernameOrEmail: email,
+        newPassword: newPass,
+        otp: otp,
+      })
+      .subscribe(
+        () => {
+          notification.success({
+            placement: "bottomRight",
+            message: "Đổi mật khẩu thành công",
+          });
+          window.location.href = LOGIN_ROUTE;
+        },
+        (error: AxiosError<AppUser>) => {
+          if (error.response && error.response.status === 400) {
+            handleErrorNoti(error);
+          }
+        }
+      );
+  }, [email, newPass, otp]);
+
+  // Send mail to get otp
+  const handleSendMail = useCallback(() => {
+    userRepository
+      .forgotPassword({ usernameOrEmail: email, newPassword: newPass })
+      .subscribe(
+        () => {
+          setForgotPasswordVisible(false);
+          setGetOtpVisible(true);
+        },
+        (error: any) => {
+          if (error.response && error.response.status === 400) {
+            handleErrorNoti(error);
+          }
+        }
+      );
+  }, [email, newPass]);
+
+  // Get new pass word
+  const handleChangeNewPass = useCallback((event) => {
+    setNewPass(event);
+  }, []);
 
   const handleSetValue = useCallback(
     (field: string, value?: string | number | boolean | null) => {
@@ -52,10 +124,8 @@ export default function useLogin(
         [field]: value,
         errors: undefined,
       });
-      setErrorMessagePass(null);
-      setErrorMessageUsername(null);
     },
-    [appUser, setAppUser, setErrorMessagePass, setErrorMessageUsername]
+    [appUser, setAppUser]
   );
 
   const handleChangeField = useCallback(
@@ -75,6 +145,19 @@ export default function useLogin(
     [handleLogin]
   );
   return {
+    otp,
+    email,
+    newPass,
+    loginVisible,
+    forgotPasswordVisible,
+    getOtpVisible,
+    showForgotPassword,
+    handleChangeEmail,
+    handleChangeOtp,
+    handleSendOtp,
+    handleChangeNewPass,
+    handleSendMail,
+    showLogin,
     handleLogin,
     handleChangeField,
     handleEnter,
