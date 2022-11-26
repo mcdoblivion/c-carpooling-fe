@@ -114,10 +114,7 @@ export default function useVehicleMaster() {
   const handleVerify = useCallback(
     (id) => {
       setLoadingList(true);
-      vehicleRepository
-        .verify(id)
-        .pipe(finalize(() => setLoadingList(false)))
-        .subscribe((res) => handleLoadList(filter));
+      vehicleRepository.verify(id).subscribe((res) => handleLoadList(filter));
     },
     [filter, handleLoadList]
   );

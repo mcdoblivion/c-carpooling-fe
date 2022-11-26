@@ -23,6 +23,7 @@ export const PrivateRoute = ({ ...rest }) => {
 
     userRepository.getMe(accessToken).subscribe((result) => {
       store.dispatch(updateUser(result));
+      localStorage.setItem("currentUserInfo", JSON.stringify(result.data));
     });
   }, []);
 
