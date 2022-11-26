@@ -12,7 +12,7 @@ import {
   ListState,
 } from "services/page-services/list-service";
 
-export default function useCarpoolingGroupFinding() {
+export default function useCarpoolingGroupFinding(reloadUser: () => void) {
   const [{ list }, dispatch] = useReducer<
     Reducer<ListState<AppUser>, ListAction<AppUser>>
   >(listReducer, { list: [], count: 0 });
@@ -112,11 +112,12 @@ export default function useCarpoolingGroupFinding() {
   }, [setVisiblePopupFee]);
 
   const handleConfirm = useCallback(() => {
-    carpoolingGroupRepository
-      .join(currentItem?.id)
-      .subscribe((res) => notifyUpdateItemSuccess());
+    carpoolingGroupRepository.join(currentItem?.id).subscribe((res) => {
+      notifyUpdateItemSuccess();
+      reloadUser();
+    });
     setVisiblePopupFee(false);
-  }, [currentItem?.id, notifyUpdateItemSuccess]);
+  }, [currentItem?.id, notifyUpdateItemSuccess, reloadUser]);
 
   const handleGoCreate = useCallback(() => {
     setVisibleDetail(true);

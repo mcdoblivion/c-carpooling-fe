@@ -50,7 +50,7 @@ function CarpoolingGroupFinding(props: CarpoolingGroupFindingProps) {
     handleGoPreview,
     handleFindingGroup,
     handleOpenPopupFee,
-  } = useCarpoolingGroupFinding();
+  } = useCarpoolingGroupFinding(reloadUser);
 
   const columns: ColumnProps<AppUser>[] = useMemo(
     () => [
