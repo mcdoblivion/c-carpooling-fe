@@ -45,10 +45,26 @@ export default function useVehicleNormalMaster() {
           .pipe(finalize(() => setLoadingList(false)))
           .subscribe(
             (res) => {
+              let listVehicles = [];
+              if (res.data.length > 0) {
+                listVehicles = res.data.map(
+                  (vehicle: { id: number; licensePlate: string }) => {
+                    if (vehicle.id === user.driver.vehicleIdForCarpooling) {
+                      return {
+                        ...vehicle,
+                        licensePlate: `${vehicle.licensePlate} (Phương tiện đi chung)`,
+                      };
+                    }
+
+                    return vehicle;
+                  }
+                );
+              }
+
               dispatch({
                 type: ListActionType.SET,
                 payload: {
-                  list: res.data,
+                  list: listVehicles,
                   count: 0,
                 },
               });

@@ -84,10 +84,10 @@ function VehicleNormalMaster() {
       },
 
       {
-        title: <LayoutHeader orderType="left" title="Loại nhiên liệu" />,
-        key: nameof(list[0].fuelType),
-        dataIndex: nameof(list[0].fuelType),
-        width: 100,
+        title: <LayoutHeader orderType="left" title="Biển số" />,
+        key: nameof(list[0].licensePlate),
+        dataIndex: nameof(list[0].licensePlate),
+        width: 150,
         ellipsis: true,
         render(...params: [string, AppUser, number]) {
           return (
@@ -98,9 +98,9 @@ function VehicleNormalMaster() {
         },
       },
       {
-        title: <LayoutHeader orderType="left" title="Biển số" />,
-        key: nameof(list[0].licensePlate),
-        dataIndex: nameof(list[0].licensePlate),
+        title: <LayoutHeader orderType="left" title="Loại nhiên liệu" />,
+        key: nameof(list[0].fuelType),
+        dataIndex: nameof(list[0].fuelType),
         width: 100,
         ellipsis: true,
         render(...params: [string, AppUser, number]) {

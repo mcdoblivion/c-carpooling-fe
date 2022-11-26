@@ -169,7 +169,10 @@ function VehicleMaster() {
               <VirtualColumnKey16
                 color="#0f62fe"
                 style={{ cursor: "pointer" }}
-                onClick={() => handleVerify(id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleVerify(id);
+                }}
                 id="action"
               />
             </Tooltip>
