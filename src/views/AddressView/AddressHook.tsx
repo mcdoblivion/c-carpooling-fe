@@ -52,6 +52,10 @@ export default function useAddress() {
     }
   }, [subscription, token]);
 
+  useEffect(() => {
+    document.title = "Địa chỉ";
+  }, []);
+
   const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
   const handleChangeHomeAddress = useCallback(
     (selectedPlace: any) => {

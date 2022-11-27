@@ -88,6 +88,10 @@ export default function useWalletMaster() {
     [handleLoadList, user?.id]
   );
 
+  useEffect(() => {
+    document.title = "Ví C-Carpooling";
+  }, []);
+
   const handleGoCreate = useCallback(() => {
     setCurrentItem({
       ...new AppUser(),

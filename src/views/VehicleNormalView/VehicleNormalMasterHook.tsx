@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import { driverRepository } from "repositories/driver-repository";
 import { userRepository } from "repositories/user-repository";
 import { finalize } from "rxjs";
+import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
 import {
   ListAction,
@@ -19,6 +20,7 @@ import {
   listReducer,
   ListState,
 } from "services/page-services/list-service";
+const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
 export default function useVehicleNormalMaster() {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -94,13 +96,20 @@ export default function useVehicleNormalMaster() {
     }
   }, [handleLoadList, token]);
 
+  useEffect(() => {
+    document.title = "Phương tiện";
+  }, []);
+
   const handleSetMainVehicle = useCallback(
     (vehicleId) => {
       setLoadingList(true);
       driverRepository
         .mainVehicle(user?.driver?.id, vehicleId)
         .pipe(finalize(() => setLoadingList(false)))
-        .subscribe((res) => handleLoadList(user));
+        .subscribe((res) => {
+          notifyUpdateItemSuccess();
+          handleLoadList(user);
+        });
     },
     [handleLoadList, user]
   );

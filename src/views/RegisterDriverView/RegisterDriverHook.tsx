@@ -31,6 +31,10 @@ export default function useRegisterDriver() {
     }
   }, [subscription, token]);
 
+  useEffect(() => {
+    document.title = "Đăng ký trở thành tài xế";
+  }, []);
+
   const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
   const handleChangeDriverLicenseNumber = useCallback(

@@ -34,6 +34,10 @@ export default function useUserPreview() {
     }
   }, [subscription, token]);
 
+  useEffect(() => {
+    document.title = "Hồ sơ cá nhân";
+  }, []);
+
   const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
   const enumGender = useMemo(() => {

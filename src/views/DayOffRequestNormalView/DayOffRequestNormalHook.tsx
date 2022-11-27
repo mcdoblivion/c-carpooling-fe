@@ -1,5 +1,12 @@
 import { AppUser, AppUserFilter } from "models/AppUser";
-import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
+import {
+  Reducer,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 import { dayOffRequestRepository } from "repositories/day-off-requests-repository";
 import { userRepository } from "repositories/user-repository";
@@ -18,10 +25,23 @@ import {
   getAntOrderType,
   getOrderType,
 } from "services/page-services/table-service";
-import { getCurrentUserInfo } from "store";
 
 export default function useDayOffRequestNormal() {
-  const user = getCurrentUserInfo();
+  const token = JSON.parse(localStorage.getItem("token"));
+  const [user, setUser] = useState(new AppUser());
+  const firstLoad = useRef(true);
+
+  useEffect(() => {
+    if (firstLoad) {
+      userRepository.getMe(token).subscribe((res) => setUser(res?.data));
+      firstLoad.current = false;
+    }
+  }, [token]);
+
+  useEffect(() => {
+    document.title = "Yêu cầu nghỉ phép";
+  }, []);
+
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
