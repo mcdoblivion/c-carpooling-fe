@@ -100,8 +100,7 @@ export default function useVehicleNormalDetail() {
         goToVehicleMenu();
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [goToVehicleMenu, model, notifyUpdateItemSuccess]);

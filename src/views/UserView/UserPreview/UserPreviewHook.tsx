@@ -157,7 +157,7 @@ export default function useUserPreview() {
   );
 
   const handleError = useCallback((error) => {
-    if (error.response && error.response.status === 400) handleErrorNoti(error);
+    handleErrorNoti(error);
   }, []);
 
   const handleSave = useCallback(() => {

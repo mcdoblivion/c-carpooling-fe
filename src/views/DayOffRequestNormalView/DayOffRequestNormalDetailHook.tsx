@@ -89,8 +89,7 @@ export default function useDayOffRequestNormalDetail(
         handleClose();
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, notifyUpdateItemSuccess]);

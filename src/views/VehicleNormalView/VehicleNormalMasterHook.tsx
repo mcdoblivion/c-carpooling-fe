@@ -20,6 +20,7 @@ import {
   listReducer,
   ListState,
 } from "services/page-services/list-service";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
 export default function useVehicleNormalMaster() {
@@ -106,10 +107,15 @@ export default function useVehicleNormalMaster() {
       driverRepository
         .mainVehicle(user?.driver?.id, vehicleId)
         .pipe(finalize(() => setLoadingList(false)))
-        .subscribe((res) => {
-          notifyUpdateItemSuccess();
-          handleLoadList(user);
-        });
+        .subscribe(
+          (res) => {
+            notifyUpdateItemSuccess();
+            handleLoadList(user);
+          },
+          (error) => {
+            handleErrorNoti(error);
+          }
+        );
     },
     [handleLoadList, user]
   );

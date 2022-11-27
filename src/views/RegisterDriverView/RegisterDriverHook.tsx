@@ -88,8 +88,7 @@ export default function useRegisterDriver() {
           });
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [model, notifyUpdateItemSuccess, token]);

@@ -11,6 +11,7 @@ import {
   listReducer,
   ListState,
 } from "services/page-services/list-service";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useCarpoolingGroupFinding(reloadUser: () => void) {
   const [{ list }, dispatch] = useReducer<
@@ -112,10 +113,15 @@ export default function useCarpoolingGroupFinding(reloadUser: () => void) {
   }, [setVisiblePopupFee]);
 
   const handleConfirm = useCallback(() => {
-    carpoolingGroupRepository.join(currentItem?.id).subscribe((res) => {
-      notifyUpdateItemSuccess();
-      reloadUser();
-    });
+    carpoolingGroupRepository.join(currentItem?.id).subscribe(
+      (res) => {
+        notifyUpdateItemSuccess();
+        reloadUser();
+      },
+      (error) => {
+        handleErrorNoti(error);
+      }
+    );
     setVisiblePopupFee(false);
   }, [currentItem?.id, notifyUpdateItemSuccess, reloadUser]);
 

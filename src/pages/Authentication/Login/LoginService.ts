@@ -71,8 +71,8 @@ export default function useLogin(appUser: any, setAppUser: any) {
         }
       },
       (error) => {
-        setLoading(false);
         handleErrorNoti(error);
+        setLoading(false);
       }
     );
   }, [appUser, otp]);
@@ -109,9 +109,7 @@ export default function useLogin(appUser: any, setAppUser: any) {
             window.location.href = LOGIN_ROUTE;
           },
           (error: AxiosError<AppUser>) => {
-            if (error.response && error.response.status === 400) {
-              handleErrorNoti(error);
-            }
+            handleErrorNoti(error);
           }
         );
     }
@@ -126,9 +124,7 @@ export default function useLogin(appUser: any, setAppUser: any) {
           showOtp();
         },
         (error: any) => {
-          if (error.response && error.response.status === 400) {
-            handleErrorNoti(error);
-          }
+          handleErrorNoti(error);
         }
       );
   }, [email, newPass]);
