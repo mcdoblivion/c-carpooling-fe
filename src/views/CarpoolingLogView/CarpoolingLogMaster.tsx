@@ -16,6 +16,8 @@ import {
   Pagination,
   StandardTable,
 } from "react3l-ui-library";
+import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
+import { userRepository } from "repositories/user-repository";
 import nameof from "ts-nameof.macro";
 import useCarpoolingLogMaster from "./CarpoolingLogMasterHook";
 
@@ -34,8 +36,6 @@ function CarpoolingLogMaster() {
     handleChangeDirectionTypeFilter,
     handleChangeStatusFilter,
     handleChangeDateFilter,
-    appUserSearchFunc,
-    groupSearchFunc,
     statusSearchFunc,
     directionTypeSearchFunc,
   } = useCarpoolingLogMaster();
@@ -162,8 +162,10 @@ function CarpoolingLogMaster() {
                     <Select
                       label="Tên người dùng"
                       classFilter={AppUserFilter}
+                      searchProperty="search"
+                      searchType=""
                       placeHolder="Chọn người dùng"
-                      getList={appUserSearchFunc}
+                      getList={userRepository.getUsers}
                       render={(item) =>
                         item?.userProfile &&
                         `${item.userProfile?.firstName} ${item.userProfile?.lastName}`
@@ -178,7 +180,9 @@ function CarpoolingLogMaster() {
                     label="Nhóm đi chung"
                     classFilter={AppUserFilter}
                     placeHolder="Chọn nhóm đi chung"
-                    getList={groupSearchFunc}
+                    searchProperty="search"
+                    searchType=""
+                    getList={carpoolingGroupRepository.search}
                     render={(item) => item?.groupName}
                     onChange={handleChangeSelectFilter("carpoolingGroup")}
                     value={filter?.carpoolingGroup}
@@ -192,6 +196,7 @@ function CarpoolingLogMaster() {
                     getList={directionTypeSearchFunc}
                     onChange={handleChangeDirectionTypeFilter}
                     value={filter?.directionTypeValue}
+                    isEnumerable
                   />
                 </Col>
                 <Col lg={5}>
@@ -210,6 +215,7 @@ function CarpoolingLogMaster() {
                     getList={statusSearchFunc}
                     onChange={handleChangeStatusFilter}
                     value={filter?.statusValue}
+                    isEnumerable
                   />
                 </Col>
               </Row>
@@ -228,7 +234,7 @@ function CarpoolingLogMaster() {
             <Pagination
               skip={(filter?.page - 1) * filter?.limit}
               take={filter?.limit}
-              total={count * filter?.limit}
+              total={count}
               onChange={handlePagination}
             />
           </div>

@@ -14,6 +14,8 @@ import {
   Pagination,
   StandardTable,
 } from "react3l-ui-library";
+import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
+import { userRepository } from "repositories/user-repository";
 import nameof from "ts-nameof.macro";
 import useLeaveGroupRequestMaster from "./LeaveGroupRequestMasterHook";
 
@@ -29,8 +31,6 @@ function LeaveGroupRequestMaster() {
     handlePagination,
     handleChangeAppUserFilter,
     handleChangeGroupFilter,
-    appUserSearchFunc,
-    groupSearchFunc,
   } = useLeaveGroupRequestMaster();
 
   const columns: ColumnProps<AppUser>[] = useMemo(
@@ -113,7 +113,9 @@ function LeaveGroupRequestMaster() {
                     label="Tên người dùng"
                     classFilter={AppUserFilter}
                     placeHolder="Chọn người dùng"
-                    getList={appUserSearchFunc}
+                    searchProperty="search"
+                    searchType=""
+                    getList={userRepository.getUsers}
                     render={(item) =>
                       item?.userProfile &&
                       `${item.userProfile?.firstName} ${item.userProfile?.lastName}`
@@ -125,9 +127,11 @@ function LeaveGroupRequestMaster() {
                 <Col lg={6}>
                   <Select
                     label="Nhóm đi chung"
+                    searchProperty="search"
+                    searchType=""
                     classFilter={AppUserFilter}
                     placeHolder="Chọn nhóm đi chung"
-                    getList={groupSearchFunc}
+                    getList={carpoolingGroupRepository.search}
                     render={(item) => item?.groupName}
                     onChange={handleChangeGroupFilter}
                     value={filter?.carpoolingGroup}
@@ -153,7 +157,7 @@ function LeaveGroupRequestMaster() {
             <Pagination
               skip={(filter?.page - 1) * filter?.limit}
               take={filter?.limit}
-              total={count * filter?.limit}
+              total={count}
               onChange={handlePagination}
             />
           </div>

@@ -55,6 +55,7 @@ function DayOffRequestNormalDetail(props: DayOffRequestNormalDetailProps) {
               getList={directionTypeSearchFunc}
               onChange={handleChangeDayOfRequest("directionType")}
               value={currentModel?.directionTypeValue}
+              isEnumerable
             />
           </FormItem>
         </Col>

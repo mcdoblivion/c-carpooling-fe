@@ -193,6 +193,7 @@ function DriverMaster() {
                     getList={statusSearchFunc}
                     onChange={handleChangeStatusFilter}
                     value={filter?.statusValue}
+                    isEnumerable
                   />
                 </Col>
                 <Col lg={6}></Col>
@@ -223,7 +224,7 @@ function DriverMaster() {
             <Pagination
               skip={(filter?.page - 1) * filter?.limit}
               take={filter?.limit}
-              total={count * filter?.limit}
+              total={count}
               onChange={handlePagination}
             />
           </div>

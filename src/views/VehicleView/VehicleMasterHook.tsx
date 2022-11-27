@@ -51,7 +51,7 @@ export default function useVehicleMaster() {
                 type: ListActionType.SET,
                 payload: {
                   list: res.data.records,
-                  count: res.data.totalPages,
+                  count: res.data.total,
                 },
               });
             },

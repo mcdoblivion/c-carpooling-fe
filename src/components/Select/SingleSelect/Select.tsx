@@ -7,7 +7,7 @@ import { useDebounceFn } from "ahooks";
 import { Empty, Tooltip } from "antd";
 import classNames from "classnames";
 import React, { RefObject } from "react";
-import type { ErrorObserver, Observable } from "rxjs";
+import type { ErrorObserver } from "rxjs";
 import "./Select.scss";
 import { BORDER_TYPE } from "react3l-ui-library/build/config/enum";
 import { DEBOUNCE_TIME_300 } from "config/consts";
@@ -39,7 +39,7 @@ export interface SelectProps<
 
   isRequired?: boolean;
 
-  getList?: (TModelFilter?: TModelFilter) => Observable<T[]>;
+  getList?: any;
 
   onChange?: (id: number, T?: T) => void;
 
@@ -113,18 +113,31 @@ function Select(props: SelectProps<Model, ModelFilter>) {
     (valueFilter: ModelFilter) => {
       setLoading(true);
       subscription.add(getList);
-      getList(valueFilter).subscribe({
-        next: (res: Model[]) => {
-          setList(res);
-          setLoading(false);
-        },
-        error: (err: ErrorObserver<Error>) => {
-          setList([]);
-          setLoading(false);
-        },
-      });
+      if (isEnumerable) {
+        getList(valueFilter).subscribe({
+          next: (res: any) => {
+            setList(res);
+            setLoading(false);
+          },
+          error: (err: ErrorObserver<Error>) => {
+            setList([]);
+            setLoading(false);
+          },
+        });
+      } else {
+        getList(valueFilter).subscribe({
+          next: (res: any) => {
+            setList(res?.data?.records);
+            setLoading(false);
+          },
+          error: (err: ErrorObserver<Error>) => {
+            setList([]);
+            setLoading(false);
+          },
+        });
+      }
     },
-    [getList, subscription]
+    [getList, isEnumerable, subscription]
   );
 
   const handleLoadList = React.useCallback(() => {
