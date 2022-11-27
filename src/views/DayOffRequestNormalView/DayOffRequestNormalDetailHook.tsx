@@ -43,7 +43,7 @@ export default function useDayOffRequestNormalDetail(
         { id: 1, name: "Home to Work", code: "HTW" },
         { id: 2, name: "Work to Home", code: "WTH" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;

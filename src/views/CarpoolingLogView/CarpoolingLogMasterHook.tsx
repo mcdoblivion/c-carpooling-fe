@@ -109,8 +109,14 @@ export default function useCarpoolingLogMaster() {
   useEffect(() => {
     document.title = "Lịch sử đi chung";
 
-    const useInfo = getCurrentUserInfo();
-    useInfo?.role === ADMIN && setIsAdmin(true);
+    const interval = setInterval(() => {
+      const useInfo = getCurrentUserInfo();
+
+      if (useInfo) {
+        useInfo?.role === ADMIN && setIsAdmin(true);
+        clearInterval(interval);
+      }
+    }, 500);
   }, []);
 
   const handleTableChange = useCallback(
@@ -154,11 +160,7 @@ export default function useCarpoolingLogMaster() {
     (value, object) => {
       handleChangeAllFilter({
         ...filter,
-        isAbsent: object
-          ? object?.name === "Có tham gia"
-            ? false
-            : true
-          : null,
+        ...(object?.name && { isAbsent: object?.name !== "Có tham gia" }),
         statusValue: object,
       });
     },
@@ -194,10 +196,10 @@ export default function useCarpoolingLogMaster() {
   );
 
   const appUserObservable = new Observable<any[]>((observer) => {
-    userRepository.all().subscribe((res) => {
+    userRepository.getUsers(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
-        observer.next(res?.data);
-      }, 1000);
+        observer.next(res?.data?.records);
+      }, 500);
     });
   });
   const appUserSearchFunc = (TModelFilter?: any) => {
@@ -207,7 +209,7 @@ export default function useCarpoolingLogMaster() {
     carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data?.records);
-      }, 1000);
+      }, 500);
     });
   });
   const groupSearchFunc = (TModelFilter?: any) => {
@@ -220,7 +222,7 @@ export default function useCarpoolingLogMaster() {
         { id: 1, name: "Home to Work", code: "HTW" },
         { id: 2, name: "Work to Home", code: "WTH" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;
@@ -231,7 +233,7 @@ export default function useCarpoolingLogMaster() {
         { id: 1, name: "Có tham gia", code: "join" },
         { id: 2, name: "Nghỉ phép", code: "absent" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const statusSearchFunc = (TModelFilter?: any) => {
     return statusObservable;

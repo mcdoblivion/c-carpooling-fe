@@ -152,7 +152,7 @@ export default function useLeaveGroupRequestMaster() {
     userRepository.all().subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data);
-      }, 1000);
+      }, 500);
     });
   });
   const appUserSearchFunc = (TModelFilter?: any) => {
@@ -162,7 +162,7 @@ export default function useLeaveGroupRequestMaster() {
     carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data?.records);
-      }, 1000);
+      }, 500);
     });
   });
   const groupSearchFunc = (TModelFilter?: any) => {

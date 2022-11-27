@@ -123,7 +123,7 @@ export default function useDriverMaster() {
         { id: 2, name: "Rejected", code: "Rejected" },
         { id: 3, name: "Pending", code: "Pending" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const statusSearchFunc = (TModelFilter?: any) => {
     return statusObservable;

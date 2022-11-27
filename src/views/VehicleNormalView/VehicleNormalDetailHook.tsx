@@ -58,7 +58,7 @@ export default function useVehicleNormalDetail() {
         { id: 1, name: "Gasoline", code: "1" },
         { id: 2, name: "Diesel", code: "2" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const fuelTypeSearchFunc = (TModelFilter?: any) => {
     return fuelTypeObservable;
