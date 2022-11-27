@@ -46,10 +46,10 @@ const CreditCard = (props: CreditCardProps) => {
           <div className="d-flex justify-content-between">
             <div className="w-100">
               <div className="Expire">
-                <p>02/30</p>
+                <p>MM/YY</p>
               </div>
               <div className="Name">
-                <h3>DONG MINH CUONG</h3>
+                <h3>**** **** ****</h3>
               </div>
             </div>
 

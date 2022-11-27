@@ -14,7 +14,6 @@ import {
 } from "react3l-ui-library";
 import nameof from "ts-nameof.macro";
 import useVehicleMaster from "./WalletMasterHook";
-import WalletPreview from "./WalletPreview";
 import "react-credit-cards/es/styles-compiled.css";
 import { formatNumber } from "helpers/number";
 import CreditCard from "components/CreditCard/CreditCard";
@@ -28,15 +27,12 @@ function WalletMaster() {
     user,
     list,
     loadingList,
-    visiblePreview,
     visibleDetail,
     visibleTopup,
     currentItem,
-    handleGoPreview,
     handleGoTopUp,
     handleCloseDetail,
     handleCloseTopup,
-    handleClosePreview,
     handleDelete,
     handleGoCreate,
     handleLoadList,
@@ -51,7 +47,7 @@ function WalletMaster() {
             className="ant-action-menu"
             onClick={(e) => {
               e.stopPropagation();
-              handleGoTopUp(model?.id);
+              handleGoTopUp(model);
             }}
           >
             Nạp tiền vào ví
@@ -112,7 +108,9 @@ function WalletMaster() {
         render(...params: [string, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText value={params[0]} />
+              <OneLineText
+                value={params[0] === "visa" ? "Visa" : "Master Card"}
+              />
             </LayoutCell>
           );
         },
@@ -162,10 +160,8 @@ function WalletMaster() {
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
                 <Col lg={6}>
                   <div className="text__with__label_vertical">
-                    <span>Số dư hiện tại: </span>
-                    <span>
-                      {formatNumber(user?.wallet?.currentBalance)} VNĐ
-                    </span>
+                    <h2>Số dư hiện tại: </h2>
+                    <h2>{formatNumber(user?.wallet?.currentBalance)} VND</h2>
                   </div>
                 </Col>
 
@@ -179,7 +175,7 @@ function WalletMaster() {
                     icon={<Add16 />}
                     onClick={handleGoCreate}
                   >
-                    Tạo mới thẻ
+                    Thêm thẻ tín dụng
                   </Button>
                 </Col>
               </Row>
@@ -193,24 +189,10 @@ function WalletMaster() {
               isDragable={true}
               tableSize={"md"}
               scroll={{ x: 1000 }}
-              onRow={(record, rowIndex) => {
-                return {
-                  onClick: (event: any) => {
-                    if (event?.target?.id !== "action") {
-                      handleGoPreview(record);
-                    }
-                  },
-                };
-              }}
             />
           </div>
         </div>
       </div>
-      <WalletPreview
-        visible={visiblePreview}
-        model={currentItem}
-        handleClose={handleClosePreview}
-      />
       <WalletDetail
         visible={visibleDetail}
         model={currentItem}

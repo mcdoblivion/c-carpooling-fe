@@ -33,7 +33,7 @@ function Topup(props: TopupProps) {
       titleButtonCancel="Đóng"
       loading={false}
       size={"sm"}
-      title={`Nạp tiền vào thẻ số ${currentModel?.paymentMethodId}`}
+      title={`Nạp tiền bằng thẻ ${currentModel?.lastFourDigits}`}
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col lg={24} className="m-b--lg">

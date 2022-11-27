@@ -41,7 +41,7 @@ function WalletDetail(props: WalletDetailProps) {
           <Cards
             cvc={currentModel?.cvc}
             expiry={`${currentModel?.expiry}`}
-            name="DONG MINH CUONG"
+            name="CARD OWNER NAME"
             number={currentModel?.cardNumber || "0000000000000000"}
             focused={focused}
           />
@@ -49,10 +49,10 @@ function WalletDetail(props: WalletDetailProps) {
 
         <Col lg={24} className="m-b--lg m-t--lg">
           <FormItem>
-            <InputNumber
+            <InputText
               value={currentModel?.cardNumber}
               label="Số thẻ"
-              placeHolder="Nhập Số thẻ"
+              placeHolder="Nhập số thẻ"
               onChange={handleChangeSingleField("cardNumber")}
             />
           </FormItem>
@@ -61,8 +61,8 @@ function WalletDetail(props: WalletDetailProps) {
           <FormItem>
             <InputText
               value={currentModel?.expiry}
-              label="Ngày hết hạn ghi trên thẻ"
-              placeHolder="Nhập Ngày hết hạn ghi trên thẻ"
+              label="Ngày hết hạn"
+              placeHolder="Nhập ngày hết hạn ghi trên thẻ"
               onChange={handleChangeDateField("expiry")}
               maxLength={5}
             />
@@ -72,10 +72,10 @@ function WalletDetail(props: WalletDetailProps) {
           <FormItem>
             <InputNumber
               value={currentModel?.cvc}
-              label="cvc"
+              label="CVC"
               placeHolder="Nhập CVC"
               onChange={handleChangeSingleField("cvc")}
-              max={9999}
+              max={999}
             />
           </FormItem>
         </Col>

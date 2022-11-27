@@ -10,6 +10,7 @@ import {
 import { userRepository } from "repositories/user-repository";
 import { walletRepository } from "repositories/wallets-repository";
 import { finalize } from "rxjs";
+import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
 import {
   ListAction,
@@ -17,6 +18,7 @@ import {
   listReducer,
   ListState,
 } from "services/page-services/list-service";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useWalletMaster() {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -27,7 +29,6 @@ export default function useWalletMaster() {
 
   const [loadingList, setLoadingList] = useState<boolean>(false);
   const [visibleDetail, setVisibleDetail] = useState<boolean>(false);
-  const [visiblePreview, setVisiblePreview] = useState<boolean>(false);
   const [visibleTopup, setVisibleTopup] = useState<boolean>(false);
 
   const [user, setUser] = useState(new AppUser());
@@ -37,9 +38,12 @@ export default function useWalletMaster() {
   });
 
   const [subscription] = webService.useSubscription();
+  const { notifyUpdateItemSuccess } = appMessageService.useCRUDMessage();
 
   const handleLoadList = useCallback(
     (id) => {
+      setLoadingList(true);
+
       subscription.add(
         walletRepository
           .getCards(id)
@@ -81,11 +85,17 @@ export default function useWalletMaster() {
 
   const handleDelete = useCallback(
     (cardId: number) => {
-      walletRepository
-        .deleteCard(user?.id, cardId)
-        .subscribe((res) => handleLoadList(user?.id));
+      walletRepository.deleteCard(user?.id, cardId).subscribe(
+        (res) => {
+          notifyUpdateItemSuccess();
+          handleLoadList(user?.id);
+        },
+        (error) => {
+          handleErrorNoti(error);
+        }
+      );
     },
-    [handleLoadList, user?.id]
+    [handleLoadList, notifyUpdateItemSuccess, user?.id]
   );
 
   useEffect(() => {
@@ -96,34 +106,24 @@ export default function useWalletMaster() {
     setCurrentItem({
       ...new AppUser(),
       id: user?.id,
-      expiry: "12/30",
+      expiry: "MM/YY",
     });
     setVisibleDetail(true);
   }, [user?.id]);
 
   const handleGoTopUp = useCallback(
-    (cardId: number) => {
+    (card) => {
       setCurrentItem({
         ...new AppUser(),
         id: user?.id,
-        paymentMethodId: cardId,
+        paymentMethodId: card.id,
+        lastFourDigits: card.lastFourDigits,
       });
       setVisibleTopup(true);
     },
     [user?.id]
   );
 
-  const handleGoPreview = useCallback(
-    (model: AppUser) => {
-      setCurrentItem(model);
-      setVisiblePreview(true);
-      setVisibleDetail(false);
-    },
-    [setCurrentItem]
-  );
-  const handleClosePreview = useCallback(() => {
-    setVisiblePreview(false);
-  }, []);
   const handleCloseDetail = useCallback(() => {
     setVisibleDetail(false);
   }, []);
@@ -137,14 +137,11 @@ export default function useWalletMaster() {
     list,
     count,
     loadingList,
-    visiblePreview,
     visibleDetail,
     visibleTopup,
     currentItem,
     handleDelete,
-    handleGoPreview,
     handleGoTopUp,
-    handleClosePreview,
     handleCloseDetail,
     handleCloseTopup,
     handleGoCreate,
