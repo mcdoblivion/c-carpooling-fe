@@ -9,6 +9,7 @@ import {
   FormItem,
   InputText,
 } from "react3l-ui-library";
+import InputPassword from "./InputPassword/InputPassword";
 import "./UserPreview.scss";
 import useUserPreview from "./UserPreviewHook";
 
@@ -16,6 +17,7 @@ function UserPreview() {
   const {
     loading,
     model,
+    changePassword,
     handleChangeAvatar,
     handleChangeUserProfile,
     singleList2FAMethod,
@@ -134,6 +136,36 @@ function UserPreview() {
                     />
                   </FormItem>
                 </Col>
+                {changePassword ? (
+                  <>
+                    <Col lg={12} className="m-b--sm">
+                      <FormItem>
+                        <InputPassword
+                          inputType="password"
+                          label="Mật khẩu hiện tại"
+                          value={model?.currentPassword}
+                          onChange={handleChangeUserProfile("currentPassword")}
+                          placeHolder="Nhập mật khẩu hiện tại"
+                        />
+                      </FormItem>
+                    </Col>
+                    <Col lg={12} className="m-b--sm">
+                      <FormItem>
+                        <InputText
+                          label="Số CMND/Số căn cước"
+                          type={0}
+                          value={model?.userProfile?.ICNumber}
+                          className={"tio-account_square_outlined"}
+                          onChange={handleChangeUserProfile("ICNumber")}
+                          placeHolder="Nhập số CMND/Số căn cước..."
+                          isRequired
+                        />
+                      </FormItem>
+                    </Col>
+                  </>
+                ) : (
+                  <></>
+                )}
               </Row>
             </Col>
             <Col lg={6}>

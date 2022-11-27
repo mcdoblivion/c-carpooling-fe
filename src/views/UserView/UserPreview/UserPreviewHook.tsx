@@ -8,6 +8,7 @@ import { userRepository } from "repositories/user-repository";
 import { finalize, Observable } from "rxjs";
 import appMessageService from "services/common-services/app-message-service";
 import { webService } from "services/common-services/web-service";
+import { queryStringService } from "services/page-services/query-string-service";
 import { handleErrorNoti } from "views/AddressView/AddressHook";
 export default function useUserPreview() {
   const firstLoad = useRef(true);
@@ -17,6 +18,8 @@ export default function useUserPreview() {
   const [isCreatingProfile, setIsCreatingProfile] = useState(false);
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
+  const { changePassword }: any =
+    queryStringService.useGetQueryString("changePassword");
 
   useEffect(() => {
     if (firstLoad) {
@@ -98,6 +101,14 @@ export default function useUserPreview() {
           setModel({ ...model, phoneNumber: value });
           break;
 
+        case "currentPassword":
+          setModel({ ...model, currentPassword: value });
+          break;
+
+        case "newPassword":
+          setModel({ ...model, newPassword: value });
+          break;
+
         case "dateOfBirth":
           userProfile["dateOfBirth"] = (value as Moment).format("YYYY-MM-DD");
           break;
@@ -160,16 +171,37 @@ export default function useUserPreview() {
   }, []);
 
   const handleSave = useCallback(() => {
-    const userObservable = isCreatingProfile
-      ? userRepository.create(model)
-      : userRepository.update(model);
+    if (changePassword) {
+      userRepository.changePassword(model?.id, model).subscribe(
+        (res) => {
+          window.location.href = `/carpooling/users-preview?id=${
+            model?.id
+          }&&changePassword=${true}`;
+          notification.success({
+            placement: "bottomRight",
+            message: "Cập nhật mật khẩu thành công",
+          });
+        },
+        (err) => {
+          notification.error({
+            placement: "bottomRight",
+            message: "Cập nhật mật khẩu thất bại",
+          });
+        }
+      );
+    } else {
+      const userObservable = isCreatingProfile
+        ? userRepository.create(model)
+        : userRepository.update(model);
 
-    userObservable.subscribe(handleSuccess, handleError);
-  }, [handleError, handleSuccess, isCreatingProfile, model]);
+      userObservable.subscribe(handleSuccess, handleError);
+    }
+  }, [changePassword, handleError, handleSuccess, isCreatingProfile, model]);
 
   return {
     loading,
     model,
+    changePassword,
     goToHomePage,
     handleChangeAvatar,
     handleChangeUserProfile,

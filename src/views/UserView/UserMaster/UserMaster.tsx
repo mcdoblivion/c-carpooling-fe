@@ -239,7 +239,7 @@ function UserMaster() {
                     label="Tìm kiếm"
                     placeHolder="Tìm kiếm"
                     value={filter?.search}
-                    onChange={handleChangeInputSearch}
+                    onEnter={handleChangeInputSearch}
                   />
                 </Col>
                 <Col lg={6}></Col>

@@ -1,7 +1,9 @@
+import { StringFilter } from "react3l-advanced-filters";
 import { ModelFilter } from "react3l-common";
 
 export class AppUserFilter extends ModelFilter {
   public search?: string = "";
+  public name?: StringFilter = new StringFilter();
   public userId?: number = null;
   public id?: any;
   public carpoolingGroupId?: number = null;

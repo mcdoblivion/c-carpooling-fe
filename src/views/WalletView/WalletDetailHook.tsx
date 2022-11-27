@@ -16,6 +16,7 @@ export default function useWalletDetail(
   useEffect(() => {
     if (firstLoad) {
       setCurrentModel(model);
+      setFocused("name");
       firstLoad.current = false;
     }
   }, [model]);

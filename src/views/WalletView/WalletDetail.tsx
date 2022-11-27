@@ -37,13 +37,16 @@ function WalletDetail(props: WalletDetailProps) {
       title={"Thêm thẻ"}
     >
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Cards
-          cvc={currentModel?.cvc || 111}
-          expiry={`${currentModel?.expiry}`}
-          name="DONG MINH CUONG"
-          number={currentModel?.cardNumber || "0000000000000000"}
-          focused={focused}
-        />
+        {currentModel && (
+          <Cards
+            cvc={currentModel?.cvc}
+            expiry={`${currentModel?.expiry}`}
+            name="DONG MINH CUONG"
+            number={currentModel?.cardNumber || "0000000000000000"}
+            focused={focused}
+          />
+        )}
+
         <Col lg={24} className="m-b--lg m-t--lg">
           <FormItem>
             <InputNumber
