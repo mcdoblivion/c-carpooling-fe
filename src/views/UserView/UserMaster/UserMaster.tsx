@@ -129,9 +129,7 @@ function UserMaster() {
         render(...params: [string, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText
-                value={params[1]?.userProfile?.gender === "Male" ? "Nam" : "Nữ"}
-              />
+              <OneLineText value={params[1]?.userProfile?.gender || "Nữ"} />
             </LayoutCell>
           );
         },
@@ -179,7 +177,7 @@ function UserMaster() {
         },
       },
       {
-        title: <LayoutHeader orderType="left" title="Ngày tạo" />,
+        title: <LayoutHeader orderType="left" title="Ngày đăng ký" />,
         key: nameof(list[0].createdAt),
         dataIndex: nameof(list[0].createdAt),
         width: 80,
@@ -207,7 +205,7 @@ function UserMaster() {
               <Dropdown
                 overlay={menuAction(id, appUser)}
                 trigger={["click"]}
-                placement="bottomCenter"
+                placement="bottom"
                 arrow
               >
                 <OverflowMenuHorizontal24 />

@@ -149,9 +149,9 @@ export default function useLeaveGroupRequestMaster() {
   );
 
   const appUserObservable = new Observable<any[]>((observer) => {
-    userRepository.all().subscribe((res) => {
+    userRepository.getUsers(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
-        observer.next(res?.data);
+        observer.next(res?.data?.records);
       }, 500);
     });
   });
