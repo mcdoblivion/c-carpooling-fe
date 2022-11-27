@@ -16,6 +16,7 @@ import {
   Pagination,
   StandardTable,
 } from "react3l-ui-library";
+import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 import nameof from "ts-nameof.macro";
 import DayOffRequestNormalDetail from "./DayOffRequestNormalDetail";
 import useDayOffRequestNormal from "./DayOffRequestNormalHook";
@@ -38,7 +39,6 @@ function DayOffRequestNormal() {
     handlePagination,
     handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
-    groupSearchFunc,
     directionTypeSearchFunc,
     handleDelete,
     handleGoCreate,
@@ -181,9 +181,11 @@ function DayOffRequestNormal() {
                 <Col lg={6}>
                   <Select
                     label="Nhóm đi chung"
+                    searchProperty="search"
+                    searchType=""
                     classFilter={AppUserFilter}
                     placeHolder="Chọn nhóm đi chung"
-                    getList={groupSearchFunc}
+                    getList={carpoolingGroupRepository.search}
                     render={(item) => item?.groupName}
                     onChange={handleChangeSelectFilter("carpoolingGroup")}
                     value={filter?.carpoolingGroup}
@@ -198,6 +200,7 @@ function DayOffRequestNormal() {
                     getList={directionTypeSearchFunc}
                     onChange={handleChangeDirectionTypeFilter}
                     value={filter?.directionTypeValue}
+                    isEnumerable
                   />
                 </Col>
 

@@ -124,6 +124,7 @@ function VehicleNormalDetail() {
                   value={model?.fuelTypeValue}
                   isRequired
                   type={0}
+                  isEnumerable
                 />
               </FormItem>
             </Col>

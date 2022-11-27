@@ -14,6 +14,8 @@ import {
   Pagination,
   StandardTable,
 } from "react3l-ui-library";
+import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
+import { userRepository } from "repositories/user-repository";
 import nameof from "ts-nameof.macro";
 import useDayOffRequestMaster from "./DayOffRequestMasterHook";
 
@@ -29,8 +31,6 @@ function DayOffRequestMaster() {
     handlePagination,
     handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
-    appUserSearchFunc,
-    groupSearchFunc,
     directionTypeSearchFunc,
   } = useDayOffRequestMaster();
   const columns: ColumnProps<AppUser>[] = useMemo(
@@ -125,9 +125,11 @@ function DayOffRequestMaster() {
                 <Col lg={6}>
                   <Select
                     label="Tên người dùng"
+                    searchProperty="search"
+                    searchType=""
                     classFilter={AppUserFilter}
                     placeHolder="Chọn người dùng"
-                    getList={appUserSearchFunc}
+                    getList={userRepository.getUsers}
                     render={(item) =>
                       item?.userProfile &&
                       `${item.userProfile?.firstName} ${item.userProfile?.lastName}`
@@ -140,8 +142,10 @@ function DayOffRequestMaster() {
                   <Select
                     label="Nhóm đi chung"
                     classFilter={AppUserFilter}
+                    searchProperty="search"
+                    searchType=""
                     placeHolder="Chọn nhóm đi chung"
-                    getList={groupSearchFunc}
+                    getList={carpoolingGroupRepository.search}
                     render={(item) => item?.groupName}
                     onChange={handleChangeSelectFilter("carpoolingGroup")}
                     value={filter?.carpoolingGroup}
@@ -156,6 +160,7 @@ function DayOffRequestMaster() {
                     getList={directionTypeSearchFunc}
                     onChange={handleChangeDirectionTypeFilter}
                     value={filter?.directionTypeValue}
+                    isEnumerable
                   />
                 </Col>
 

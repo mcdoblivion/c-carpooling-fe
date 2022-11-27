@@ -193,6 +193,7 @@ function DriverMaster() {
                     getList={statusSearchFunc}
                     onChange={handleChangeStatusFilter}
                     value={filter?.statusValue}
+                    isEnumerable
                   />
                 </Col>
                 <Col lg={6}></Col>

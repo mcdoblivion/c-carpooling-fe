@@ -48,14 +48,6 @@ export default function useCarpoolingLogMaster() {
 
   const [loadingList, setLoadingList] = useState<boolean>(false);
 
-  // const [defaultFilter] = useState<any>({
-  //   ...filter,
-  //   page: 1,
-  //   limit: 10,
-  //   userId: null,
-  //   carpoolingGroupId: null,
-  // });
-
   const [subscription] = webService.useSubscription();
 
   const handleLoadList = useCallback(

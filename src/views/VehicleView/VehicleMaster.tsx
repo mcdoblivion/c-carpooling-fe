@@ -207,6 +207,7 @@ function VehicleMaster() {
                     getList={fuelTypeSearchFunc}
                     onChange={handleChangeFuelTypeFilter}
                     value={filter?.fuelTypeValue}
+                    isEnumerable
                   />
                 </Col>
                 <Col lg={6}>
@@ -217,6 +218,7 @@ function VehicleMaster() {
                     getList={isVerifiedSearchFunc}
                     onChange={handleChangeVerifiedFilter}
                     value={filter?.verifiedValue}
+                    isEnumerable
                   />
                 </Col>
 
