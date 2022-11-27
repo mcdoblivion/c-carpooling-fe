@@ -102,6 +102,10 @@ export default function useLeaveGroupRequestMaster() {
     }
   }, [autoCallListByChange, filter, handleLoadList]);
 
+  useEffect(() => {
+    document.title = "Quản lý yêu cầu rời nhóm";
+  }, []);
+
   const handleTableChange = useCallback(
     (...[, , sorter]) => {
       let newFilter = { ...filter }; // dont check pagination change because of we customize it

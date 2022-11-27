@@ -82,6 +82,10 @@ export default function useCarpoolingGroupMaster() {
     }
   }, [autoCallListByChange, filter, handleLoadList]);
 
+  useEffect(() => {
+    document.title = "Quản lý nhóm đi chung xe";
+  }, []);
+
   const handleTableChange = useCallback(
     (...[, , sorter]) => {
       let newFilter = { ...filter }; // dont check pagination change because of we customize it

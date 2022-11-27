@@ -86,6 +86,10 @@ export default function useVehicleMaster() {
     }
   }, [autoCallListByChange, filter, handleLoadList]);
 
+  useEffect(() => {
+    document.title = "Quản lý phương tiện";
+  }, []);
+
   const handleTableChange = useCallback(
     (...[, , sorter]) => {
       let newFilter = { ...filter }; // dont check pagination change because of we customize it

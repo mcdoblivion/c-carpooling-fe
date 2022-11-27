@@ -96,6 +96,10 @@ export default function useVehicleNormalMaster() {
     }
   }, [handleLoadList, token]);
 
+  useEffect(() => {
+    document.title = "Phương tiện";
+  }, []);
+
   const handleSetMainVehicle = useCallback(
     (vehicleId) => {
       setLoadingList(true);

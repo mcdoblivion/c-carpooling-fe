@@ -23,6 +23,10 @@ function CarpoolingGroupNormal() {
     }
   }, [getUserInfo]);
 
+  useEffect(() => {
+    document.title = "Nhóm đi chung xe";
+  }, []);
+
   return (
     <>
       {user.carpoolingGroupId ? (

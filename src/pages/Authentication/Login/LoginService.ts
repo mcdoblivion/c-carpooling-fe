@@ -1,5 +1,5 @@
 import { AppUser } from "models/AppUser";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { authRepository } from "repositories/auth-repository";
 import { userRepository } from "repositories/user-repository";
 import authenticationService from "services/common-services/authentication-service";
@@ -17,6 +17,10 @@ export default function useLogin(appUser: any, setAppUser: any) {
   const [email, setEmail] = useState<string>(null);
   const [otp, setOtp] = useState<string>(null);
   const [newPass, setNewPass] = useState<string>(null);
+
+  useEffect(() => {
+    document.title = "Đăng nhập";
+  }, []);
 
   const showForgotPassword = () => {
     setLoginVisible(false);

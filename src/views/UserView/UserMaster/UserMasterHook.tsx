@@ -100,6 +100,10 @@ export default function useUserMaster() {
   );
 
   useEffect(() => {
+    document.title = "Quản lý người dùng";
+  }, []);
+
+  useEffect(() => {
     if (filter && autoCallListByChange) {
       setLoadingList(true);
       handleLoadList();

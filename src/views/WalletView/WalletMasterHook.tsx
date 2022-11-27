@@ -78,6 +78,10 @@ export default function useWalletMaster() {
     }
   }, [handleLoadList, token]);
 
+  useEffect(() => {
+    document.title = "Ví C-Carpooling";
+  }, []);
+
   const handleSetMainVehicle = useCallback(
     (vehicleId) => {
       setLoadingList(true);

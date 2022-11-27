@@ -38,6 +38,10 @@ export default function useDayOffRequestNormal() {
     }
   }, [token]);
 
+  useEffect(() => {
+    document.title = "Yêu cầu nghỉ phép";
+  }, []);
+
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,

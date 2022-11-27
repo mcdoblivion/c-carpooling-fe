@@ -13,6 +13,8 @@ function Home() {
   const [nextRoute, setNextRoute] = useState("");
 
   useEffect(() => {
+    document.title = "Trang chủ | C-Carpooling";
+
     const interval = setInterval(() => {
       const userInfo = getCurrentUserInfo();
 

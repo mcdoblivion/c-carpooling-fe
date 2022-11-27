@@ -27,6 +27,7 @@ function CarpoolingLogMaster() {
     list,
     count,
     loadingList,
+    isAdmin: isUserFilterVisible,
     handleTableChange,
     handlePagination,
     handleChangeSelectFilter,
@@ -156,17 +157,19 @@ function CarpoolingLogMaster() {
           <div className="page-master__content">
             <div className="m-b--xxxs m-l--sm">
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
-                <Col lg={5}>
-                  <Select
-                    label="Tên người dùng"
-                    classFilter={AppUserFilter}
-                    placeHolder="Chọn người dùng"
-                    getList={appUserSearchFunc}
-                    render={(item) => item?.username}
-                    onChange={handleChangeSelectFilter("user")}
-                    value={filter?.user}
-                  />
-                </Col>
+                {isUserFilterVisible && (
+                  <Col lg={5}>
+                    <Select
+                      label="Tên người dùng"
+                      classFilter={AppUserFilter}
+                      placeHolder="Chọn người dùng"
+                      getList={appUserSearchFunc}
+                      render={(item) => item?.username}
+                      onChange={handleChangeSelectFilter("user")}
+                      value={filter?.user}
+                    />
+                  </Col>
+                )}
                 <Col lg={5}>
                   <Select
                     label="Nhóm đi chung"
@@ -178,7 +181,6 @@ function CarpoolingLogMaster() {
                     value={filter?.carpoolingGroup}
                   />
                 </Col>
-
                 <Col lg={5}>
                   <Select
                     label="Chiều di chuyển"
@@ -189,7 +191,6 @@ function CarpoolingLogMaster() {
                     value={filter?.directionTypeValue}
                   />
                 </Col>
-
                 <Col lg={5}>
                   <DatePicker
                     label="Ngày"
@@ -198,7 +199,6 @@ function CarpoolingLogMaster() {
                     onChange={handleChangeDateFilter}
                   />
                 </Col>
-
                 <Col lg={4}>
                   <Select
                     label="Trạng thái"

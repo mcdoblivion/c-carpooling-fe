@@ -1,3 +1,4 @@
+import { ADMIN } from "config/consts";
 import { AppUser, AppUserFilter } from "models/AppUser";
 import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
 import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
@@ -18,8 +19,11 @@ import {
   getAntOrderType,
   getOrderType,
 } from "services/page-services/table-service";
+import { getCurrentUserInfo } from "store";
 
 export default function useCarpoolingLogMaster() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const autoCallListByChange: boolean = true;
   const [modelFilter, dispatchFilter] = queryStringService.useQueryString(
     AppUserFilter,
@@ -101,6 +105,13 @@ export default function useCarpoolingLogMaster() {
       handleLoadList();
     }
   }, [autoCallListByChange, filter, handleLoadList]);
+
+  useEffect(() => {
+    document.title = "Lịch sử đi chung";
+
+    const useInfo = getCurrentUserInfo();
+    useInfo?.role === ADMIN && setIsAdmin(true);
+  }, []);
 
   const handleTableChange = useCallback(
     (...[, , sorter]) => {
@@ -230,6 +241,7 @@ export default function useCarpoolingLogMaster() {
     list,
     count,
     loadingList,
+    isAdmin,
     handleTableChange,
     handlePagination,
     handleChangeSelectFilter,
