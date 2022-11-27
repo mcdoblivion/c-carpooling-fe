@@ -98,6 +98,7 @@ const Navbar = () => {
     },
     [menuItems]
   );
+
   const renderMenu = (menu: Menu, key: number, itemType?: string) => {
     return (
       <React.Fragment key={key}>

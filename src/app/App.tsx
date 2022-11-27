@@ -36,7 +36,7 @@ const App = (props: any) => {
     history.listen(() => {
       reloadUserInfo();
     });
-  }, []);
+  }, [history]);
 
   return (
     <React.Fragment>

@@ -9,17 +9,16 @@ import useDayOffRequestNormalDetail from "./DayOffRequestNormalDetailHook";
 
 export interface DayOffRequestNormalDetailProps extends DrawerProps {
   model?: AppUser;
-  handleLoadList?: (filterParam?: any) => void;
 }
 
 function DayOffRequestNormalDetail(props: DayOffRequestNormalDetailProps) {
-  const { visible, model, handleClose, handleLoadList } = props;
+  const { visible, model, handleClose } = props;
   const {
     currentModel,
     directionTypeSearchFunc,
     handleChangeDayOfRequest,
     handleSave,
-  } = useDayOffRequestNormalDetail(model, handleLoadList, handleClose);
+  } = useDayOffRequestNormalDetail(model, handleClose);
 
   return (
     <Drawer

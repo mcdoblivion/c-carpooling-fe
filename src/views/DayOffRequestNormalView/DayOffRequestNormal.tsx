@@ -44,7 +44,6 @@ function DayOffRequestNormal() {
     handleGoCreate,
     handleGoDetail,
     handleGoPreview,
-    handleLoadList,
   } = useDayOffRequestNormal();
 
   const menuAction = useCallback(
@@ -240,7 +239,6 @@ function DayOffRequestNormal() {
         visible={visibleDetail}
         handleClose={handleCloseDetail}
         model={currentItem}
-        handleLoadList={handleLoadList}
       />
       <DayOffRequestNormalPreview
         visible={visiblePreview}
