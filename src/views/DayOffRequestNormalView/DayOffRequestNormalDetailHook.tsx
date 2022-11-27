@@ -7,7 +7,6 @@ import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useDayOffRequestNormalDetail(
   model: AppUser,
-  handleLoadList?: (filterParam?: any) => void,
   handleClose?: () => void
 ) {
   const [currentModel, setCurrentModel] = useState(null);

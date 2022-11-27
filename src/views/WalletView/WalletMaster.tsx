@@ -15,52 +15,33 @@ import {
 import nameof from "ts-nameof.macro";
 import useVehicleMaster from "./WalletMasterHook";
 import WalletPreview from "./WalletPreview";
-import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import { formatNumber } from "helpers/number";
+import CreditCard from "components/CreditCard/CreditCard";
+import WalletDetail from "./WalletDetail";
+import Topup from "./Topup";
 
 /* end individual import */
 
 function WalletMaster() {
   const {
+    user,
     list,
     loadingList,
-    visible,
+    visiblePreview,
+    visibleDetail,
+    visibleTopup,
     currentItem,
     handleGoPreview,
-    handleGoDetail,
+    handleGoTopUp,
+    handleCloseDetail,
+    handleCloseTopup,
     handleClosePreview,
     handleDelete,
     handleGoCreate,
-    handleSetMainVehicle,
+    handleLoadList,
+    setUser,
   } = useVehicleMaster();
-
-  const mockData = [
-    {
-      cvc: "123",
-      name: "DONG MINH CUONG",
-      expiry: "12/30",
-      number: "4111111111111111",
-      cardType: "Visa",
-      id: 1,
-    },
-    {
-      cvc: "123",
-      name: "DONG MINH CUONG",
-      expiry: "12/30",
-      number: "5555555555554444",
-      cardType: "MasterCard",
-      id: 2,
-    },
-    {
-      cvc: "123",
-      name: "DONG MINH CUONG",
-      expiry: "12/30",
-      number: "6062825624254001",
-      cardType: "Hipercard",
-      id: 3,
-    },
-  ];
 
   const menuAction = useCallback(
     (model: AppUser) => (
@@ -70,10 +51,10 @@ function WalletMaster() {
             className="ant-action-menu"
             onClick={(e) => {
               e.stopPropagation();
-              handleGoDetail(model?.id);
+              handleGoTopUp(model?.id);
             }}
           >
-            Cập nhật thông tin phương tiện
+            Nạp tiền vào ví
           </div>
         </Menu.Item>
         <Menu.Item key="2">
@@ -84,23 +65,12 @@ function WalletMaster() {
               handleDelete(model?.id);
             }}
           >
-            Xóa phương tiện
-          </div>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <div
-            className="ant-action-menu"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSetMainVehicle(model?.id);
-            }}
-          >
-            Chọn làm phương tiện đi chung
+            Xóa thẻ
           </div>
         </Menu.Item>
       </Menu>
     ),
-    [handleDelete, handleGoDetail, handleSetMainVehicle]
+    [handleDelete, handleGoTopUp]
   );
 
   const columns: ColumnProps<AppUser>[] = useMemo(
@@ -121,16 +91,14 @@ function WalletMaster() {
             title="Thẻ thanh toán"
           />
         ),
-        key: nameof(list[0].fuelType),
-        dataIndex: nameof(list[0].fuelType),
+        key: nameof(list[0].id),
+        dataIndex: nameof(list[0].id),
         width: 200,
         render(...params: [string, AppUser, number]) {
           return (
-            <Cards
-              cvc={params[1]?.cvc}
-              expiry={params[1]?.expiry}
-              name={params[1]?.name}
-              number={params[1]?.number}
+            <CreditCard
+              cardType={params[1]?.cardType}
+              lastFourDigits={params[1]?.lastFourDigits}
             />
           );
         },
@@ -138,13 +106,13 @@ function WalletMaster() {
 
       {
         title: <LayoutHeader orderType="left" title="Loại thẻ" />,
-        key: nameof(list[0].isVerified),
-        dataIndex: nameof(list[0].isVerified),
+        key: nameof(list[0].cardType),
+        dataIndex: nameof(list[0].cardType),
         width: 100,
-        render(...params: [boolean, AppUser, number]) {
+        render(...params: [string, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText value={params[1]?.cardType} />
+              <OneLineText value={params[0]} />
             </LayoutCell>
           );
         },
@@ -187,17 +155,17 @@ function WalletMaster() {
           breadcrumbItems={["Quản lý ví điện tử", "Danh sách thẻ"]}
         />
         <div className="page page-master m-t--lg m-l--sm m-r--xxl m-b--xxs">
-          <div className="page-master__title p-l--sm p-t--sm p-r--sm p-b--xs">
-            Danh sách thẻ
-          </div>
+          <div className="page-master__title p-l--sm p-t--sm p-r--sm p-b--xs"></div>
 
           <div className="page-master__content">
             <div className="m-b--xxxs m-l--sm">
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
                 <Col lg={6}>
                   <div className="text__with__label_vertical">
-                    <span>Số dư hiện tại</span>
-                    <span>{formatNumber(100000000)}</span>
+                    <span>Số dư hiện tại: </span>
+                    <span>
+                      {formatNumber(user?.wallet?.currentBalance)} VNĐ
+                    </span>
                   </div>
                 </Col>
 
@@ -210,9 +178,8 @@ function WalletMaster() {
                     className="btn--lg"
                     icon={<Add16 />}
                     onClick={handleGoCreate}
-                    disabled={list?.length > 2}
                   >
-                    Tạo mới
+                    Tạo mới thẻ
                   </Button>
                 </Col>
               </Row>
@@ -222,7 +189,7 @@ function WalletMaster() {
             <StandardTable
               rowKey={nameof(list[0].id)}
               columns={columns}
-              dataSource={mockData}
+              dataSource={list}
               isDragable={true}
               tableSize={"md"}
               scroll={{ x: 1000 }}
@@ -240,9 +207,22 @@ function WalletMaster() {
         </div>
       </div>
       <WalletPreview
-        visible={visible}
+        visible={visiblePreview}
         model={currentItem}
         handleClose={handleClosePreview}
+      />
+      <WalletDetail
+        visible={visibleDetail}
+        model={currentItem}
+        handleClose={handleCloseDetail}
+        handleLoadList={handleLoadList}
+      />
+      <Topup
+        visible={visibleTopup}
+        model={currentItem}
+        handleClose={handleCloseTopup}
+        handleLoadList={handleLoadList}
+        setUser={setUser}
       />
     </Spin>
   );
