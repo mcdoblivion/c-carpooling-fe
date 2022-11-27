@@ -149,10 +149,10 @@ export default function useLeaveGroupRequestMaster() {
   );
 
   const appUserObservable = new Observable<any[]>((observer) => {
-    userRepository.all().subscribe((res) => {
+    userRepository.getUsers(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
-        observer.next(res?.data);
-      }, 1000);
+        observer.next(res?.data?.records);
+      }, 500);
     });
   });
   const appUserSearchFunc = (TModelFilter?: any) => {
@@ -162,7 +162,7 @@ export default function useLeaveGroupRequestMaster() {
     carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data?.records);
-      }, 1000);
+      }, 500);
     });
   });
   const groupSearchFunc = (TModelFilter?: any) => {

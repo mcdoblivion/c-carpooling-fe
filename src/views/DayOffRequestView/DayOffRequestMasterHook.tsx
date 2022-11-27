@@ -138,10 +138,10 @@ export default function useDayOffRequestMaster() {
   );
 
   const appUserObservable = new Observable<any[]>((observer) => {
-    userRepository.all().subscribe((res) => {
+    userRepository.getUsers(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
-        observer.next(res?.data);
-      }, 1000);
+        observer.next(res?.data?.records);
+      }, 500);
     });
   });
   const appUserSearchFunc = (TModelFilter?: any) => {
@@ -151,7 +151,7 @@ export default function useDayOffRequestMaster() {
     carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data?.records);
-      }, 1000);
+      }, 500);
     });
   });
   const groupSearchFunc = (TModelFilter?: any) => {
@@ -164,7 +164,7 @@ export default function useDayOffRequestMaster() {
         { id: 1, name: "Home to Work", code: "HTW" },
         { id: 2, name: "Work to Home", code: "WTH" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;

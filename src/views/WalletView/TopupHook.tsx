@@ -47,8 +47,7 @@ export default function useTopup(
         handleLoadList(currentModel.id);
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [

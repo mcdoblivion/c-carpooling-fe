@@ -1,4 +1,4 @@
-import { Checkbox, Divider } from "antd";
+import { Checkbox, Divider, Spin } from "antd";
 import { useState } from "react";
 import nameof from "ts-nameof.macro";
 import "./Login.scss";
@@ -19,6 +19,7 @@ function Login() {
   });
 
   const {
+    loading,
     otp,
     email,
     newPass,
@@ -38,7 +39,7 @@ function Login() {
   } = useLogin(appUser, setAppUser);
   const history = useHistory();
   return (
-    <>
+    <Spin spinning={loading}>
       <div className="login-page">
         <LoginHeader />
         <div className="login-page__content d-flex align-items-start m-l--xxl">
@@ -66,10 +67,6 @@ function Login() {
                           nameof(appUser.usernameOrEmail)
                         )}
                         placeHolder="Nhập tên đăng nhập"
-                        action={{
-                          name: "Quên mật khẩu",
-                          action: () => showForgotPassword(),
-                        }}
                         onKeyDown={handleEnter}
                       />
                     </FormItem>
@@ -98,12 +95,21 @@ function Login() {
                     </Button>
                   </div>
 
-                  <div className="remember-password pointer m-b--max">
+                  <div className="remember-password pointer m-b--max justify-content-between">
                     <Checkbox>
                       <span className="remember-password_label">
                         Nhớ mật khẩu
                       </span>
                     </Checkbox>
+                    <span
+                      onClick={showForgotPassword}
+                      style={{
+                        color: "var(--palette-blue-40)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Quên mật khẩu
+                    </span>
                   </div>
 
                   <Divider className="login-page__content--divider" />
@@ -199,7 +205,7 @@ function Login() {
           </div>
         </div>
       </div>
-    </>
+    </Spin>
   );
 }
 

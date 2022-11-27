@@ -102,14 +102,12 @@ export default function useAddress() {
               handleGoMaster(); // go master
             },
             (error) => {
-              if (error.response && error.response.status === 400)
-                handleErrorNoti(error);
+              handleErrorNoti(error);
             }
           );
         },
         (error) => {
-          if (error.response && error.response.status === 400)
-            handleErrorNoti(error);
+          handleErrorNoti(error);
         }
       );
     } else {
@@ -125,14 +123,12 @@ export default function useAddress() {
                   handleGoMaster(); // go master
                 },
                 (error) => {
-                  if (error.response && error.response.status === 400)
-                    handleErrorNoti(error);
+                  handleErrorNoti(error);
                 }
               );
           },
           (error) => {
-            if (error.response && error.response.status === 400)
-              handleErrorNoti(error);
+            handleErrorNoti(error);
           }
         );
     }

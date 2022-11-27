@@ -11,6 +11,7 @@ import { leaveGroupRequestRepository } from "repositories/leave-group-request-re
 
 import { finalize } from "rxjs";
 import { webService } from "services/common-services/web-service";
+import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useCarpoolingGroupInformation(
   carpoolingGroupId?: number,
@@ -108,10 +109,15 @@ export default function useCarpoolingGroupInformation(
 
   const handleDeleteLeaveGroupRequest = useCallback(
     (id) => {
-      leaveGroupRequestRepository.delete(id).subscribe((res) => {
-        handleLoadList();
-        handleCloseDetail();
-      });
+      leaveGroupRequestRepository.delete(id).subscribe(
+        (res) => {
+          handleLoadList();
+          handleCloseDetail();
+        },
+        (error) => {
+          handleErrorNoti(error);
+        }
+      );
     },
     [handleCloseDetail, handleLoadList]
   );

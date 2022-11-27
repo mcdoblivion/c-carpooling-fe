@@ -27,12 +27,12 @@ export default function GetOtp({
       </div>
 
       <h2 className="login-page__content--title forgot-password">
-        Đổi mật khẩu
+        Xác thực 2 bước
       </h2>
 
       <div className="login-page__content--under-title m-t--xxs">
-        Hệ thống đã gửi một mail kèm mã OTP tới địa chỉ Email bạn vừa nhập. Vui
-        lòng kiểm tra hộp thư và điền thông tin mã OTP sau đó bấm Xác nhận.
+        Hệ thống đã gửi một mail kèm mã OTP tới địa chỉ email của bạn. Vui lòng
+        kiểm tra hộp thư và điền thông tin mã OTP sau đó bấm Xác nhận.
       </div>
 
       <Divider className="login-page__content--divider" />

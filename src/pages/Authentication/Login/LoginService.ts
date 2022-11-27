@@ -1,16 +1,16 @@
+import { notification } from "antd";
+import { AxiosError } from "axios";
+import { LOGIN_ROUTE } from "config/route-consts";
 import { AppUser } from "models/AppUser";
 import React, { useCallback, useEffect, useState } from "react";
 import { authRepository } from "repositories/auth-repository";
 import { userRepository } from "repositories/user-repository";
-import authenticationService from "services/common-services/authentication-service";
 import store from "store";
 import { updateUser } from "store/global-state/actions";
-import { AxiosError } from "axios";
-import { notification } from "antd";
-import { LOGIN_ROUTE } from "config/route-consts";
 import { handleErrorNoti } from "views/AddressView/AddressHook";
 
 export default function useLogin(appUser: any, setAppUser: any) {
+  const [loading, setLoading] = useState(false);
   const [loginVisible, setLoginVisible] = useState(true);
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
   const [getOtpVisible, setGetOtpVisible] = useState(false);
@@ -26,6 +26,7 @@ export default function useLogin(appUser: any, setAppUser: any) {
     setLoginVisible(false);
     setForgotPasswordVisible(true);
   };
+
   const showLogin = () => {
     setLoginVisible(true);
     setForgotPasswordVisible(false);
@@ -34,10 +35,22 @@ export default function useLogin(appUser: any, setAppUser: any) {
     setEmail(null);
     setNewPass(null);
   };
+
+  const showOtp = () => {
+    setLoginVisible(false);
+    setForgotPasswordVisible(false);
+    setGetOtpVisible(true);
+    setOtp(null);
+  };
+
   const handleLogin = useCallback(() => {
-    authRepository.login(appUser).subscribe(
+    setLoading(true);
+
+    authRepository.login({ ...appUser, ...(otp && { otp }) }).subscribe(
       (res) => {
-        if (res.isSuccess && res.data.access_token) {
+        setLoading(false);
+
+        if (res?.data?.access_token) {
           const bearerToken = JSON.stringify(`Bearer ${res.data.access_token}`);
           userRepository
             .getMe(`Bearer ${res.data.access_token}`)
@@ -51,19 +64,18 @@ export default function useLogin(appUser: any, setAppUser: any) {
                 );
 
                 window.location.href = "/";
-              } else {
-                authenticationService.logout();
               }
             });
+        } else {
+          showOtp();
         }
       },
       (error) => {
-        if (error.response && error.response.status === 400) {
-          handleErrorNoti(error);
-        }
+        handleErrorNoti(error);
+        setLoading(false);
       }
     );
-  }, [appUser]);
+  }, [appUser, otp]);
 
   const handleChangeEmail = useCallback((event) => {
     setEmail(event);
@@ -77,27 +89,31 @@ export default function useLogin(appUser: any, setAppUser: any) {
   // SendOtp
 
   const handleSendOtp = useCallback(() => {
-    userRepository
-      .forgotPassword({
-        usernameOrEmail: email,
-        newPassword: newPass,
-        otp: otp,
-      })
-      .subscribe(
-        () => {
-          notification.success({
-            placement: "bottomRight",
-            message: "Đổi mật khẩu thành công",
-          });
-          window.location.href = LOGIN_ROUTE;
-        },
-        (error: AxiosError<AppUser>) => {
-          if (error.response && error.response.status === 400) {
+    // 2FA
+    if (!newPass) {
+      handleLogin();
+    } else {
+      // create new password
+      userRepository
+        .forgotPassword({
+          usernameOrEmail: email,
+          newPassword: newPass,
+          otp: otp,
+        })
+        .subscribe(
+          () => {
+            notification.success({
+              placement: "bottomRight",
+              message: "Đổi mật khẩu thành công",
+            });
+            window.location.href = LOGIN_ROUTE;
+          },
+          (error: AxiosError<AppUser>) => {
             handleErrorNoti(error);
           }
-        }
-      );
-  }, [email, newPass, otp]);
+        );
+    }
+  }, [email, handleLogin, newPass, otp]);
 
   // Send mail to get otp
   const handleSendMail = useCallback(() => {
@@ -105,13 +121,10 @@ export default function useLogin(appUser: any, setAppUser: any) {
       .forgotPassword({ usernameOrEmail: email, newPassword: newPass })
       .subscribe(
         () => {
-          setForgotPasswordVisible(false);
-          setGetOtpVisible(true);
+          showOtp();
         },
         (error: any) => {
-          if (error.response && error.response.status === 400) {
-            handleErrorNoti(error);
-          }
+          handleErrorNoti(error);
         }
       );
   }, [email, newPass]);
@@ -149,6 +162,7 @@ export default function useLogin(appUser: any, setAppUser: any) {
     [handleLogin]
   );
   return {
+    loading,
     otp,
     email,
     newPass,

@@ -185,7 +185,7 @@ export default function useCarpoolingGroupNormal() {
     userRepository.all().subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data);
-      }, 1000);
+      }, 500);
     });
   });
   const appUserSearchFunc = (TModelFilter?: any) => {
@@ -195,7 +195,7 @@ export default function useCarpoolingGroupNormal() {
     carpoolingGroupRepository.search(new AppUserFilter()).subscribe((res) => {
       setTimeout(() => {
         observer.next(res?.data?.records);
-      }, 1000);
+      }, 500);
     });
   });
   const groupSearchFunc = (TModelFilter?: any) => {
@@ -208,7 +208,7 @@ export default function useCarpoolingGroupNormal() {
         { id: 1, name: "Home to Work", code: "HTW" },
         { id: 2, name: "Work to Home", code: "WTH" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const directionTypeSearchFunc = (TModelFilter?: any) => {
     return directionTypeObservable;
@@ -219,7 +219,7 @@ export default function useCarpoolingGroupNormal() {
         { id: 1, name: "Có tham gia", code: "join" },
         { id: 2, name: "Nghỉ phép", code: "absent" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const statusSearchFunc = (TModelFilter?: any) => {
     return statusObservable;

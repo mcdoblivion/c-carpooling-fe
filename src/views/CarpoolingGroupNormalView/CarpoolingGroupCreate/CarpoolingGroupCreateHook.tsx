@@ -39,8 +39,7 @@ export default function useCarpoolingGroupCreate(
         handleLoadGroupInfo();
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, handleLoadGroupInfo, notifyUpdateItemSuccess]);

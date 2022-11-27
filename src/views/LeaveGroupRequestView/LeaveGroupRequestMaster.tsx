@@ -114,7 +114,10 @@ function LeaveGroupRequestMaster() {
                     classFilter={AppUserFilter}
                     placeHolder="Chọn người dùng"
                     getList={appUserSearchFunc}
-                    render={(item) => item?.username}
+                    render={(item) =>
+                      item?.userProfile &&
+                      `${item.userProfile?.firstName} ${item.userProfile?.lastName}`
+                    }
                     onChange={handleChangeAppUserFilter}
                     value={filter?.user}
                   />

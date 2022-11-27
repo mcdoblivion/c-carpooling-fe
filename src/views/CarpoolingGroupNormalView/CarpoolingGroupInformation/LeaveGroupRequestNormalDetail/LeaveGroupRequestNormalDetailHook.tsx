@@ -46,8 +46,7 @@ export default function useLeaveGroupRequestNormalDetail(
       },
       (error) => {
         window.location.href = CARPOOLING_GROUP_NORMAL_ROUTE;
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, notifyUpdateItemSuccess]);

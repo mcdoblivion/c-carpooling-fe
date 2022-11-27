@@ -25,9 +25,7 @@ export default function useSignup(appUser: any, setAppUser: any) {
         setSignupVisible(false);
       },
       (error) => {
-        if (error.response && error.response.status === 400) {
-          handleErrorNoti(error);
-        }
+        handleErrorNoti(error);
       }
     );
   }, [appUser]);
@@ -55,9 +53,7 @@ export default function useSignup(appUser: any, setAppUser: any) {
           history.push(LOGIN_ROUTE);
         },
         (error: AxiosError<AppUser>) => {
-          if (error.response && error.response.status === 400) {
-            handleErrorNoti(error);
-          }
+          handleErrorNoti(error);
         }
       );
   }, [history, otp]);

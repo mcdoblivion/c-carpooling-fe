@@ -77,8 +77,7 @@ export default function useWalletDetail(
         handleLoadList(currentModel.id);
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [currentModel, handleClose, handleLoadList, notifyUpdateItemSuccess]);

@@ -60,7 +60,7 @@ export default function useUserPreview() {
     return new Observable<any>((observer) => {
       setTimeout(() => {
         observer.next(enumGender);
-      }, 1000);
+      }, 500);
     });
   }, [enumGender]);
 
@@ -70,9 +70,9 @@ export default function useUserPreview() {
 
   const enum2FAMethod = useMemo(() => {
     return [
-      { id: 1, name: "OFF" },
-      { id: 2, name: "Email" },
-      { id: 3, name: "SMS" },
+      { id: 1, name: "OFF", value: "OFF" },
+      { id: 2, name: "Email", value: "EMAIL" },
+      { id: 3, name: "SMS", value: "SMS" },
     ];
   }, []);
 
@@ -80,7 +80,7 @@ export default function useUserPreview() {
     return new Observable<any>((observer) => {
       setTimeout(() => {
         observer.next(enum2FAMethod);
-      }, 1000);
+      }, 500);
     });
   }, [enum2FAMethod]);
 
@@ -109,18 +109,19 @@ export default function useUserPreview() {
           setModel({ ...model, newPassword: value });
           break;
 
+        case "2FAMethod":
+          setModel({
+            ...model,
+            "2FAMethod": enum2FAMethod.find(({ id }) => id === value)?.value,
+          });
+          break;
+
         case "dateOfBirth":
           userProfile["dateOfBirth"] = (value as Moment).format("YYYY-MM-DD");
           break;
 
         case "gender":
           userProfile["gender"] = enumGender.find(
-            ({ id }) => id === value
-          )?.name;
-          break;
-
-        case "2FAMethod":
-          model["2FAMethod"] = enum2FAMethod.find(
             ({ id }) => id === value
           )?.name;
           break;
@@ -167,7 +168,7 @@ export default function useUserPreview() {
   );
 
   const handleError = useCallback((error) => {
-    if (error.response && error.response.status === 400) handleErrorNoti(error);
+    handleErrorNoti(error);
   }, []);
 
   const handleSave = useCallback(() => {

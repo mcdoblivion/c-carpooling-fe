@@ -58,7 +58,7 @@ export default function useVehicleNormalDetail() {
         { id: 1, name: "Gasoline", code: "1" },
         { id: 2, name: "Diesel", code: "2" },
       ]);
-    }, 1000);
+    }, 500);
   });
   const fuelTypeSearchFunc = (TModelFilter?: any) => {
     return fuelTypeObservable;
@@ -100,8 +100,7 @@ export default function useVehicleNormalDetail() {
         goToVehicleMenu();
       },
       (error) => {
-        if (error.response && error.response.status === 400)
-          handleErrorNoti(error);
+        handleErrorNoti(error);
       }
     );
   }, [goToVehicleMenu, model, notifyUpdateItemSuccess]);
