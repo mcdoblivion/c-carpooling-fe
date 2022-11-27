@@ -16,7 +16,6 @@ import {
   Pagination,
   StandardTable,
 } from "react3l-ui-library";
-import { carpoolingGroupRepository } from "repositories/carpooling-group-repository";
 import nameof from "ts-nameof.macro";
 import DayOffRequestNormalDetail from "./DayOffRequestNormalDetail";
 import useDayOffRequestNormal from "./DayOffRequestNormalHook";
@@ -37,7 +36,6 @@ function DayOffRequestNormal() {
     handleClosePreview,
     handleTableChange,
     handlePagination,
-    handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
     directionTypeSearchFunc,
     handleDelete,
@@ -180,20 +178,6 @@ function DayOffRequestNormal() {
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} className="w-100">
                 <Col lg={6}>
                   <Select
-                    label="Nhóm đi chung"
-                    searchProperty="search"
-                    searchType=""
-                    classFilter={AppUserFilter}
-                    placeHolder="Chọn nhóm đi chung"
-                    getList={carpoolingGroupRepository.search}
-                    render={(item) => item?.groupName}
-                    onChange={handleChangeSelectFilter("carpoolingGroup")}
-                    value={filter?.carpoolingGroup}
-                  />
-                </Col>
-
-                <Col lg={6}>
-                  <Select
                     label="Chiều di chuyển"
                     classFilter={AppUserFilter}
                     placeHolder="Chọn chiều di chuyển"
@@ -204,14 +188,13 @@ function DayOffRequestNormal() {
                   />
                 </Col>
 
-                <Col lg={6}></Col>
+                <Col lg={12} />
                 <Col lg={6} style={{ alignSelf: "end", textAlign: "right" }}>
                   <Button
                     type="primary"
                     className="btn--lg"
                     icon={<Add16 />}
                     onClick={handleGoCreate}
-                    disabled={list?.length > 2}
                   >
                     Tạo mới
                   </Button>

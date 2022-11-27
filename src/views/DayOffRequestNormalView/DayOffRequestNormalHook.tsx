@@ -151,17 +151,6 @@ export default function useDayOffRequestNormal() {
     [handleChangeAllFilter, filter]
   );
 
-  const handleChangeSelectFilter = useCallback(
-    (field) => (value: any, object: any) => {
-      handleChangeAllFilter({
-        ...filter,
-        [`${field}Id`]: value,
-        [`${field}`]: object,
-      });
-    },
-    [handleChangeAllFilter, filter]
-  );
-
   const appUserObservable = new Observable<any[]>((observer) => {
     userRepository.all().subscribe((res) => {
       setTimeout(() => {
@@ -244,7 +233,6 @@ export default function useDayOffRequestNormal() {
     handleClosePreview,
     handleTableChange,
     handlePagination,
-    handleChangeSelectFilter,
     handleChangeDirectionTypeFilter,
     appUserSearchFunc,
     groupSearchFunc,
