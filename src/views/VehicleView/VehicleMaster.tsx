@@ -248,7 +248,7 @@ function VehicleMaster() {
             <Pagination
               skip={(filter?.page - 1) * filter?.limit}
               take={filter?.limit}
-              total={count * filter?.limit}
+              total={count}
               onChange={handlePagination}
             />
           </div>

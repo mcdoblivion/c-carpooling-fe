@@ -52,7 +52,7 @@ export default function useCarpoolingGroupFinding(reloadUser: () => void) {
                 type: ListActionType.SET,
                 payload: {
                   list: res?.data?.carpoolingGroups,
-                  count: res.data.totalPages,
+                  count: res.data.total,
                 },
               });
             },
