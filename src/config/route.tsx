@@ -9,6 +9,7 @@ import {
   CARPOOLING_GROUP_NORMAL_ROUTE,
   CARPOOLING_GROUP_ROUTE,
   CARPOOLING_LOG_ROUTE,
+  CRON_JOB_ROUTE,
   DAY_OFF_REQUEST_NORMAL_ROUTE,
   DAY_OFF_REQUEST_ROUTE,
   DRIVERS_ROUTE,
@@ -37,6 +38,7 @@ import Home from "pages/HomePage/HomePage";
 import VehicleNormalMaster from "views/VehicleNormalView/VehicleNormalMaster";
 import VehicleNormalDetail from "views/VehicleNormalView/VehicleNormalDetail";
 import WalletMaster from "views/WalletView/WalletMaster";
+import CronJob from "views/CronJobView/CronJob";
 
 export interface Route {
   path: string;
@@ -109,6 +111,10 @@ const userRoutes: Route[] = [
   {
     path: ADDRESS_ROUTE,
     component: Address,
+  },
+  {
+    path: CRON_JOB_ROUTE,
+    component: CronJob,
   },
   {
     path: `${process.env.PUBLIC_URL}/`,
