@@ -135,7 +135,7 @@ function CarpoolingLogMaster() {
         render(...params: [number, AppUser, number]) {
           return (
             <LayoutCell orderType="left" tableSize="md">
-              <OneLineText value={formatNumber(params[0]) + " VNĐ"} />
+              <OneLineText value={formatNumber(params[0]) + " VND"} />
             </LayoutCell>
           );
         },
