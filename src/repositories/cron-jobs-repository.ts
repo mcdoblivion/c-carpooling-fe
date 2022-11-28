@@ -12,15 +12,22 @@ export class CronJobRepository extends Repository {
     super(httpConfig);
     this.baseURL = new URL(API_PREFIX, BASE_API_URL).href;
   }
+
   public getCronJobs = (filter: any): Observable<AppUser> => {
     return this.http
       .get(
         `cron-jobs?page=${filter?.page}&limit=${
           filter?.limit
-        }&filters={"isProcessed":${filter?.isProcessed || false},"type":${
-          filter.type ? `"${filter?.type}"` : null
+        }&filters={"isProcessed":${filter?.isProcessed || null},"type":${
+          filter?.type ? `"${filter.type}"` : null
         }}&sort=${filter?.sort}&order=${filter?.order}`
       )
+      .pipe(Repository.responseMapToModel<AppUser>(AppUser));
+  };
+
+  public triggerCronJob = (id: number): Observable<AppUser> => {
+    return this.http
+      .put(`cron-jobs/${id}`)
       .pipe(Repository.responseMapToModel<AppUser>(AppUser));
   };
 }
