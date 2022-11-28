@@ -38,6 +38,8 @@ export default function useCarpoolingGroupFinding(reloadUser: () => void) {
 
   const handleFindingGroup = useCallback(() => {
     if (departureTimeValue && comebackTimeValue) {
+      setLoadingList(true);
+
       const filterValue = {
         departureTime: departureTimeValue,
         comebackTime: comebackTimeValue,
