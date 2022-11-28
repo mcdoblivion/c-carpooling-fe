@@ -93,7 +93,7 @@ export default function useAddress() {
   }, []);
 
   const handleSave = useCallback(() => {
-    if (!model[0].id && !model[1].id) {
+    if (!homeAddressId && !workAddressId) {
       userRepository.createAddress(appUserId, model[0]).subscribe(
         (res) => {
           userRepository.createAddress(appUserId, model[1]).subscribe(
