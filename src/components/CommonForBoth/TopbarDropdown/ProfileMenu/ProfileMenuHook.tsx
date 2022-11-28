@@ -25,12 +25,12 @@ export function useProfileMenu() {
     authenticationService.logout();
   }, []);
   const handleClickToProfile = React.useCallback(() => {
-    window.location.href = `/carpooling/users-preview?id=${user?.id}`;
+    window.location.href = `/users-preview?id=${user?.id}`;
   }, [user?.id]);
   const handleClickToChangePassword = React.useCallback(() => {
-    window.location.href = `/carpooling/users-preview?id=${
+    window.location.href = `/users-preview?id=${
       user?.id
-    }&&changePassword=${true}`;
+    }&changePassword=${true}`;
   }, [user?.id]);
 
   const handleToggerProfile = React.useCallback(() => {
